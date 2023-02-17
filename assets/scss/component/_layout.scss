@@ -3,6 +3,9 @@
   width: 100%;
   min-height: -vh(100);
   overflow: hidden;
+  min-width: 28rem;
+  background-color: #fff;
+  @include web-center;
 }
 .page-enter-active,
 .page-leave-active {
@@ -10,7 +13,7 @@
   // box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.08);
 }
 .page-leave-active {
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   &:after {
     content: '';
@@ -58,9 +61,7 @@
   display: flex;
   min-height: -vh(100);
   flex-direction: column;
-  min-width: 28rem;
   background-color: #fff;
-  @include web-center;
 }
 @include media-min-width(1024) {
   body {
