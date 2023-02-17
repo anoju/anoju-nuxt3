@@ -7,20 +7,26 @@
   },
   "ignorePatterns": ["node_modules/*", "dist/*", "!.prettierrc.js"],
   "extends": ["plugin:nuxt/recommended", "plugin:vue/vue3-recommended", "plugin:prettier/recommended"],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
+  },
   "plugins": ["vue", "prettier"],
   "rules": {
     "vue/multi-word-component-names": "off",
     "no-trailing-spaces": ["error"],
     "eol-last": ["error"],
-    "prettier/prettier": ["error", {
-      "singleQuote": true,
-      "endOfLine": "lf",
-      "printWidth": 180,
-      // "htmlWhitespaceSensitivity": "css",
-      // "semi": false,
-      "tabWidth": 2,
-      "trailingComma": "none"
-      // "useTabs": false
-    }]
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "endOfLine": "lf",
+        "printWidth": 180,
+        // "htmlWhitespaceSensitivity": "css",
+        // "semi": false,
+        "tabWidth": 2,
+        "trailingComma": "none"
+        // "useTabs": false
+      }
+    ]
   }
 }

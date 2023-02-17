@@ -1,5 +1,7 @@
 <template>
-  <NuxtPage />
+  <div id="wrap">
+    <NuxtPage />
+  </div>
 </template>
 <script lang="ts">
 export default {
@@ -85,12 +87,12 @@ export default {
         return false;
       }
       const isTablet = tabletchk();
-      // function versionChk(str: string, num: number): number {
-      //   const $sliceStart = navigator.userAgent.indexOf(str) + (str.length + 1);
-      //   const $sliceEnd = $sliceStart + num;
-      //   const $version = parseInt(navigator.userAgent.slice($sliceStart, $sliceEnd));
-      //   return $version;
-      // }
+      function versionChk(str: string, num: number) {
+        const $sliceStart = navigator.userAgent.indexOf(str) + (str.length + 1);
+        const $sliceEnd = $sliceStart + num;
+        const $version = parseInt(navigator.userAgent.slice($sliceStart, $sliceEnd));
+        return $version;
+      }
       const rtnClass = [];
       if (isAny) {
         rtnClass.push('mobile');
@@ -98,10 +100,10 @@ export default {
 
         if (isIOS) {
           rtnClass.push('ios');
-          // const isIPhoneVersion = versionChk('iPhone OS', 2);
-          // const isIPadVersion = versionChk('iPad; CPU OS', 2);
-          // if (isIPhone && isIPhoneVersion >= 10) rtnClass.push(`iphone_${isIPhoneVersion}`);
-          // if (isIPad && isIPadVersion >= 10) rtnClass.push(`ipad_${isIPadVersion}`);
+          const isIPhoneVersion = versionChk('iPhone OS', 2);
+          const isIPadVersion = versionChk('iPad; CPU OS', 2);
+          if (isIPhone && isIPhoneVersion >= 10) rtnClass.push(`iphone_${isIPhoneVersion}`);
+          if (isIPad && isIPadVersion >= 10) rtnClass.push(`ipad_${isIPadVersion}`);
         }
         if (isAndroid) rtnClass.push('android');
 
