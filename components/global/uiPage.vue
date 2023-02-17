@@ -24,13 +24,26 @@
 </template>
 
 <script setup lang="ts">
-const uiPageProps = defineProps({
-  pageTitle: { type: [String, Number], default: null },
-  pageClass: { type: [String, Object], default: null },
-  headClass: { type: [String, Object], default: null },
-  bodyClass: { type: [String, Object], default: null },
-  noHeader: { type: Boolean, default: false },
-  btnBack: { type: Boolean, default: false },
-  btnClose: { type: Boolean, default: false }
-});
+// const uiPageProps = defineProps({
+//   pageTitle: { type: [String, Number], default: null },
+//   pageClass: { type: [String, Object], default: null },
+//   headClass: { type: [String, Object], default: null },
+//   bodyClass: { type: [String, Object], default: null },
+//   noHeader: { type: Boolean, default: false },
+//   btnBack: { type: Boolean, default: false },
+//   btnClose: { type: Boolean, default: false }
+// });
+</script>
+<script lang="ts">
+export default {
+  props: {
+    pageTitle: { type: [String, Number], default: null },
+    pageClass: { type: [String, Object], default: null },
+    headClass: { type: [String, Object], default: null },
+    bodyClass: { type: [String, Object], default: null },
+    noHeader: { type: Boolean, default: false },
+    btnBack: { type: Boolean, default: false },
+    btnClose: { type: Boolean, default: false }
+  }
+};
 </script>
