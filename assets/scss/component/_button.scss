@@ -364,9 +364,7 @@ button.btn-click-outer {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 100%;
   transform: scale(0);
-  &.animate {
-    animation: btnClickEf 0.65s linear;
-  }
+  animation: btnClickEf 0.65s linear;
   &.white {
     background: rgba(255, 255, 255, 0.2);
   }
