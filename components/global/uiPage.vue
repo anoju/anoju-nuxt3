@@ -24,48 +24,35 @@
 </template>
 
 <script setup lang="ts">
-// const uiPageProps = defineProps({
-//   pageTitle: { type: [String, Number], default: null },
-//   pageClass: { type: [String, Object], default: null },
-//   headClass: { type: [String, Object], default: null },
-//   bodyClass: { type: [String, Object], default: null },
-//   noHeader: { type: Boolean, default: false },
-//   btnBack: { type: Boolean, default: false },
-//   btnClose: { type: Boolean, default: false }
-// });
-</script>
-<script lang="ts">
-export default {
-  props: {
-    pageTitle: { type: [String, Number], default: null },
-    pageClass: { type: [String, Object], default: null },
-    headClass: { type: [String, Object], default: null },
-    bodyClass: { type: [String, Object], default: null },
-    noHeader: { type: Boolean, default: false },
-    btnBack: { type: [Boolean, String, Function], default: false },
-    btnClose: { type: [Boolean, String, Function], default: false }
-  },
-  methods: {
-    backClick(): void {
-      const router = useRouter();
-      if (typeof this.btnBack === 'function') {
-        this.btnBack();
-      } else if (typeof this.btnBack === 'string') {
-        router.push({ path: this.btnBack });
-      } else {
-        router.back();
-      }
-    },
-    closeClick(): void {
-      const router = useRouter();
-      if (typeof this.btnClose === 'function') {
-        this.btnClose();
-      } else if (typeof this.btnClose === 'string') {
-        router.push({ path: this.btnClose });
-      } else {
-        router.back();
-      }
-    }
+const props = defineProps({
+  pageTitle: { type: [String, Number], default: null },
+  pageClass: { type: [String, Object], default: null },
+  headClass: { type: [String, Object], default: null },
+  bodyClass: { type: [String, Object], default: null },
+  noHeader: { type: Boolean, default: false },
+  btnBack: { type: [Boolean, String, Function], default: false },
+  btnClose: { type: [Boolean, String, Function], default: false }
+});
+
+const backClick = (): void => {
+  const router = useRouter();
+  if (typeof props.btnBack === 'function') {
+    props.btnBack();
+  } else if (typeof props.btnBack === 'string') {
+    router.push({ path: props.btnBack });
+  } else {
+    router.back();
+  }
+};
+
+const closeClick = (): void => {
+  const router = useRouter();
+  if (typeof props.btnClose === 'function') {
+    props.btnClose();
+  } else if (typeof props.btnClose === 'string') {
+    router.push({ path: props.btnClose });
+  } else {
+    router.back();
   }
 };
 </script>
