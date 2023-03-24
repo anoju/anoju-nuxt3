@@ -46,7 +46,7 @@ export default {
     btnClose: { type: [Boolean, String, Function], default: false }
   },
   methods: {
-    backClick() {
+    backClick(): void {
       const router = useRouter();
       if (typeof this.btnBack === 'function') {
         this.btnBack();
@@ -55,16 +55,16 @@ export default {
       } else {
         router.back();
       }
-    }
-  },
-  closeClick() {
-    const router = useRouter();
-    if (typeof this.btnClose === 'function') {
-      this.btnClose();
-    } else if (typeof this.btnClose === 'string') {
-      router.push({ path: this.btnClose });
-    } else {
-      router.back();
+    },
+    closeClick(): void {
+      const router = useRouter();
+      if (typeof this.btnClose === 'function') {
+        this.btnClose();
+      } else if (typeof this.btnClose === 'string') {
+        router.push({ path: this.btnClose });
+      } else {
+        router.back();
+      }
     }
   }
 };

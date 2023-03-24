@@ -16,12 +16,18 @@
     @click="clickEvt"
   >
     <slot />
-    <i v-if="isClick" :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }" class="btn-click-in" @transtionend="clickEndEvt" />
+    <i
+      v-if="isClick"
+      ref="clickIn"
+      :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }"
+      class="btn-click-in"
+      @animationend="clickEndEvt"
+    />
   </a>
   <button
     v-else
     ref="button"
-    :type="type"
+    type="button"
     :class="buttonClass"
     :disabled="disabled"
     :title="title"
@@ -29,14 +35,21 @@
     @focus="isFocus = true"
     @blur="isFocus = false"
     @click="clickEvt"
-    @transtionend="clickEndEvt"
   >
     <slot />
-    <i v-if="isClick" :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }" class="btn-click-in" @transtionend="clickEndEvt" />
+    <i
+      v-if="isClick"
+      ref="clickIn"
+      :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }"
+      class="btn-click-in"
+      @animationend="clickEndEvt"
+    />
   </button>
 </template>
 
 <script lang="ts">
+let dblclickTime: ReturnType<typeof setTimeout> | null = null;
+
 export default {
   props: {
     type: { type: String, default: 'button' },
@@ -88,17 +101,10 @@ export default {
       btnInX: 0,
       btnInY: 0,
       btnTxt: null,
-      isDblclick: false,
-      dblclickTime: null
+      isDblclick: false
     };
   },
   computed: {
-    // listeners() {
-    //   if (this.disabled) {
-    //     return null;
-    //   }
-    //   return this.$listeners;
-    // },
     $color() {
       if (this.color) {
         if (this.colorType.indexOf(this.color) > -1) {
@@ -173,7 +179,7 @@ export default {
     }
   },
   methods: {
-    clickEvt(e: any) {
+    clickEvt(e: any): void {
       if (this.aTag && this.href === '#') e.preventDefault();
       const isChecked = this.$el.classList.contains('checked');
       if (!this.disabled) {
@@ -182,23 +188,27 @@ export default {
           const url = this.to !== null ? this.to : this.href;
           this.linkTo(url);
         }
-        // if (this.dblclick !== null) {
-        //   if (this.isDblclick) {
-        //     clearTimeout(this.dblclickTime5);
-        //     this.isDblclick = false;
-        //     this.dblclick();
-        //   } else {
-        //     this.isDblclick = true;
-        //     this.dblclickTime = setTimeout(() => {
-        //       this.isDblclick = false;
-        //     }, 300);
-        //   }
-        // }
+        if (this.dblclick !== null) {
+          if (this.isDblclick) {
+            if (!!dblclickTime) {
+              clearTimeout(dblclickTime);
+              dblclickTime = null;
+            }
+            this.isDblclick = false;
+            this.dblclick();
+          } else {
+            this.isDblclick = true;
+            if (!dblclickTime) {
+              dblclickTime = setTimeout(() => {
+                this.isDblclick = false;
+              }, 300);
+            }
+          }
+        }
         if (!this.noEffect && !this.isClick) this.clickEffect(e);
       }
     },
-    clickEffect(e: any) {
-      console.log('aaa');
+    clickEffect(e: any): void {
       const _this = this;
       _this.isClick = true;
       const { $el } = this;
@@ -212,11 +222,10 @@ export default {
         _this.btnInY = e.clientY - $el.getBoundingClientRect().top - $btnMax / 2;
       }, 10);
     },
-    clickEndEvt() {
-      console.log('clickEndEvt');
+    clickEndEvt(): void {
       this.isClick = false;
     },
-    linkTo(url: string) {
+    linkTo(url: string): void {
       // window.location.href = appUtil.linkBrowser(url);
     }
   }
