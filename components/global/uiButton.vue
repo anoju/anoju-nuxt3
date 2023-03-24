@@ -3,7 +3,7 @@
     <slot />
   </NuxtLink>
   <a
-    v-else-if="aTag"
+    v-else-if="anchor"
     ref="button"
     role="button"
     :href="href"
@@ -63,8 +63,7 @@ export default {
     to: { type: String, default: null },
 
     // a태그 설정(링크이동X)
-    aTag: { type: Boolean, default: false },
-    href: { type: String, default: '#' },
+    anchor: { type: Boolean, default: false },
 
     not: { type: Boolean, default: false },
     link: { type: Boolean, default: false },
@@ -105,6 +104,11 @@ export default {
     };
   },
   computed: {
+    href() {
+      let val = '#';
+      if (!!this.to && typeof this.to === 'string') val = this.to;
+      return val;
+    },
     $color() {
       if (this.color) {
         if (this.colorType.indexOf(this.color) > -1) {
@@ -180,8 +184,7 @@ export default {
   },
   methods: {
     clickEvt(e: any): void {
-      if (this.aTag && this.href === '#') e.preventDefault();
-      const isChecked = this.$el.classList.contains('checked');
+      if (this.anchor && this.href === '#') e.preventDefault();
       if (!this.disabled) {
         if (this.target === '_blank' && this.isApp && (!!this.to || !!this.href)) {
           e.preventDefault();
