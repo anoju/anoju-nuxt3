@@ -227,6 +227,7 @@ export default {
     },
     linkTo(url: string): void {
       // window.location.href = appUtil.linkBrowser(url);
+      window.open(url);
     }
   }
 };
