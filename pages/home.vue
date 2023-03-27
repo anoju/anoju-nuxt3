@@ -3,7 +3,7 @@
     <uiInner>
       <ul>
         <li>
-          <p><uiButton2 to="/" line>move index</uiButton2></p>
+          <p><uiButton to="/" line>move index</uiButton></p>
         </li>
       </ul>
     </uiInner>

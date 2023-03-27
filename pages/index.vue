@@ -8,8 +8,8 @@ const incrementCount = (): void => {
 <template>
   <uiPage page-title="Index page" btn-back>
     <uiInner>
-      <p><uiButton2 to="/home" line>move home</uiButton2></p>
-      <p><uiButton2 line @click="incrementCount">버튼</uiButton2></p>
+      <p><uiButton to="/home" line>move home</uiButton></p>
+      <p><uiButton line @click="incrementCount">버튼</uiButton></p>
       <p>Count: {{ count }}</p>
     </uiInner>
   </uiPage>
