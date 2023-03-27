@@ -1,6 +1,6 @@
 :root {
   --vh: 1vh;
-  --primary-color: $primary;
+  --primary-color: #{$primary};
   accent-color: var(--primary-color);
   --spl-highlight-color: var(--primary-color);
   --primary-color-rgb: 0, 202, 202;
@@ -586,35 +586,24 @@ html.pc {
   //     width: 100%;
   //   }
   // }
-  &:not(.not-full):not(.justify-start):not(.justify-center):not(.justify-end):not(.space-between):not(.space-around):not(.space-evenly):not(.flex-11):not(.flex-10):not(.flex-01):not(.flex-00):not(.flex-wrap):not(.flex-column) {
+  --flex-gap: 0.8rem;
+  > * + * {
+    margin-left: var(--flex-gap);
+  }
+  &.full {
     > *:not(.unit):not(i) {
       width: 100%;
     }
+    @include class-begins('w-', '>') {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    &.no-gap {
+      --flex-gap: 0;
+    }
   }
-  // > * {
-  //   width: 100%;
-  // }
-  // &.not-full,
-  // &.justify-start,
-  // &.justify-center,
-  // &.justify-end,
-  // &.space-between,
-  // &.space-around,
-  // &.space-evenly,
-  // &.flex-11,
-  // &.flex-10,
-  // &.flex-01,
-  // &.flex-00,
-  // &.flex-wrap,
-  // &.flex-column {
-  //   > * {
-  //     width: auto;
-  //   }
-  // }
-  @include class-begins('w-', '>') {
-    flex-grow: 0;
-    flex-shrink: 0;
-  }
+
   > .unit {
     display: flex;
     width: auto;
@@ -622,27 +611,10 @@ html.pc {
     font-size: 1.5rem;
     padding: 0 0.2rem;
   }
-  > .input,
-  > .select {
-    + .input,
-    + .select {
-      margin-top: 0;
-    }
-    &:not(.form-box) {
-      + .input,
-      + .select {
-        margin-top: 0;
-      }
-    }
+  > :is(.input, .select) + :is(.input, .select) {
+    margin-top: 0;
   }
-  > * + * {
-    margin-left: 0.8rem;
-  }
-  + .input,
-  + .select,
-  + .textarea {
-    margin-top: 0.8rem;
-  }
+
   > .button {
     padding-left: 0.5rem;
     padding-right: 0.5rem;

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+useHead({
+  title: '페이지 제목'
+});
+
 const count: Ref<number> = ref(0);
 
 const incrementCount = (): void => {
@@ -8,9 +12,17 @@ const incrementCount = (): void => {
 <template>
   <uiPage page-title="Index page" btn-back>
     <uiInner>
-      <p><uiButton to="/home" line>move home</uiButton></p>
-      <p><uiButton line @click="incrementCount">버튼</uiButton></p>
-      <p>Count: {{ count }}</p>
+      <h1 class="tit-h1">NUXT3 컴포넌트 가이즈 제작</h1>
+      <p class="t-right">by. 안효주</p>
+      <br />
+      <br />
+      <div class="flex space-between align-center">
+        <p><uiButton line @click="incrementCount">count++</uiButton></p>
+        <p>Count: {{ count }}</p>
+      </div>
     </uiInner>
+    <uiBottomFixed flex full>
+      <uiButton to="/guide/text" primary>Go to Guide</uiButton>
+    </uiBottomFixed>
   </uiPage>
 </template>

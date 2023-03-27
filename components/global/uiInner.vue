@@ -6,7 +6,7 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div class="section" :class="[full ? 'full-contents' : '', full && center ? 'justify-center' : '', bottom ? 'bottom-contents' : '']">
+  <div class="section" :class="[{ 'full-contents': full, 'justify-center': center ? 'bottom-contents' : bottom }]">
     <slot />
   </div>
 </template>

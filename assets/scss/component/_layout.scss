@@ -433,3 +433,36 @@ html.lock,
     }
   }
 }
+.bottom-fixed {
+  > div {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--base-padding) 2rem;
+    transition: box-shadow 0.3s;
+    z-index: 50;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) var(--base-padding), #fff 100%) !important;
+    // pointer-events: none;
+    // > * {
+    //   pointer-events: auto;
+    // }
+    html.ios & {
+      @include ios-bottom(padding-bottom, var(--base-padding));
+    }
+  }
+  @include media-min-width(1024) {
+    & {
+      > div {
+        @include web-center;
+        @include web-center-fixed;
+      }
+    }
+  }
+  &.btn-wrap {
+    margin-top: 0;
+  }
+  &.outer {
+    @include outer;
+  }
+}
