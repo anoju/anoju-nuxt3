@@ -1,40 +1,3 @@
-<template>
-  <NuxtLink v-if="!!to && target !== '_blank'" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut">
-    <slot />
-  </NuxtLink>
-  <a
-    v-else-if="anchor"
-    ref="button"
-    role="button"
-    :href="href"
-    :class="buttonClass"
-    :title="title"
-    :target="target"
-    v-bind="$attrs"
-    @focus="focusIn"
-    @blur="focusOut"
-    @click="clickEvt"
-  >
-    <slot />
-    <i
-      v-if="isClick"
-      ref="clickIn"
-      :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }"
-      class="btn-click-in"
-      @animationend="clickEndEvt"
-    />
-  </a>
-  <button v-else ref="button" type="button" :class="buttonClass" :disabled="disabled" :title="title" v-bind="$attrs" @focus="focusIn" @blur="focusOut" @click="clickEvt">
-    <slot />
-    <i
-      v-if="isClick"
-      ref="clickIn"
-      :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }"
-      class="btn-click-in"
-      @animationend="clickEndEvt"
-    />
-  </button>
-</template>
 <script lang="ts" setup>
 // props
 const props = defineProps({
@@ -73,8 +36,8 @@ const props = defineProps({
   h24: { type: Boolean, default: false }
 });
 // data
-let isFocus = ref(false);
-let isClick = ref(false);
+const isFocus: Ref<boolean> = ref(false);
+const isClick: Ref<boolean> = ref(false);
 
 //computed
 const href = computed<string>((): string => {
@@ -196,7 +159,7 @@ const clickEvt = (e: any): void => {
         }
       }
     }
-    if (!props.noEffect && !isClick) clickEffect(e);
+    if (!props.noEffect && !isClick.value) clickEffect(e);
   }
 };
 const linkTo = (url: string): void => {
@@ -205,24 +168,21 @@ const linkTo = (url: string): void => {
 
 const button: any = ref(null);
 let btnHtml: string | null = null;
-let btnW = 0;
-let btnInW = 0;
-let btnInH = 0;
-let btnInX = 0;
-let btnInY = 0;
+const btnInW: Ref<number> = ref(0);
+const btnInH: Ref<number> = ref(0);
+const btnInX: Ref<number> = ref(0);
+const btnInY: Ref<number> = ref(0);
 
 const clickEffect = (e: any): void => {
   btnHtml = button.value.textContent;
   isClick.value = true;
-  console.log(button.value.offsetWidth, button.value.offsetHeight);
   setTimeout(() => {
     if (btnHtml !== button.value.textContent) return;
-    console.log(btnHtml, button.value.textContent);
     const $btnMax = Math.max(button.value.offsetWidth, button.value.offsetHeight);
-    btnInW = $btnMax;
-    btnInH = $btnMax;
-    btnInX = e.clientX - button.value.getBoundingClientRect().left - $btnMax / 2;
-    btnInY = e.clientY - button.value.getBoundingClientRect().top - $btnMax / 2;
+    btnInW.value = $btnMax;
+    btnInH.value = $btnMax;
+    btnInX.value = e.clientX - button.value.getBoundingClientRect().left - $btnMax / 2;
+    btnInY.value = e.clientY - button.value.getBoundingClientRect().top - $btnMax / 2;
   }, 10);
 };
 const clickEndEvt = (): void => {
@@ -231,7 +191,50 @@ const clickEndEvt = (): void => {
 
 // lifecycle
 onMounted(() => {
-  // if (button.value) {
-  // }
+  if (button.value) {
+    console.log(buttonClass);
+  }
 });
 </script>
+<template>
+  <!-- link일때 -->
+  <NuxtLink v-if="!!to && target !== '_blank'" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut">
+    <slot />
+  </NuxtLink>
+
+  <!-- anchor일때 -->
+  <a
+    v-else-if="anchor"
+    ref="button"
+    role="button"
+    :href="href"
+    :class="buttonClass"
+    :title="title"
+    :target="target"
+    v-bind="$attrs"
+    @focus="focusIn"
+    @blur="focusOut"
+    @click="clickEvt"
+  >
+    <slot />
+    <i
+      v-if="isClick"
+      ref="clickIn"
+      :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }"
+      class="btn-click-in"
+      @animationend="clickEndEvt"
+    />
+  </a>
+
+  <!-- button일때 -->
+  <button v-else ref="button" type="button" :class="buttonClass" :disabled="disabled" :title="title" v-bind="$attrs" @focus="focusIn" @blur="focusOut" @click="clickEvt">
+    <slot />
+    <i
+      v-if="isClick"
+      ref="clickIn"
+      :style="{ width: `${btnInW}px`, height: `${btnInH}px`, left: `${btnInX}px`, top: `${btnInY}px` }"
+      class="btn-click-in"
+      @animationend="clickEndEvt"
+    />
+  </button>
+</template>

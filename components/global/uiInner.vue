@@ -1,8 +1,3 @@
-<template>
-  <div class="section" :class="[full ? 'full-contents' : '', full && center ? 'justify-center' : '', bottom ? 'bottom-contents' : '']">
-    <slot />
-  </div>
-</template>
 <script setup lang="ts">
 const props = defineProps({
   full: { type: Boolean, default: false },
@@ -10,3 +5,8 @@ const props = defineProps({
   bottom: { type: Boolean, default: false }
 });
 </script>
+<template>
+  <div class="section" :class="[full ? 'full-contents' : '', full && center ? 'justify-center' : '', bottom ? 'bottom-contents' : '']">
+    <slot />
+  </div>
+</template>
