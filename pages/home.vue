@@ -3,7 +3,7 @@
     <uiInner>
       <ul>
         <li>
-          <NuxtLink to="/" class="button line">move index</NuxtLink>
+          <p><uiButton2 to="/" line>move index</uiButton2></p>
         </li>
       </ul>
     </uiInner>

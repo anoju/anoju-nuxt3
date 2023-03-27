@@ -85,7 +85,7 @@ const buttonClass = computed<any>((): any => {
 });
 
 const btnClass = computed<Array<string | Object>>((): Array<string | Object> => {
-  return [
+  const rtnAry = [
     'button',
     {
       focus: isFocus.value,
@@ -97,10 +97,11 @@ const btnClass = computed<Array<string | Object>>((): Array<string | Object> => 
       icon: props.icon,
       disabled: props.disabled,
       'btn-clicking-active': isClick.value
-    },
-    $color,
-    $size
+    }
   ];
+  if ($color.value) rtnAry.push($color.value);
+  if ($size.value) rtnAry.push($size.value);
+  return rtnAry;
 });
 
 const notClass = computed<Array<string | Object>>((): Array<string | Object> => {
@@ -115,15 +116,16 @@ const notClass = computed<Array<string | Object>>((): Array<string | Object> => 
 });
 
 const linkClass = computed<Array<string | Object>>((): Array<string | Object> => {
-  return [
+  const rtnAry = [
     'btn-link',
     {
       focus: isFocus.value,
       line: props.line,
       disabled: props.disabled
-    },
-    $color
+    }
   ];
+  if ($color.value) rtnAry.push($color.value);
+  return rtnAry;
 });
 
 let isDblclick = false;
@@ -186,21 +188,19 @@ const clickEffect = (e: any): void => {
   }, 10);
 };
 const clickEndEvt = (): void => {
-  isClick.value = false;
+  // isClick.value = false;
 };
 
 // lifecycle
 onMounted(() => {
   if (button.value) {
-    console.log(buttonClass);
+    console.log(buttonClass.value);
   }
 });
 </script>
 <template>
   <!-- link일때 -->
-  <NuxtLink v-if="!!to && target !== '_blank'" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut">
-    <slot />
-  </NuxtLink>
+  <NuxtLink v-if="!!to && target !== '_blank'" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut"><slot /></NuxtLink>
 
   <!-- anchor일때 -->
   <a
