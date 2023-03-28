@@ -73,11 +73,8 @@
     }
   }
   &:not(.form-box) {
-    & + .flex,
-    & + .input,
-    & + .select,
-    & + .textarea {
-      margin-top: 0.8rem;
+    & + :is(.flex, .input, .select, .textarea) {
+      margin-top: var(--item-margin-y);
     }
   }
   .textarea-count {

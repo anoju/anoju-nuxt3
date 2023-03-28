@@ -12066,7 +12066,7 @@ const selectOpt2: Option[] = [
         </div>
       </div>
       <div class="flex">
-        <uiSelect v-model="selectVal1" title="굵기 선택" class="mt-20" :options="selectOpt1"></uiSelect>
+        <uiSelect v-model="selectVal1" title="굵기 선택" :options="selectOpt1"></uiSelect>
       </div>
       <div class="flex">
         <uiSelect v-model="selectVal2" title="크기 선택" :options="selectOpt2"></uiSelect>

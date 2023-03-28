@@ -491,7 +491,7 @@
   .chk-item {
     margin-top: 2.4rem;
     + .chk-item {
-      margin-top: 0.8rem;
+      margin-top: var(--item-margin-y);
     }
   }
   .btn-wrap,
@@ -527,7 +527,7 @@
   }
 
   .round-box {
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
     border: 0.1rem solid #ebebeb;
     padding: 2rem;
     border-radius: 1rem;

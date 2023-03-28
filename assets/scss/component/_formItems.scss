@@ -29,9 +29,8 @@ i.require {
     align-items: center;
     font-weight: normal;
   }
-  + .form-item,
-  + .validate-item {
-    margin-top: 0.8rem;
+  + :is(.form-item, .validate-item) {
+    margin-top: var(--item-margin-y);
   }
   .txt-count {
     font-size: 1.2rem;
@@ -145,7 +144,7 @@ i.require {
     margin-top: 1.6rem;
   }
   + .validate-txt {
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
     padding: 0 2rem;
     + .form-box {
       margin-top: 1.6rem;
@@ -210,15 +209,12 @@ i.require {
   &.is-success {
     color: var(--primary-color);
   }
-  + .flex,
-  + .input,
-  + .select,
-  + .textare {
-    margin-top: 0.8rem;
+  + :is(.flex, .input, .select, .textarea) {
+    margin-top: var(--item-margin-y);
   }
 }
 .help-txt {
-  margin-top: 0.8rem;
+  margin-top: var(--item-margin-y);
   font-size: 1.2rem;
   line-height: 1.33;
 }

@@ -3,7 +3,9 @@
   --primary-color: #{$primary};
   accent-color: var(--primary-color);
   --spl-highlight-color: var(--primary-color);
-  --primary-color-rgb: 0, 202, 202;
+  --primary-color-rgb: rgb($primary);
+  --item-margin-x: 0.8rem;
+  --item-margin-y: 0.8rem;
 
   --base-txt-color: #606060;
   --strong-txt-color: #212121;
@@ -573,22 +575,21 @@ html.pc {
   flex-direction: column !important;
   &.flex > div + div {
     margin-left: 0;
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
   }
 }
 .flex {
   display: flex;
   & + .flex {
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
   }
   // &:not(.not-full, .justify-start, .justify-center, .justify-end, .space-between, .space-around, .space-evenly, .flex-11, .flex-10, .flex-01, .flex-00, .flex-wrap, .flex-column) {
   //   > *:not(.unit) {
   //     width: 100%;
   //   }
   // }
-  --flex-gap: 0.8rem;
   > * + * {
-    margin-left: var(--flex-gap);
+    margin-left: var(--item-margin-x);
   }
   &.full {
     > *:not(.unit):not(i) {
@@ -600,7 +601,7 @@ html.pc {
     }
 
     &.no-gap {
-      --flex-gap: 0;
+      --item-margin-x: 0;
     }
   }
 

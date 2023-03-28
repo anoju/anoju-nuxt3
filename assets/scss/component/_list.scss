@@ -74,7 +74,7 @@
     }
   }
   + .round-box-item {
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
   }
 }
 
@@ -253,7 +253,7 @@
     font-size: 1.4rem;
     color: var(--gray-txt-color);
     + .item-tit {
-      margin-top: 0.8rem;
+      margin-top: var(--item-margin-y);
     }
   }
   .item-tit {
@@ -342,7 +342,7 @@
 // temp
 .file-list {
   > li + li {
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
   }
   .btn-txt {
     padding: 0;

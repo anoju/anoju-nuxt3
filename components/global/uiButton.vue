@@ -110,10 +110,9 @@ const notClass = computed<Array<string | Object>>((): Array<string | Object> => 
 
 const linkClass = computed<Array<string | Object>>((): Array<string | Object> => {
   const rtnAry = [
-    'btn-link',
+    'btn-txt',
     {
       focus: isFocus.value,
-      line: props.line,
       disabled: props.disabled
     }
   ];

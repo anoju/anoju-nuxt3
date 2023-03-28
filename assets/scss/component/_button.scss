@@ -382,11 +382,11 @@ button.btn-click-outer {
 
 .btn-wrap,
 .tg-btn-wrap {
-  margin-top: 0.8rem;
+  margin-top: var(--item-margin-y);
   text-align: center;
   clear: both;
   > .button + .button {
-    margin-top: 0.8rem;
+    margin-top: var(--item-margin-y);
   }
   > .button,
   div:not(.input):not(.textarea) > .button {
@@ -472,16 +472,13 @@ button.btn-click-outer {
       > .button + .button,
       > .btn + .btn {
         margin-left: 0;
-        margin-top: 0.8rem;
+        margin-top: var(--item-margin-y);
       }
     }
   }
 
-  + .input,
-  + .select,
-  + .textare,
-  + .flex {
-    margin-top: 0.8rem;
+  + :is(.input, .select, .textarea, .flex) {
+    margin-top: var(--item-margin-y);
   }
 }
 

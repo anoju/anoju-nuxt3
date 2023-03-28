@@ -1,7 +1,7 @@
 #wrap {
   position: relative;
   min-height: -vh(100);
-  overflow: hidden;
+  // overflow: hidden;
   min-width: 28rem;
   background-color: #fff;
   @include web-center;
@@ -29,7 +29,7 @@
   }
 }
 .page-enter-active {
-  position: absolute !important;
+  position: fixed !important;
   left: 0;
   top: 0;
   width: 100%;
@@ -323,7 +323,7 @@ html.lock,
     line-height: 1.33;
     color: var(--strong-txt-color2);
     + .btn {
-      margin-top: 0.8rem;
+      margin-top: var(--item-margin-y);
     }
     &.btn-page-top {
       display: flex;
