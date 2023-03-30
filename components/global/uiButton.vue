@@ -47,33 +47,26 @@ const href = computed<string>((): string => {
 });
 
 type Color = 'primary' | 'gray' | 'gray2' | 'gray3';
-const colorAry = ['primary', 'gray', 'gray2', 'gray3'];
+const colorAry: Color[] = ['primary', 'gray', 'gray2', 'gray3'];
+const matchingColor = colorAry.find((color) => props[color]);
 const $color = computed<Color | null>((): Color | null => {
-  if (props.color) {
-    if (colorAry.includes(props.color)) {
-      return props.color as Color;
-    }
+  if (props.size && colorAry.includes(props.size as Color)) {
+    return props.size as Color;
+  } else if (matchingColor) {
+    return matchingColor;
   }
-  if (props.primary) return 'primary';
-  if (props.gray) return 'gray';
-  if (props.gray2) return 'gray2';
-  if (props.gray3) return 'gray3';
   return null;
 });
 
 type Size = 'h60' | 'h52' | 'h38' | 'h32' | 'h24';
-const sizeAry = ['h60', 'h52', 'h38', 'h32', 'h24'];
+const sizeAry: Size[] = ['h60', 'h52', 'h38', 'h32', 'h24'];
+const matchingSize = sizeAry.find((size) => props[size]);
 const $size = computed<Size | null>((): Size | null => {
-  if (props.color) {
-    if (sizeAry.includes(props.size)) {
-      return props.size as Size;
-    }
+  if (props.size && sizeAry.includes(props.size as Size)) {
+    return props.size as Size;
+  } else if (matchingSize) {
+    return matchingSize;
   }
-  if (props.h60) return 'h60';
-  if (props.h52) return 'h52';
-  if (props.h38) return 'h38';
-  if (props.h32) return 'h32';
-  if (props.h24) return 'h24';
   return null;
 });
 
