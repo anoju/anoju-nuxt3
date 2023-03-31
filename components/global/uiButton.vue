@@ -136,7 +136,7 @@ const clickEvt = (e: any): void => {
       const url = props.to !== null ? props.to : href.value;
       linkTo(url);
     }
-    if (props.dblclick !== null) {
+    if (props.dblclick) {
       if (isDblclick) {
         if (!!dblclickTime) {
           clearTimeout(dblclickTime);
