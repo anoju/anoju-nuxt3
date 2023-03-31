@@ -17,9 +17,8 @@ const props = defineProps({
   button: { type: Boolean, default: false },
   value: { type: [String, Number], default: null, require: true },
   modelValue: { type: [String, Number, Boolean, Array, Object], default: null },
-  trueValue: { type: Boolean, default: true },
-  falseValue: { type: Boolean, default: false },
-  lblClass: { type: String, default: null },
+  wrapClass: { type: [String, Array], default: null },
+  lblClass: { type: [String, Array], default: null },
   lblStyle: { type: String, default: null },
   dblclick: { type: Function, default: null }
 });
@@ -34,7 +33,7 @@ const radioId = computed<string>((): string => {
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });
-const shouldBeChecked = computed<boolean>((): boolean => {
+const isChecked = computed<boolean>((): boolean => {
   return props.modelValue === props.value;
 });
 
@@ -70,7 +69,7 @@ const radioClass = computed<Array<RadioClass | string>>((): Array<RadioClass | s
       btn: props.button,
       focus: isFocus.value,
       disabled: props.disabled,
-      checked: shouldBeChecked.value
+      checked: isChecked.value
     }
   ];
   return rtnAry;
@@ -112,12 +111,12 @@ const onInputChange = (e: Event) => {
 };
 
 // lifecycle
-onMounted(() => {
-  console.log(ref(null));
-});
+// onMounted(() => {
+//   console.log(ref(null));
+// });
 </script>
 <template>
-  <span :class="radioClass">
+  <span :class="[radioClass, wrapClass]">
     <label v-if="right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="radioId">
       <slot />
     </label>
@@ -125,7 +124,7 @@ onMounted(() => {
       :id="radioId"
       ref="radio"
       type="radio"
-      :checked="shouldBeChecked"
+      :checked="isChecked"
       :value="value"
       :disabled="disabled"
       v-bind="$attrs"

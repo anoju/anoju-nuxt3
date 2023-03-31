@@ -5,6 +5,8 @@ interface Option {
   disabled?: boolean;
 }
 
+const ffVal: Ref<string> = ref('noto');
+
 const selectVal1: Ref<number> = ref(900);
 const selectOpt1: Option[] = [
   { label: 'Thin', value: 100 },
@@ -52,7 +54,7 @@ const selectOpt2: Option[] = [
 
       <h2 class="gd__h1">영어, 숫자, 기호</h2>
       <div class="gd__txt-box">
-        <div :class="`fw-${selectVal1} fz-${selectVal2}`">
+        <div :class="`fw-${selectVal1} fz-${selectVal2} ff-${ffVal}`">
           <div>ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
           <div>abcdefghijklmnopqrstuvwxyz</div>
           <div>0123456789</div>
@@ -78,7 +80,7 @@ const selectOpt2: Option[] = [
       </p>
       <br />
       <div class="gd__tbl">
-        <table :class="`fw-${selectVal1} fz-${selectVal2}`">
+        <table :class="`fw-${selectVal1} fz-${selectVal2} ff-${ffVal}`">
           <tbody>
             <tr>
               <td class="yellow">가</td>
@@ -12056,14 +12058,8 @@ const selectOpt2: Option[] = [
     </uiInner>
     <uiBottomFixed>
       <div class="flex full">
-        <div class="radio btn">
-          <input id="ffRdo1" type="radio" class="ff-rdo" name="ffRdo" value="ff-noto" checked /><i aria-hidden="true"></i>
-          <label for="ffRdo1" class="lbl">Noto Sans KR - v21</label>
-        </div>
-        <div class="radio btn">
-          <input id="ffRdo2" type="radio" class="ff-rdo" name="ffRdo" value="ff-roboto" /><i aria-hidden="true"></i>
-          <label for="ffRdo2" class="lbl">Roboto - v29</label>
-        </div>
+        <uiRadio v-model="ffVal" button value="noto">Noto Sans KR - v21</uiRadio>
+        <uiRadio v-model="ffVal" button value="roboto">Roboto - v29</uiRadio>
       </div>
       <div class="flex">
         <uiSelect v-model="selectVal1" title="굵기 선택" :options="selectOpt1"></uiSelect>
