@@ -4,6 +4,7 @@ useHead({
 });
 
 const count: Ref<number> = ref(0);
+const rdoVal: Ref<string> = ref('');
 
 const incrementCount = (): void => {
   count.value++;
@@ -20,6 +21,9 @@ const incrementCount = (): void => {
         <p><uiButton line @click="incrementCount">count++</uiButton></p>
         <p>Count: {{ count }}</p>
       </div>
+      <uiRadio v-model="rdoVal" value="남자">남자</uiRadio>
+      <uiRadio v-model="rdoVal" value="여자">여자</uiRadio>
+      <P>{{ rdoVal }}</P>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>
