@@ -5,6 +5,8 @@ useHead({
 
 const count: Ref<number> = ref(0);
 const rdoVal: Ref<string> = ref('');
+const chkVal: Ref<boolean> = ref(false);
+const chkVal2: Ref<string> = ref('N');
 
 const incrementCount = (): void => {
   count.value++;
@@ -21,9 +23,20 @@ const incrementCount = (): void => {
         <p><uiButton line @click="incrementCount">count++</uiButton></p>
         <p>Count: {{ count }}</p>
       </div>
-      <uiRadio v-model="rdoVal" value="남자">남자</uiRadio>
-      <uiRadio v-model="rdoVal" value="여자">여자</uiRadio>
-      <P>{{ rdoVal }}</P>
+      <br />
+      <div>
+        <uiRadio v-model="rdoVal" value="남자">남자</uiRadio>
+        <uiRadio v-model="rdoVal" value="여자">여자</uiRadio>
+        {{ rdoVal }}
+      </div>
+      <br />
+      <div>
+        <uiCheckbox v-model="chkVal">선택1</uiCheckbox>
+        {{ chkVal }}
+        <br />
+        <uiCheckbox v-model="chkVal2" true-value="Y" false-value="N">선택2</uiCheckbox>
+        {{ chkVal2 }}
+      </div>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>
