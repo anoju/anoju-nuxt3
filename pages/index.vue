@@ -26,7 +26,7 @@ const incrementCount = (): void => {
       <br />
       <div>
         <uiRadio v-model="rdoVal" value="남자">남자</uiRadio>
-        <uiRadio v-model="rdoVal" value="여자">여자</uiRadio>
+        <uiRadio v-model="rdoVal" small value="여자">여자</uiRadio>
         {{ rdoVal }}
       </div>
       <br />
@@ -34,7 +34,7 @@ const incrementCount = (): void => {
         <uiCheckbox v-model="chkVal">선택1</uiCheckbox>
         {{ chkVal }}
         <br />
-        <uiCheckbox v-model="chkVal2" true-value="Y" false-value="N">선택2</uiCheckbox>
+        <uiCheckbox v-model="chkVal2" small true-value="Y" false-value="N">선택2</uiCheckbox>
         {{ chkVal2 }}
       </div>
     </uiInner>
