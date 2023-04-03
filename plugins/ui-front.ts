@@ -5,9 +5,16 @@ interface ScrollOptions {
   top?: number;
 }
 
-const scrollTo = (option?: ScrollOptions, speed: number = 500, fn?: () => void) => {
-  let wrap: Element = window.document.scrollingElement || window.document.body || window.document.documentElement;
-
+const scrollTo = (el = 'window', option?: ScrollOptions, speed: number = 500, fn?: () => void) => {
+  let wrap: Element | null = window.document.scrollingElement || window.document.body || window.document.documentElement;
+  if (el !== 'window') {
+    if (typeof el === 'string') {
+      wrap = document.querySelector(el);
+    } else {
+      wrap = el;
+    }
+  }
+  if (wrap === null) return;
   let leftVal = wrap.scrollLeft;
   let topVal = wrap.scrollTop;
 

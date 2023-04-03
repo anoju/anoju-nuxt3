@@ -65,7 +65,7 @@ const btnTopChk = (): void => {
 
 const $scrollTo = useNuxtApp().$scrollTo;
 const btnTopClick = (): void => {
-  $scrollTo({ top: 0 }, 300);
+  $scrollTo('window', { top: 0 }, 300);
 };
 
 const wrapScrollEvt = (): void => {
