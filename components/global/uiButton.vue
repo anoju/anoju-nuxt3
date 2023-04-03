@@ -129,7 +129,7 @@ const focusOut = () => {
   isFocus.value = false;
 };
 const clickEvt = (e: any): void => {
-  if (props.anchor && href.value === '#') e.preventDefault();
+  if ((props.anchor && href.value === '#') || props.to.startsWith('#')) e.preventDefault();
   if (!props.disabled) {
     if (props.target === '_blank' && (!!props.to || !!href)) {
       e.preventDefault();
@@ -192,11 +192,13 @@ const clickEndEvt = (): void => {
 </script>
 <template>
   <!-- link일때 -->
-  <NuxtLink v-if="!!to && target !== '_blank'" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut"><slot /></NuxtLink>
+  <NuxtLink v-if="!!to && target !== '_blank' && !to.startsWith('#')" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut"
+    ><slot
+  /></NuxtLink>
 
   <!-- anchor일때 -->
   <a
-    v-else-if="anchor"
+    v-else-if="anchor || !!to"
     ref="button"
     role="button"
     :href="href"

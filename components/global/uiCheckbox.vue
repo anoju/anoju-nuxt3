@@ -43,7 +43,6 @@ const isChecked = computed<boolean>((): boolean => {
   if (props.modelValue instanceof Array) {
     return props.modelValue.includes(props.value);
   }
-  console.log(props.modelValue === props.trueValue);
   return props.modelValue === props.trueValue;
 });
 
