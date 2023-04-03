@@ -129,7 +129,7 @@ const focusOut = () => {
   isFocus.value = false;
 };
 const clickEvt = (e: any): void => {
-  if ((props.anchor && href.value === '#') || props.to.startsWith('#')) e.preventDefault();
+  if ((props.anchor && href.value === '#') || (!!props.to && props.to.startsWith('#'))) e.preventDefault();
   if (!props.disabled) {
     if (props.target === '_blank' && (!!props.to || !!href)) {
       e.preventDefault();
