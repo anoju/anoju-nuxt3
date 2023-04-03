@@ -308,14 +308,12 @@ html.lock,
   &.top-on {
     padding-bottom: 6.4rem;
   }
-  .btn {
-    position: relative;
-    display: block;
+  .button {
     width: 5.6rem;
     height: 5.6rem;
+    padding: 0;
     background-color: #fff;
     border-radius: 50%;
-    overflow: hidden;
     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.15);
     transition: 0.3s;
     z-index: 1;

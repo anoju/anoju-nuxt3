@@ -9,6 +9,7 @@ const props = defineProps({
   btnClose: { type: [Boolean, String, Function], default: false }
 });
 
+// methods
 const backClick = (): void => {
   const router = useRouter();
   if (typeof props.btnBack === 'function') {
@@ -30,9 +31,61 @@ const closeClick = (): void => {
     router.back();
   }
 };
+
+const el = ref<HTMLElement | null>(null);
+const spaceHeight = ref<number>(0);
+const isBtnTopOn = ref<boolean>(false);
+
+const fixedSpace = (): void => {
+  const heightAry: Array<number> = [];
+  const _el = el.value;
+  if (!_el) return;
+  const $bottomFixed = _el.querySelectorAll('.bottom-fixed');
+  if (!$bottomFixed.length) return;
+
+  $bottomFixed.forEach((item: Element) => {
+    const child = item.firstElementChild as HTMLElement;
+    if (getComputedStyle(child).position === 'fixed') {
+      heightAry.push(child.offsetHeight);
+    }
+  });
+
+  const $maxHeight = heightAry.length > 0 ? Math.max.apply(null, heightAry) : 0;
+  spaceHeight.value = $maxHeight;
+};
+
+const btnTopChk = (): void => {
+  const _el = el.value;
+  if (!_el) return;
+  const wrap = window.document.scrollingElement || window.document.body || window.document.documentElement;
+  let sclTop = wrap.scrollTop;
+  if (sclTop > 100) isBtnTopOn.value = true;
+  else isBtnTopOn.value = false;
+};
+
+const $scrollTo = useNuxtApp().$scrollTo;
+const btnTopClick = (): void => {
+  $scrollTo({ top: 0 }, 300);
+};
+
+const wrapScrollEvt = (): void => {
+  fixedSpace();
+  btnTopChk();
+};
+
+// life cycle
+onMounted(() => {
+  nextTick(() => {
+    window.addEventListener('scroll', wrapScrollEvt);
+    fixedSpace();
+  });
+});
+onUnmounted(() => {
+  window.removeEventListener('scroll', wrapScrollEvt);
+});
 </script>
 <template>
-  <article class="page" :class="pageClass">
+  <article ref="el" class="page" :class="pageClass">
     <header v-if="!noHeader" class="page-head" :class="headClass">
       <div v-if="!!$slots.header">
         <slot name="header" />
@@ -53,5 +106,10 @@ const closeClick = (): void => {
     <main class="page-body" :class="[bodyClass, noHeader ? 'no-header' : '']">
       <slot />
     </main>
+    <div class="floating-btn" :style="{ bottom: `${spaceHeight + 10}px` }">
+      <slot name="floating" />
+      <uiButton to="#none" class="btn-page-top" :class="{ on: isBtnTopOn }" title="컨텐츠 상단으로 이동" aria-label="컨텐츠 상단으로 이동" @click="btnTopClick">TOP</uiButton>
+    </div>
+    <div class="bottom-fixed-space" aria-hidden="true" :style="{ height: `${spaceHeight}px` }"></div>
   </article>
 </template>
