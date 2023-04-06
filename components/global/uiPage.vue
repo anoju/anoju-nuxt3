@@ -37,21 +37,37 @@ const spaceHeight = ref<number>(0);
 const isBtnTopOn = ref<boolean>(false);
 
 const fixedSpace = (): void => {
-  const heightAry: Array<number> = [];
   const _el = el.value;
   if (!_el) return;
+  /*
+  const heightAry: Array<number> = [];
   const $bottomFixed = _el.querySelectorAll('.bottom-fixed');
   if (!$bottomFixed.length) return;
-
   $bottomFixed.forEach((item: Element) => {
     const child = item.firstElementChild as HTMLElement;
     if (getComputedStyle(child).position === 'fixed') {
       heightAry.push(child.offsetHeight);
     }
   });
-
   const $maxHeight = heightAry.length > 0 ? Math.max.apply(null, heightAry) : 0;
   spaceHeight.value = $maxHeight;
+  */
+
+  const $bottomFixed = _el.querySelector('.bottom-fixed') as HTMLElement;
+  if (!$bottomFixed) return;
+  const child = $bottomFixed.firstElementChild as HTMLElement;
+  let $height = 0;
+  if (getComputedStyle($bottomFixed).position === 'fixed') {
+    $height = $bottomFixed.offsetHeight;
+  } else if (getComputedStyle(child).position === 'fixed') {
+    $height = child.offsetHeight;
+  }
+  spaceHeight.value = $height;
+
+  const wrap = window.document.scrollingElement || window.document.body || window.document.documentElement;
+  let sclTop = wrap.scrollTop;
+  if (wrap.scrollHeight - sclTop - 5 <= wrap.clientHeight - 5) $bottomFixed.classList.add('end');
+  else $bottomFixed.classList.remove('end');
 };
 
 let btnTopTime: ReturnType<typeof setTimeout> | null = null;
@@ -77,7 +93,6 @@ const $scrollTo = useNuxtApp().$scrollTo;
 const btnTopClick = (): void => {
   $scrollTo('window', { top: 0 }, 300);
 };
-
 const wrapScrollEvt = (): void => {
   fixedSpace();
   btnTopChk();
