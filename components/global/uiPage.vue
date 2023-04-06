@@ -54,13 +54,23 @@ const fixedSpace = (): void => {
   spaceHeight.value = $maxHeight;
 };
 
+let btnTopTime: ReturnType<typeof setTimeout> | null = null;
 const btnTopChk = (): void => {
   const _el = el.value;
   if (!_el) return;
+  if (!!btnTopTime) {
+    clearTimeout(btnTopTime);
+    btnTopTime = null;
+  }
   const wrap = window.document.scrollingElement || window.document.body || window.document.documentElement;
   let sclTop = wrap.scrollTop;
   if (sclTop > 100) isBtnTopOn.value = true;
   else isBtnTopOn.value = false;
+  if (!btnTopTime && isBtnTopOn.value) {
+    btnTopTime = setTimeout(() => {
+      isBtnTopOn.value = false;
+    }, 3000);
+  }
 };
 
 const $scrollTo = useNuxtApp().$scrollTo;

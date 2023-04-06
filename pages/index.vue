@@ -37,6 +37,7 @@ const incrementCount = (): void => {
         <uiCheckbox v-model="chkVal2" small true-value="Y" false-value="N">선택2</uiCheckbox>
         {{ chkVal2 }}
       </div>
+      <div style="background-color: #f1f1f1; height: 200vh"></div>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>

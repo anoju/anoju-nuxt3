@@ -111,14 +111,12 @@ const getOffset = function (element: HTMLElement): { left: number; top: number }
 const getSiblings = (element: Element): Array<Element> => {
   const siblings: Array<Element> = [];
   let sibling: Element | null = element.parentElement?.firstElementChild || null;
-
   while (sibling) {
     if (sibling !== element) {
       siblings.push(sibling);
     }
     sibling = sibling.nextElementSibling;
   }
-
   return siblings;
 };
 
