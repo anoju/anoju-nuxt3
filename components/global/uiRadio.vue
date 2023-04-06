@@ -74,7 +74,6 @@ const radioClass = computed<Array<RadioClass | string>>((): Array<RadioClass | s
       checked: isChecked.value
     }
   ];
-  // if ($size.value) rtnAry.push($size.value);
   return rtnAry;
 });
 
@@ -119,7 +118,7 @@ const onInputChange = (e: Event) => {
 // });
 </script>
 <template>
-  <span :class="[radioClass, wrapClass, $size]">
+  <div :class="[radioClass, wrapClass, $size]">
     <label v-if="right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="radioId">
       <slot />
     </label>
@@ -143,7 +142,7 @@ const onInputChange = (e: Event) => {
       <slot name="summary" />
     </div>
     <slot name="last" />
-  </span>
+  </div>
 </template>
 
 <script lang="ts">

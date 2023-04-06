@@ -17,15 +17,11 @@ input[type='radio'] {
   margin: 0;
 }
 .radio.block,
-.checkbox.block,
-div.radio,
-div.checkbox {
+.checkbox.block {
   display: block;
   margin-right: 0;
   + .radio.block,
-  + .checkbox.block,
-  + div.radio,
-  + div.checkbox {
+  + .checkbox.block {
     margin-top: 1.8rem;
   }
 }
