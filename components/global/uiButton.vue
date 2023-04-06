@@ -160,8 +160,7 @@ const linkTo = (url: string): void => {
   window.open(url);
 };
 
-const button: any = ref(null);
-let btnHtml: string | null = null;
+const button = ref<HTMLElement | null>(null);
 const btnInW: Ref<number> = ref(0);
 const btnInH: Ref<number> = ref(0);
 const btnInX: Ref<number> = ref(0);
@@ -170,6 +169,7 @@ const btnInY: Ref<number> = ref(0);
 const clickEffect = (e: any): void => {
   if (isClick.value) return;
   isClick.value = true;
+  if (!button.value) return;
   const $btnMax = Math.max(button.value.offsetWidth, button.value.offsetHeight);
   btnInW.value = $btnMax;
   btnInH.value = $btnMax;
