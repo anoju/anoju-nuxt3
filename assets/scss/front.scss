@@ -4,9 +4,15 @@
 @import url('/css/lib/animated.4.1.1.css');
 @import url('/css/lib/swiper-bundle.7.0.6.min.css');
 
-@import 'component/common',
-        'component/layout',
-        'component/animation',
+@import 'base/reset', 
+        'base/common';
+
+@import 'layout/page', 
+        'layout/header', 
+        'layout/body', 
+        'layout/floating';
+
+@import 'component/animation',
         'component/badge',
         'component/button',
         'component/etc',
@@ -23,7 +29,6 @@
         'component/list',
         'component/loading',
         'component/pagination',
-        'component/popup',
         'component/slider',
         'component/spinner',
         'component/swiper',
@@ -32,5 +37,7 @@
         'component/text',
         'component/toast',
         'component/tooltip';
+
+@import 'popup/popup'; 
 
 @import 'contents/guide';
