@@ -7,6 +7,7 @@ const count: Ref<number> = ref(0);
 const rdoVal: Ref<string> = ref('');
 const chkVal: Ref<boolean> = ref(false);
 const chkVal2: Ref<string> = ref('N');
+const inpVal: Ref<string> = ref('');
 
 const incrementCount = (): void => {
   count.value++;
@@ -39,6 +40,10 @@ const incrementCount = (): void => {
         <br />
         {{ chkVal }}, {{ chkVal2 }}
       </div>
+      <br />
+      <uiInput v-model="inpVal"></uiInput>
+      <br />
+      {{ inpVal }}
       <br />
       <div style="background-color: #f1f1f1; height: 200vh"></div>
     </uiInner>

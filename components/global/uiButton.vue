@@ -168,16 +168,13 @@ const btnInX: Ref<number> = ref(0);
 const btnInY: Ref<number> = ref(0);
 
 const clickEffect = (e: any): void => {
-  btnHtml = button.value.textContent;
+  if (isClick.value) return;
   isClick.value = true;
-  setTimeout(() => {
-    if (btnHtml !== button.value.textContent) return;
-    const $btnMax = Math.max(button.value.offsetWidth, button.value.offsetHeight);
-    btnInW.value = $btnMax;
-    btnInH.value = $btnMax;
-    btnInX.value = e.clientX - button.value.getBoundingClientRect().left - $btnMax / 2;
-    btnInY.value = e.clientY - button.value.getBoundingClientRect().top - $btnMax / 2;
-  }, 10);
+  const $btnMax = Math.max(button.value.offsetWidth, button.value.offsetHeight);
+  btnInW.value = $btnMax;
+  btnInH.value = $btnMax;
+  btnInX.value = e.clientX - button.value.getBoundingClientRect().left - $btnMax / 2;
+  btnInY.value = e.clientY - button.value.getBoundingClientRect().top - $btnMax / 2;
 };
 const clickEndEvt = (): void => {
   isClick.value = false;
