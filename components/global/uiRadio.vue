@@ -1,5 +1,14 @@
 <script lang="ts" setup>
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
+// const uuid = uuidv4();
+const nuxtApp = useNuxtApp();
+const componentName = 'input';
+if (!nuxtApp.$globalCounters[componentName]) {
+  nuxtApp.$globalCounters[componentName] = 1;
+} else {
+  nuxtApp.$globalCounters[componentName]++;
+}
+const instanceId = nuxtApp.$globalCounters[componentName];
 
 // props
 const props = defineProps({
@@ -27,11 +36,11 @@ const props = defineProps({
 
 // data
 const emit = defineEmits(['update:modelValue']);
-const uuid = uuidv4();
 const isFocus: Ref<boolean> = ref(false);
 
 const radioId = computed<string>((): string => {
-  let rtnVal = `rdo_${uuid}`;
+  // let rtnVal = `rdo_${uuid}`;
+  let rtnVal = `rdo_${instanceId}`;
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });

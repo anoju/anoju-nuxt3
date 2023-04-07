@@ -1,5 +1,14 @@
 <script lang="ts" setup>
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
+// const uuid = uuidv4();
+const nuxtApp = useNuxtApp();
+const componentName = 'checkbox';
+if (!nuxtApp.$globalCounters[componentName]) {
+  nuxtApp.$globalCounters[componentName] = 1;
+} else {
+  nuxtApp.$globalCounters[componentName]++;
+}
+const instanceId = nuxtApp.$globalCounters[componentName];
 
 // props
 const props = defineProps({
@@ -30,11 +39,10 @@ const props = defineProps({
 
 // data
 const emit = defineEmits(['update:modelValue']);
-const uuid = uuidv4();
 const isFocus: Ref<boolean> = ref(false);
-
 const chkboxId = computed<string>((): string => {
-  let rtnVal = `chk_${uuid}`;
+  // let rtnVal = `chk_${uuid}`;
+  let rtnVal = `chk_${instanceId}`;
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });

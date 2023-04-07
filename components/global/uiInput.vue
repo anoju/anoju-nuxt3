@@ -1,5 +1,14 @@
 <script lang="ts" setup>
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
+// const uuid = uuidv4();
+const nuxtApp = useNuxtApp();
+const componentName = 'input';
+if (!nuxtApp.$globalCounters[componentName]) {
+  nuxtApp.$globalCounters[componentName] = 1;
+} else {
+  nuxtApp.$globalCounters[componentName]++;
+}
+const instanceId = nuxtApp.$globalCounters[componentName];
 
 // props
 const props = defineProps({
@@ -30,10 +39,10 @@ const props = defineProps({
 const el = ref<HTMLElement | null>(null);
 const inputEl = ref<HTMLElement | null>(null);
 const emit = defineEmits(['update:modelValue']);
-const uuid = uuidv4();
 const isFocus: Ref<boolean> = ref(false);
 const inputId = computed<string>((): string => {
-  let rtnVal = `inp_${uuid}`;
+  // let rtnVal = `inp_${uuid}`;
+  let rtnVal = `inp_${instanceId}`;
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });
@@ -90,16 +99,7 @@ const calendarOpen = (e: any): void => {
       @focus="focusIn"
       @blur="focusOut"
     />
-    <input
-      v-if="date"
-      type="date"
-      :min="min"
-      :max="max ? max : $dayjs().format('YYYY-MM-DD')"
-      :value="modelValue ? $dayjs(modelValue).format('YYYY-MM-DD') : ''"
-      @change="dateChange"
-      @focus="focusIn"
-      @blur="focusOut"
-    />
+    <input v-if="date" type="date" :min="min" :max="max" :value="modelValue" @change="dateChange" @focus="focusIn" @blur="focusOut" />
     <label v-if="unit != null" class="unit" :for="inputId">
       {{ unit }}
     </label>
