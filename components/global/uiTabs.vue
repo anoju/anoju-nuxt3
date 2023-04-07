@@ -14,12 +14,13 @@ watch(activeTab, (newValue) => {
   emit('update:modelValue', newValue);
 });
 
-const setActiveTab = (index: number | string) => {
+const setActiveTab = (value: number | string, index: number) => {
   if (typeof props.modelValue === 'number') {
-    activeTab.value = Number(index);
+    activeTab.value = Number(value);
   } else {
-    activeTab.value = index;
+    activeTab.value = value;
   }
+  console.log(index);
 };
 
 defineExpose({ activeTab, setActiveTab });
@@ -27,6 +28,27 @@ defineExpose({ activeTab, setActiveTab });
 provide('activeTab', activeTab);
 provide('setActiveTab', setActiveTab);
 provide('modelValueType', typeof props.modelValue);
+
+const tabs = ref<Array<{ value: number | string }>>([]);
+provide('tabs', tabs);
+const registerTab = (tab: { value: number | string }) => {
+  tabs.value.push(tab);
+  tabs.value.sort((a, b) => {
+    if (typeof a.value === 'number' && typeof b.value === 'number') {
+      return a.value - b.value;
+    }
+    return String(a.value).localeCompare(String(b.value));
+  });
+};
+provide('registerTab', registerTab);
+
+const unregisterTab = (tab: { value: number | string }) => {
+  const index = tabs.value.findIndex((t) => t.value === tab.value);
+  if (index !== -1) {
+    tabs.value.splice(index, 1);
+  }
+};
+provide('unregisterTab', unregisterTab);
 </script>
 <template>
   <div>
