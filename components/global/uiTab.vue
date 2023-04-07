@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 const props = defineProps({
-  value: { type: [Number, String], default: null }
+  value: { type: [Number, String], default: null },
+  panel: { type: String, default: null },
+  tabClass: { type: String, default: null }
 });
 
 const activeTab = inject<Ref<number | string> | undefined>('activeTab');
@@ -23,12 +25,19 @@ const tabIndex = ref(-1);
 const registerTab = inject<(tab: { value: number | string }) => void | undefined>('registerTab');
 const unregisterTab = inject<(tab: { value: number | string }) => void | undefined>('unregisterTab');
 
+const href = computed<string>((): string => {
+  let val = '#';
+  if (!!props.panel) val += props.panel;
+  return val;
+});
+
 const activeTabEvt = () => {
   isActive.value = isEqual(props.value, activeTab.value);
   if (tabs) tabIndex.value = tabs.value.findIndex((t) => t.value === tab.value);
 };
 
-const selectTab = () => {
+const selectTab = (e: Event) => {
+  e.preventDefault();
   setActiveTab(props.value, tabIndex.value);
 };
 
@@ -49,17 +58,7 @@ watchEffect(() => {
 defineExpose({ isActive, selectTab });
 </script>
 <template>
-  <div class="tab" :class="{ active: isActive }" @click="selectTab">
-    <slot />
-  </div>
+  <li class="tab" :class="{ tabClass, active: isActive }" role="presentation">
+    <a :href="href" role="tab" :aria-selected="isActive ? true : false" :aria-controls="panel" v-bind="$attrs" @click="selectTab"><slot /></a>
+  </li>
 </template>
-
-<style scoped>
-.tab {
-  cursor: pointer;
-  padding: 10px;
-}
-.active {
-  font-weight: bold;
-}
-</style>

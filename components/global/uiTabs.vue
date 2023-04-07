@@ -7,30 +7,45 @@ const props = defineProps({
 //   (e: 'update:modelValue', value: number | string): void;
 // }>();
 const emit = defineEmits(['update:modelValue']);
+const tablist = ref<HTMLElement | null>(null);
 
 const activeTab = ref(props.modelValue ?? 0);
-
-watch(activeTab, (newValue) => {
-  emit('update:modelValue', newValue);
-});
-
+const lineWidth = ref(0);
+const lineLeft = ref(0);
+const lineMoving = ref(false);
+let moveIndex = -1;
 const setActiveTab = (value: number | string, index: number) => {
   if (typeof props.modelValue === 'number') {
     activeTab.value = Number(value);
   } else {
     activeTab.value = value;
   }
-  console.log(index);
+  if (moveIndex === index) return;
+  moveIndex = index;
+  lineMoveEvt();
+};
+const lineMoveEvt = () => {
+  const $tablist = tablist.value;
+  if (!$tablist) return;
+  const $tabs = $tablist.querySelectorAll<HTMLElement>('.tab');
+  if (!$tabs.length || moveIndex < 0) return;
+  const $tab = $tabs[moveIndex];
+  lineMoving.value = true;
+  lineWidth.value = $tab.offsetWidth;
+  lineLeft.value = $tab.offsetLeft;
+};
+const lineEndEvt = () => {
+  lineMoving.value = false;
 };
 
 defineExpose({ activeTab, setActiveTab });
-
 provide('activeTab', activeTab);
 provide('setActiveTab', setActiveTab);
 provide('modelValueType', typeof props.modelValue);
 
 const tabs = ref<Array<{ value: number | string }>>([]);
 provide('tabs', tabs);
+
 const registerTab = (tab: { value: number | string }) => {
   tabs.value.push(tab);
   tabs.value.sort((a, b) => {
@@ -49,22 +64,26 @@ const unregisterTab = (tab: { value: number | string }) => {
   }
 };
 provide('unregisterTab', unregisterTab);
+
+watch(activeTab, (newValue) => {
+  emit('update:modelValue', newValue);
+});
+onMounted(() => {
+  nextTick(() => {
+    window.addEventListener('resize', lineMoveEvt);
+  });
+});
+onUnmounted(() => {
+  window.removeEventListener('resize', lineMoveEvt);
+});
 </script>
 <template>
-  <div>
-    <div class="tabs">
-      <slot></slot>
-    </div>
-    <div class="tab-content">
-      <slot name="content"></slot>
+  <div class="tab-line-menu" :class="{ 'tab-line-moving': lineMoving }">
+    <div class="tab-inner">
+      <i class="tab-line" aria-hidden="true" :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }" @transitionend="lineEndEvt"></i>
+      <ul ref="tablist" class="tab-list" role="tablist">
+        <slot />
+      </ul>
     </div>
   </div>
 </template>
-<style scoped>
-.tabs {
-  display: flex;
-}
-.tab-content {
-  display: none;
-}
-</style>
