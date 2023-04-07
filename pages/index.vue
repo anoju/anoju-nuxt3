@@ -47,11 +47,10 @@ const incrementCount = (): void => {
       {{ inpVal }}
       <br />
       <uiTabs v-model="tabVal">
-        <uiTab index="0">메뉴명1</uiTab>
-        <uiTab index="1">메뉴명2</uiTab>
-        <uiTab index="2">메뉴명3</uiTab>
+        <uiTab value="0">메뉴명1</uiTab>
+        <uiTab value="1">메뉴명2</uiTab>
+        <uiTab value="2">메뉴명3</uiTab>
       </uiTabs>
-      {{ (tabVal, typeof tabVal) }}
       <div v-show="tabVal === 0">컨텐츠1</div>
       <div v-show="tabVal === 1">컨텐츠2</div>
       <div v-show="tabVal === 2">컨텐츠3</div>

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 const props = defineProps({
-  index: { type: [Number, String], default: null }
+  value: { type: [Number, String], default: null }
 });
 
 const activeTab = inject<Ref<number | string> | undefined>('activeTab');
-const setActiveTab = inject<(index: number | string) => void | undefined>('setActiveTab');
+const setActiveTab = inject<(value: number | string) => void | undefined>('setActiveTab');
 const modelValueType = inject<string | undefined>('modelValueType');
 
 if (!activeTab || !setActiveTab || !modelValueType) {
@@ -14,19 +14,19 @@ if (!activeTab || !setActiveTab || !modelValueType) {
 const isEqual = (a: number | string, b: number | string): boolean => {
   return modelValueType === 'number' ? Number(a) === Number(b) : a === b;
 };
-const firstActive = isEqual(props.index, activeTab.value);
+const firstActive = isEqual(props.value, activeTab.value);
 const isActive = ref(firstActive);
 
 onMounted(() => {
-  isActive.value = isEqual(props.index, activeTab.value);
+  isActive.value = isEqual(props.value, activeTab.value);
 });
 
 watchEffect(() => {
-  isActive.value = isEqual(props.index, activeTab.value);
+  isActive.value = isEqual(props.value, activeTab.value);
 });
 
 const selectTab = () => {
-  setActiveTab(props.index);
+  setActiveTab(props.value);
 };
 
 defineExpose({ isActive, selectTab });
