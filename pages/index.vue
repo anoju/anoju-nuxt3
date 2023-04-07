@@ -13,6 +13,15 @@ const tabVal = ref(0);
 const incrementCount = (): void => {
   count.value++;
 };
+const listAry = [
+  { title: '공지사합니다.1', link: '#', isNew: true },
+  { title: '공지사합니다.2', link: '#' },
+  { title: '공지사합니다.3', link: '#' },
+  { title: '공지사합니다.4', link: '#' },
+  { title: '공지사합니다.5', link: '#' },
+  { title: '공지사합니다.6', link: '#' },
+  { title: '공지사합니다.7', link: '#' }
+];
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
@@ -55,6 +64,35 @@ const incrementCount = (): void => {
       <div v-show="tabVal === 1">컨텐츠2</div>
       <div v-show="tabVal === 2">컨텐츠3</div>
       <br /><br />
+      <ul>
+        <li v-for="(item, i) of listAry" :key="i">
+          <a :href="item.link">
+            <i v-if="item.isNew">NEW</i>
+            {{ item.title }}
+          </a>
+        </li>
+        <!-- <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>
+        <li><a href="">공지사항입니다.</a></li>-->
+      </ul>
       <div style="background-color: #f1f1f1; height: 200vh"></div>
     </uiInner>
     <uiBottomFixed flex full>

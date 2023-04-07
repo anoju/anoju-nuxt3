@@ -1,6 +1,24 @@
 <script lang="ts" setup>
 const props = defineProps({
-  modelValue: { type: [Number, String], default: null }
+  modelValue: { type: [Number, String], default: null },
+  type: { type: String, default: null },
+  line: { type: Boolean, default: false },
+  round: { type: Boolean, default: false },
+  navi: { type: Boolean, default: false },
+  box: { type: Boolean, default: false },
+  txt: { type: Boolean, default: false }
+});
+
+type Type = 'line' | 'round' | 'navi' | 'box' | 'txt';
+const typeAry: Type[] = ['line', 'round', 'navi', 'box', 'txt'];
+const matchingType = typeAry.find((type) => props[type]);
+const $type = computed<Type>((): Type => {
+  if (props.type && typeAry.includes(props.type as Type)) {
+    return props.type as Type;
+  } else if (matchingType) {
+    return matchingType;
+  }
+  return 'line';
 });
 
 // const emit = defineEmits<{
@@ -78,7 +96,7 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <div class="tab-line-menu" :class="{ 'tab-line-moving': lineMoving }">
+  <div :class="[`tab-${$type}-menu`, { 'tab-line-moving': lineMoving }]">
     <div class="tab-inner">
       <i class="tab-line" aria-hidden="true" :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }" @transitionend="lineEndEvt"></i>
       <ul ref="tablist" class="tab-list" role="tablist">
