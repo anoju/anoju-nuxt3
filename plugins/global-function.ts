@@ -215,6 +215,7 @@ const slideUp = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
 };
 
 export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.provide('globalCounters', {});
   nuxtApp.provide('anime', anime);
   nuxtApp.provide('scrollTo', scrollTo);
   nuxtApp.provide('getOffset', getOffset);

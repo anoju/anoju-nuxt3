@@ -19,5 +19,5 @@ export default defineNuxtConfig({
     }
   },
   css: ['~/assets/scss/front.scss'],
-  plugins: ['~/plugins/ui-front.ts']
+  plugins: ['~/plugins/global-function.ts']
 });
