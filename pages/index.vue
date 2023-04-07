@@ -8,6 +8,7 @@ const rdoVal: Ref<string> = ref('');
 const chkVal: Ref<boolean> = ref(false);
 const chkVal2: Ref<string> = ref('N');
 const inpVal: Ref<string> = ref('');
+const tabVal = ref(0);
 
 const incrementCount = (): void => {
   count.value++;
@@ -45,6 +46,16 @@ const incrementCount = (): void => {
       <br />
       {{ inpVal }}
       <br />
+      <uiTabs v-model="tabVal">
+        <uiTab index="0">메뉴명1</uiTab>
+        <uiTab index="1">메뉴명2</uiTab>
+        <uiTab index="2">메뉴명3</uiTab>
+      </uiTabs>
+      {{ (tabVal, typeof tabVal) }}
+      <div v-show="tabVal === 0">컨텐츠1</div>
+      <div v-show="tabVal === 1">컨텐츠2</div>
+      <div v-show="tabVal === 2">컨텐츠3</div>
+      <br /><br />
       <div style="background-color: #f1f1f1; height: 200vh"></div>
     </uiInner>
     <uiBottomFixed flex full>
