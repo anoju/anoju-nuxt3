@@ -61,8 +61,9 @@ const selectOpt2: Option[] = [
           <div>`~!@#$%^&*()_-+=[]\{}|;':",./&lt;&gt;?</div>
         </div>
       </div>
+
       <h2 class="gd__h1">글자크기</h2>
-      <div class="gd__txt-box">
+      <div class="gd__txt-box" :class="`fw-${selectVal1} ff-${ffVal}`">
         <p v-for="(item, i) of 20" :key="i" :class="`fz-${item}`">{{ item < 10 ? '0' + item : item }}: 가너두로므비 깁늠돌룯던박 ABCDE abcde 012345 !@#$%</p>
       </div>
 
