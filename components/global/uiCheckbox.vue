@@ -1,3 +1,8 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false
+};
+</script>
 <script lang="ts" setup>
 // import { v4 as uuidv4 } from 'uuid';
 // const uuid = uuidv4();
