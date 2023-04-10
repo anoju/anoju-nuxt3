@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-// import { Component } from 'vue';
 interface ModalObj {
   component: Component;
   componentProps: Record<string, any>;
-  componentName: string;
+  componentName?: string;
   modalProps: Record<string, any>;
   resolve: (value: unknown) => void;
   show: boolean;
@@ -16,24 +15,25 @@ interface ModalObj {
 // const modals: ModalObj[] = [];
 const modals = ref<ModalObj[]>([]);
 
-const isDuplicated = (componentName: string): boolean => {
-  return modals.value.length > 0 && modals.value.some((modal) => modal.componentName === componentName);
+const isDuplicated = (componentName: string | undefined): boolean => {
+  return componentName !== undefined && modals.value.length > 0 && modals.value.some((modal) => modal.componentName === componentName);
 };
+
 const addModal = async (
   resolve: (value: unknown) => void,
-  component: Component | (() => Promise<{ default: Component }>),
+  component: Component | (() => Promise<Component>),
   componentProps: Record<string, any> = {},
   modalProps: Record<string, any> = {},
   returnFocus: HTMLElement | null = null
 ): Promise<void> => {
-  const componentName = (component instanceof Function ? (await component()).default : component).name;
+  const componentName = ((component as Component).name !== undefined ? component : await (component as () => Promise<Component>)()).name || undefined;
 
   // 이미 열린 팝업 처리
   if (isDuplicated(componentName)) {
-    const modalObj = modals.value.filter((modal) => modal.componentName === componentName);
-    const modalIdx = modals.value.findIndex((modal) => modal.componentName === componentName);
-    if (modalIdx > -1) onOpen(modalIdx, modalObj.type, modalObj.addClass);
-    // resolve({ flag: false })
+    const modalObj = modals.value.find((modal) => modal.componentName === componentName);
+    if (modalObj) {
+      onOpen(modals.value.indexOf(modalObj), modalObj.type, modalObj.addClass);
+    }
     return;
   }
 
