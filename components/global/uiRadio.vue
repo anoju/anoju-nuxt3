@@ -1,6 +1,11 @@
 <script lang="ts">
 export default {
-  inheritAttrs: false
+  inheritAttrs: false,
+  methods: {
+    focus() {
+      // this.$refs.radio.focus();
+    }
+  }
 };
 </script>
 <script lang="ts" setup>
@@ -158,13 +163,3 @@ const onInputChange = (e: Event) => {
     <slot name="last" />
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  methods: {
-    focus() {
-      // this.$refs.radio.focus();
-    }
-  }
-};
-</script>
