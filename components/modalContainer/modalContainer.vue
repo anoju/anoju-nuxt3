@@ -3,7 +3,7 @@ import eventBus from '~/utils/eventBus';
 interface ModalObj {
   component: Component;
   componentProps?: Record<string, any>;
-  componentName?: string;
+  componentID?: string;
   modalProps?: Record<string, any>;
   resolve?: (value: unknown) => void;
   show: boolean;
@@ -14,8 +14,8 @@ interface ModalObj {
 
 const modals = ref<ModalObj[]>([]);
 
-const isDuplicated = (componentName: string | undefined): boolean => {
-  return componentName !== undefined && modals.value.length > 0 && modals.value.some((modal) => modal.componentName === componentName);
+const isDuplicated = (componentID: string | undefined): boolean => {
+  return componentID !== undefined && modals.value.length > 0 && modals.value.some((modal) => modal.componentID === componentID);
 };
 
 const addModal = async (
@@ -25,22 +25,21 @@ const addModal = async (
   modalProps: Record<string, any> = {},
   returnFocus: HTMLElement | null = null
 ): Promise<void> => {
-  console.log(component);
-  // const componentName = ((component as Component).name !== undefined ? component : await (component as () => Promise<Component>)()).name || undefined;
+  const componentID = (component as any).__hmrId;
+  // const componentFile = (component as any).__file;
+  console.log(componentID);
 
   // 이미 열린 팝업 처리
-  // if (isDuplicated(componentName)) {
-  //   const modalObj = modals.value.find((modal) => modal.componentName === componentName);
-  //   if (modalObj) {
-  //     onOpen(modals.value.indexOf(modalObj), modalObj?.type, modalObj?.addClass);
-  //   }
-  //   return;
-  // }
+  if (isDuplicated(componentID)) {
+    const modalObj = modals.value.find((modal) => modal.componentID === componentID);
+    if (modalObj) onOpen(modals.value.indexOf(modalObj));
+    return;
+  }
 
   const modalObj: ModalObj = {
     component,
     componentProps: componentProps || {},
-    // componentName,
+    componentID,
     modalProps: modalProps || {},
     resolve,
     show: false,
@@ -58,10 +57,8 @@ const onOpen = (index: number, type?: string, addClass?: string[] | string): voi
   if (isClosing.value) return;
   const idx = index;
   if (!el.value) return;
-  console.log('popOpen onOpen', el.value);
   const $popup = el.value.children[idx] as HTMLElement;
   const $wrap = $popup.querySelector('.pop-wrap') as HTMLElement;
-  console.log(modals.value[idx], type);
   if (type) modals.value[idx].type = type;
   if (addClass) modals.value[idx].addClass = addClass;
 
@@ -75,7 +72,7 @@ const onOpen = (index: number, type?: string, addClass?: string[] | string): voi
     if (idx > 0) {
       ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'true');
     }
-  }, 50);
+  }, 1);
 
   setTimeout(() => {
     const popHeadH1 = $wrap.querySelector('.pop-head h1') as HTMLElement;
@@ -89,7 +86,7 @@ const onOpen = (index: number, type?: string, addClass?: string[] | string): voi
     if (type !== 'full') {
       $popup.classList.add('opened');
     }
-  }, 650);
+  }, 501);
 };
 
 const onClose = (index: number | string, { payload }: { payload?: any } = {}): void => {
@@ -104,13 +101,15 @@ const onClose = (index: number | string, { payload }: { payload?: any } = {}): v
   // if (idx === 0) uiEventBus.$emit('unlock-wrap');
   let focusEl = modal.returnFocus;
   setTimeout(() => {
-    modals.value.splice(idx, 1);
+    // modals.value.splice(idx, 1);
+    const showModals = modals.value.filter((obj) => obj.show);
+    if (showModals.length === 0) modals.value = [];
     if (focusEl) {
       if (focusEl.closest('.button') !== null) focusEl = focusEl.closest('.button') as HTMLElement;
       focusEl.focus();
     }
     isClosing.value = false;
-  }, 600);
+  }, 500);
 };
 
 interface Like {
