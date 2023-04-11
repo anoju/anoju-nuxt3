@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import eventBus from '~/utils/eventBus';
+
 // props
 const props = defineProps({
   title: { type: String, default: null },
@@ -77,7 +79,7 @@ const popClose = () => {
 };
 
 onMounted(() => {
-  const eventBus = nuxtApp.$eventBus;
+  // const eventBus = nuxtApp.$eventBus;
   if (el.value) idx.value = Number(el.value.dataset.idx);
   isLayerChk();
   addClassChk();
