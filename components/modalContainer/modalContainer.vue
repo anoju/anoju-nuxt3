@@ -27,7 +27,6 @@ const addModal = async (
 ): Promise<void> => {
   const componentID = (component as any).__hmrId;
   // const componentFile = (component as any).__file;
-  console.log(componentID);
 
   // 이미 열린 팝업 처리
   if (isDuplicated(componentID)) {
@@ -63,7 +62,7 @@ const onOpen = (index: number, type?: string, addClass?: string[] | string): voi
   if (addClass) modals.value[idx].addClass = addClass;
 
   if (idx === 0 && document.querySelector('.lock') === null) {
-    // uiEventBus.$emit('lock-wrap');
+    eventBus.emit('lockPage');
   }
 
   setTimeout(() => {
@@ -83,9 +82,7 @@ const onOpen = (index: number, type?: string, addClass?: string[] | string): voi
     } else if (popHeadClose !== null) {
       popHeadClose.focus();
     }
-    if (type !== 'full') {
-      $popup.classList.add('opened');
-    }
+    $popup.classList.add('opened');
   }, 501);
 };
 
@@ -98,7 +95,7 @@ const onClose = (index: number | string, { payload }: { payload?: any } = {}): v
   if (modal.resolve) modal.resolve({ payload });
   modals.value[idx].show = false;
   if (idx > 0) ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'false');
-  // if (idx === 0) uiEventBus.$emit('unlock-wrap');
+  if (idx === 0) eventBus.emit('unlockPage');
   let focusEl = modal.returnFocus;
   setTimeout(() => {
     // modals.value.splice(idx, 1);

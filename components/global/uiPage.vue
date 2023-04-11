@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import eventBus from '~/utils/eventBus';
 const props = defineProps({
   pageTitle: { type: [String, Number], default: null },
   pageClass: { type: [String, Object], default: null },
@@ -97,20 +98,41 @@ const wrapScrollEvt = (): void => {
   fixedSpace();
   btnTopChk();
 };
+const isLock = ref(false);
+const lockTop: Ref<number | null> = ref(null);
+const lockPage = (): void => {
+  lockTop.value = window.pageYOffset * -1;
+  isLock.value = true;
+  // const $html = document.querySelector('html') as HTMLElement;
+  // $html.classList.add('lock');
+};
+const unlockPage = (): void => {
+  // const $html = document.querySelector('html') as HTMLElement;
+  // $html.classList.remove('lock');
+  isLock.value = false;
+  setTimeout(() => {
+    if (lockTop.value) window.scrollTo(0, lockTop.value * -1);
+    lockTop.value = null;
+  }, 1);
+};
 
 // life cycle
 onMounted(() => {
+  eventBus.on('lockPage', lockPage);
+  eventBus.on('unlockPage', unlockPage);
   nextTick(() => {
     window.addEventListener('scroll', wrapScrollEvt);
     fixedSpace();
   });
 });
 onUnmounted(() => {
+  eventBus.off('lockPage', lockPage);
+  eventBus.off('unlockPage', unlockPage);
   window.removeEventListener('scroll', wrapScrollEvt);
 });
 </script>
 <template>
-  <article ref="el" class="page" :class="pageClass">
+  <article ref="el" class="page" :class="[pageClass, { lock: isLock }]" :style="`top:${lockTop}px`">
     <header v-if="!noHeader" class="page-head" :class="headClass">
       <div v-if="!!$slots.header">
         <slot name="header" />

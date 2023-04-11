@@ -70,13 +70,13 @@
 }
 
 // lock
-html.lock,
-.lock body {
-  height: -vh(100);
-  overflow: hidden;
-  -webkit-overflow-scrolling: none;
-}
-.lock .page {
+// html.lock,
+// .lock body {
+//   height: -vh(100);
+//   overflow: hidden;
+//   -webkit-overflow-scrolling: none;
+// }
+.page.lock {
   position: fixed;
   left: 0;
   bottom: 0;
