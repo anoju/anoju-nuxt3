@@ -1,18 +1,17 @@
 <script lang="ts" setup>
+import eventBus from '~/utils/eventBus';
 interface ModalObj {
   component: Component;
-  componentProps: Record<string, any>;
+  componentProps?: Record<string, any>;
   componentName?: string;
-  modalProps: Record<string, any>;
-  resolve: (value: unknown) => void;
+  modalProps?: Record<string, any>;
+  resolve?: (value: unknown) => void;
   show: boolean;
   type: any;
   addClass: any;
-  returnFocus: HTMLElement | null;
+  returnFocus?: HTMLElement | null;
 }
 
-// const modals: Ref<ModalObj[]> = ref([]);
-// const modals: ModalObj[] = [];
 const modals = ref<ModalObj[]>([]);
 
 const isDuplicated = (componentName: string | undefined): boolean => {
@@ -26,42 +25,45 @@ const addModal = async (
   modalProps: Record<string, any> = {},
   returnFocus: HTMLElement | null = null
 ): Promise<void> => {
-  const componentName = ((component as Component).name !== undefined ? component : await (component as () => Promise<Component>)()).name || undefined;
+  console.log(component);
+  // const componentName = ((component as Component).name !== undefined ? component : await (component as () => Promise<Component>)()).name || undefined;
 
   // 이미 열린 팝업 처리
-  if (isDuplicated(componentName)) {
-    const modalObj = modals.value.find((modal) => modal.componentName === componentName);
-    if (modalObj) {
-      onOpen(modals.value.indexOf(modalObj), modalObj.type, modalObj.addClass);
-    }
-    return;
-  }
+  // if (isDuplicated(componentName)) {
+  //   const modalObj = modals.value.find((modal) => modal.componentName === componentName);
+  //   if (modalObj) {
+  //     onOpen(modals.value.indexOf(modalObj), modalObj?.type, modalObj?.addClass);
+  //   }
+  //   return;
+  // }
 
-  modals.value.push({
+  const modalObj: ModalObj = {
     component,
-    componentProps,
-    componentName,
-    modalProps,
+    componentProps: componentProps || {},
+    // componentName,
+    modalProps: modalProps || {},
     resolve,
     show: false,
-    type: null,
-    addClass: null,
-    // return: { flag: false },
+    type: '',
+    addClass: '',
     returnFocus
-  });
+  };
+
+  modals.value.push(modalObj);
 };
 
 const el = ref<HTMLElement | null>(null);
 const isClosing = ref(false);
-const onOpen = (index: number, type: string, addClass: string[] | string): void => {
-  if (isClosing) return;
-  const idx = Number(index);
+const onOpen = (index: number, type?: string, addClass?: string[] | string): void => {
+  if (isClosing.value) return;
+  const idx = index;
   if (!el.value) return;
-  const $popup = el.value.childNodes[idx] as HTMLElement;
+  console.log('popOpen onOpen', el.value);
+  const $popup = el.value.children[idx] as HTMLElement;
   const $wrap = $popup.querySelector('.pop-wrap') as HTMLElement;
-
-  modals.value[idx].type = type;
-  modals.value[idx].addClass = addClass;
+  console.log(modals.value[idx], type);
+  if (type) modals.value[idx].type = type;
+  if (addClass) modals.value[idx].addClass = addClass;
 
   if (idx === 0 && document.querySelector('.lock') === null) {
     // uiEventBus.$emit('lock-wrap');
@@ -94,9 +96,9 @@ const onClose = (index: number | string, { payload }: { payload?: any } = {}): v
   isClosing.value = true;
   const idx = Number(index);
   if (!el.value) return;
-  const $popup = el.value.childNodes[idx] as HTMLElement;
+  const $popup = el.value.children[idx] as HTMLElement;
   const modal = modals.value[idx];
-  modal.resolve({ payload });
+  if (modal.resolve) modal.resolve({ payload });
   modals.value[idx].show = false;
   if (idx > 0) ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'false');
   // if (idx === 0) uiEventBus.$emit('unlock-wrap');
@@ -135,12 +137,36 @@ const like = (addClass: string): void => {
     }, 2000);
   }, 50);
 };
+
+onMounted(() => {
+  // const nuxtApp = useNuxtApp();
+  // const eventBus = nuxtApp.$eventBus;
+  eventBus.on('addModal', (payload: any) => {
+    const { resolve, component, componentProps, modalProps, returnFocus } = payload;
+    addModal(resolve, component, componentProps, modalProps, returnFocus);
+  });
+  eventBus.on('likeModal', (payload: any) => {
+    const { className } = payload;
+    like(className);
+  });
+  eventBus.on('popOpen', (payload: any) => {
+    const idx = payload[0];
+    const type = payload[1];
+    const addClass = payload[2];
+    onOpen(idx, type, addClass);
+  });
+  eventBus.on('popClose', (payload: any) => {
+    const idx = payload[0];
+    const options = payload[1];
+    onClose(idx, options);
+  });
+});
 </script>
 <template>
-  <div v-if="modals.length || likes.length" ref="el" class="modal_container">
-    <article v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, modal.show ? 'show' : '']" @close="onClose(i)">
-      <component :is="modal.component" ref="modals" v-bind="modal.componentProps" :data-idx="i" @close="onClose(i, $event)" />
-    </article>
+  <div v-if="modals.length || likes.length" ref="el" class="modal-container">
+    <div v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, { show: modal.show }]">
+      <component :is="modal.component" v-bind="modal.componentProps" :data-idx="i" @close="onClose(i, $event)" />
+    </div>
 
     <!-- like -->
     <div v-if="likes.length" class="layer_like_wrap">

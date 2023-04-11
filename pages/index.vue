@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import popup from '~/pages/popup/popup.vue';
 useHead({
   title: '페이지 제목'
 });
@@ -22,6 +23,12 @@ const listAry = [
   { title: '공지사합니다.6', link: '#' },
   { title: '공지사합니다.7', link: '#' }
 ];
+
+const openPopup = async () => {
+  useNuxtApp().$modal({
+    component: popup
+  });
+};
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
@@ -93,6 +100,7 @@ const listAry = [
         <li><a href="">공지사항입니다.</a></li>
         <li><a href="">공지사항입니다.</a></li>-->
       </ul>
+      <p><uiButton line @click="openPopup">팝업창</uiButton></p>
       <div style="background-color: #f1f1f1; height: 200vh"></div>
     </uiInner>
     <uiBottomFixed flex full>
