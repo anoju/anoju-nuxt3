@@ -52,29 +52,9 @@ const lineEndEvt = () => {
 defineExpose({ activeTab, setActiveTab });
 provide('activeTab', activeTab);
 provide('setActiveTab', setActiveTab);
-provide('modelValueType', typeof props.modelValue);
 
-const tabs = ref<Array<{ value: string }>>([]);
-provide('tabs', tabs);
-
-const registerTab = (tab: { value: string }) => {
-  tabs.value.push(tab);
-  tabs.value.sort((a, b) => {
-    // if (typeof a.value === 'number' && typeof b.value === 'number') {
-    //   return a.value - b.value;
-    // }
-    return String(a.value).localeCompare(String(b.value));
-  });
-};
-provide('registerTab', registerTab);
-
-const unregisterTab = (tab: { value: string }) => {
-  const index = tabs.value.findIndex((t) => t.value === tab.value);
-  if (index !== -1) {
-    tabs.value.splice(index, 1);
-  }
-};
-provide('unregisterTab', unregisterTab);
+const index = ref<number>(0);
+provide('index', index);
 
 watch(activeTab, (newValue) => {
   emit('update:modelValue', newValue);

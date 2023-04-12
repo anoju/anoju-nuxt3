@@ -5,19 +5,17 @@ export default {
 </script>
 <script lang="ts" setup>
 const props = defineProps({
-  // value: { type: [Number, String], default: null },
   panel: { type: String, default: null },
   tabClass: { type: String, default: null }
 });
 
 const activeTab = inject<Ref<number | string> | undefined>('activeTab');
 const setActiveTab = inject<(index: number) => void | undefined>('setActiveTab');
-const modelValueType = inject<string | undefined>('modelValueType');
 
-if (!activeTab || !setActiveTab || !modelValueType) {
+if (!activeTab || !setActiveTab) {
   throw new Error('uiTab component must be a child of uiTabs component');
 }
-
+/*
 const slots = useSlots();
 const slotContent = ref<string>('');
 const getSlotContent = (slotName = 'default') => {
@@ -26,6 +24,7 @@ const getSlotContent = (slotName = 'default') => {
   if ($slot && $slot().length) slotContent.value = $slot()[0].children;
 };
 getSlotContent();
+*/
 
 const href = computed<string>((): string => {
   let val = '#';
@@ -34,18 +33,14 @@ const href = computed<string>((): string => {
 });
 
 const isEqual = (a: number | string, b: number | string): boolean => {
-  return modelValueType === 'number' ? Number(a) === Number(b) : a === b;
+  return a === b;
 };
-
-const tabs = inject<Ref<Array<{ value: string }>> | undefined>('tabs');
-const tab = { value: slotContent.value };
-const registerTab = inject<(tab: { value: string }) => void | undefined>('registerTab');
-const unregisterTab = inject<(tab: { value: string }) => void | undefined>('unregisterTab');
-const tabIndex = computed<number>((): number => {
-  let idx = -1;
-  if (tabs) idx = tabs.value.findIndex((t) => t.value === slotContent.value);
-  return idx;
-});
+const tabIndex = ref<number>(-1);
+const index = inject<Ref<number> | undefined>('index');
+if (index) {
+  tabIndex.value = index.value;
+  index.value += 1;
+}
 const firstActive = isEqual(tabIndex.value, activeTab.value);
 const isActive = ref(firstActive);
 
@@ -59,14 +54,10 @@ const selectTab = (e: Event) => {
 };
 
 onMounted(() => {
-  if (registerTab) registerTab(tab);
   activeTabEvt();
   nextTick(() => {
     if (isActive.value) setActiveTab(tabIndex.value);
   });
-});
-onBeforeUnmount(() => {
-  if (unregisterTab) unregisterTab(tab);
 });
 watchEffect(() => {
   activeTabEvt();

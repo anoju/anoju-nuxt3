@@ -10,6 +10,7 @@ const chkVal: Ref<boolean> = ref(false);
 const chkVal2: Ref<string> = ref('N');
 const inpVal: Ref<string> = ref('');
 const tabVal = ref(0);
+const tabVal2 = ref(0);
 
 const incrementCount = (): void => {
   count.value++;
@@ -73,6 +74,12 @@ const openPopup = async () => {
       <div v-show="tabVal === 0">컨텐츠1</div>
       <div v-show="tabVal === 1">컨텐츠2</div>
       <div v-show="tabVal === 2">컨텐츠3</div>
+      <br /><br />
+      <uiTabs v-model="tabVal2">
+        <uiTab>메뉴명1</uiTab>
+        <uiTab>메뉴명2</uiTab>
+        <uiTab>메뉴명3</uiTab>
+      </uiTabs>
       <br /><br />
       <ul>
         <li v-for="(item, i) of listAry" :key="i">
