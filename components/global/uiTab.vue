@@ -10,6 +10,14 @@ const props = defineProps({
   tabClass: { type: String, default: null }
 });
 
+const activeTab = inject<Ref<number | string> | undefined>('activeTab');
+const setActiveTab = inject<(value: number | string, index: number) => void | undefined>('setActiveTab');
+const modelValueType = inject<string | undefined>('modelValueType');
+
+if (!activeTab || !setActiveTab || !modelValueType) {
+  throw new Error('uiTab component must be a child of uiTabs component');
+}
+
 const slots = useSlots();
 const slotContent = ref<string>('');
 const getSlotContent = (slotName = 'default') => {
@@ -19,13 +27,11 @@ const getSlotContent = (slotName = 'default') => {
 };
 getSlotContent();
 
-const activeTab = inject<Ref<number | string> | undefined>('activeTab');
-const setActiveTab = inject<(value: number | string, index: number) => void | undefined>('setActiveTab');
-const modelValueType = inject<string | undefined>('modelValueType');
-
-if (!activeTab || !setActiveTab || !modelValueType) {
-  throw new Error('uiTab component must be a child of uiTabs component');
-}
+const href = computed<string>((): string => {
+  let val = '#';
+  if (!!props.panel) val += props.panel;
+  return val;
+});
 
 const isEqual = (a: number | string, b: number | string): boolean => {
   return modelValueType === 'number' ? Number(a) === Number(b) : a === b;
@@ -35,19 +41,18 @@ const isActive = ref(firstActive);
 
 const tabs = inject<Ref<Array<{ value: number | string }>> | undefined>('tabs');
 const tab = { value: modelValueType === 'number' ? Number(props.value) : props.value };
-const tabIndex = ref(-1);
 const registerTab = inject<(tab: { value: number | string }) => void | undefined>('registerTab');
 const unregisterTab = inject<(tab: { value: number | string }) => void | undefined>('unregisterTab');
-
-const href = computed<string>((): string => {
-  let val = '#';
-  if (!!props.panel) val += props.panel;
-  return val;
+const tabIndex = computed<number>((): number => {
+  let idx = -1;
+  if (tabs) idx = tabs.value.findIndex((t) => t.value === (modelValueType === 'number' ? Number(props.value) : props.value));
+  return idx;
 });
 
+// const tabIndex = ref(-1);
 const activeTabEvt = () => {
   isActive.value = isEqual(props.value, activeTab.value);
-  if (tabs) tabIndex.value = tabs.value.findIndex((t) => t.value === tab.value);
+  // if (tabs) tabIndex.value = tabs.value.findIndex((t) => t.value === tab.value);
 };
 
 const selectTab = (e: Event) => {
