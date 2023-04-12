@@ -26,7 +26,10 @@ const listAry = [
 
 const openPopup = async () => {
   useNuxtApp().$modal({
-    component: popup
+    component: popup,
+    componentProps: {
+      title: '팝업이다'
+    }
   });
 };
 </script>
