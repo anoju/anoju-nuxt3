@@ -36,10 +36,10 @@ const isEqual = (a: number | string, b: number | string): boolean => {
   return a === b;
 };
 const tabIndex = ref<number>(-1);
-const index = inject<Ref<number> | undefined>('index');
-if (index) {
-  tabIndex.value = index.value;
-  index.value += 1;
+const childIdx = inject<Ref<number> | undefined>('childIdx');
+if (childIdx) {
+  tabIndex.value = childIdx.value;
+  childIdx.value += 1;
 }
 const firstActive = isEqual(tabIndex.value, activeTab.value);
 const isActive = ref(firstActive);

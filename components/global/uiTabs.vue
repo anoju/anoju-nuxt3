@@ -53,8 +53,8 @@ defineExpose({ activeTab, setActiveTab });
 provide('activeTab', activeTab);
 provide('setActiveTab', setActiveTab);
 
-const index = ref<number>(0);
-provide('index', index);
+const childIdx = ref<number>(0);
+provide('childIdx', childIdx);
 
 watch(activeTab, (newValue) => {
   emit('update:modelValue', newValue);
