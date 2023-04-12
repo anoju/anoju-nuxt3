@@ -11,7 +11,7 @@ const props = defineProps({
 });
 
 const activeTab = inject<Ref<number | string> | undefined>('activeTab');
-const setActiveTab = inject<(value: number | string, index: number) => void | undefined>('setActiveTab');
+const setActiveTab = inject<(index: number) => void | undefined>('setActiveTab');
 const modelValueType = inject<string | undefined>('modelValueType');
 
 if (!activeTab || !setActiveTab || !modelValueType) {
@@ -37,10 +37,10 @@ const isEqual = (a: number | string, b: number | string): boolean => {
   return modelValueType === 'number' ? Number(a) === Number(b) : a === b;
 };
 
-const tabs = inject<Ref<Array<{ value: number | string }>> | undefined>('tabs');
+const tabs = inject<Ref<Array<{ value: string }>> | undefined>('tabs');
 const tab = { value: slotContent.value };
-const registerTab = inject<(tab: { value: number | string }) => void | undefined>('registerTab');
-const unregisterTab = inject<(tab: { value: number | string }) => void | undefined>('unregisterTab');
+const registerTab = inject<(tab: { value: string }) => void | undefined>('registerTab');
+const unregisterTab = inject<(tab: { value: string }) => void | undefined>('unregisterTab');
 const tabIndex = computed<number>((): number => {
   let idx = -1;
   if (tabs) idx = tabs.value.findIndex((t) => t.value === slotContent.value);
@@ -49,22 +49,20 @@ const tabIndex = computed<number>((): number => {
 const firstActive = isEqual(tabIndex.value, activeTab.value);
 const isActive = ref(firstActive);
 
-// const tabIndex = ref(-1);
 const activeTabEvt = () => {
   isActive.value = isEqual(tabIndex.value, activeTab.value);
-  // if (tabs) tabIndex.value = tabs.value.findIndex((t) => t.value === tab.value);
 };
 
 const selectTab = (e: Event) => {
   e.preventDefault();
-  setActiveTab(tabIndex.value, tabIndex.value);
+  setActiveTab(tabIndex.value);
 };
 
 onMounted(() => {
   if (registerTab) registerTab(tab);
   activeTabEvt();
   nextTick(() => {
-    if (isActive.value) setActiveTab(tabIndex.value, tabIndex.value);
+    if (isActive.value) setActiveTab(tabIndex.value);
   });
 });
 onBeforeUnmount(() => {

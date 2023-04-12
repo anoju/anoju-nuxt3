@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const props = defineProps({
-  modelValue: { type: [Number, String], default: null },
+  modelValue: { type: Number, default: null },
   type: { type: String, default: null },
   line: { type: Boolean, default: false },
   round: { type: Boolean, default: false },
@@ -21,9 +21,6 @@ const $type = computed<Type>((): Type => {
   return 'line';
 });
 
-// const emit = defineEmits<{
-//   (e: 'update:modelValue', value: number | string): void;
-// }>();
 const emit = defineEmits(['update:modelValue']);
 const tablist = ref<HTMLElement | null>(null);
 
@@ -32,12 +29,8 @@ const lineWidth = ref(0);
 const lineLeft = ref(0);
 const lineMoving = ref(false);
 let moveIndex = -1;
-const setActiveTab = (value: number | string, index: number) => {
-  if (typeof props.modelValue === 'number') {
-    activeTab.value = Number(value);
-  } else {
-    activeTab.value = value;
-  }
+const setActiveTab = (index: number) => {
+  activeTab.value = index;
   if (moveIndex === index) return;
   moveIndex = index;
   lineMoveEvt();
@@ -61,21 +54,21 @@ provide('activeTab', activeTab);
 provide('setActiveTab', setActiveTab);
 provide('modelValueType', typeof props.modelValue);
 
-const tabs = ref<Array<{ value: number | string }>>([]);
+const tabs = ref<Array<{ value: string }>>([]);
 provide('tabs', tabs);
 
-const registerTab = (tab: { value: number | string }) => {
+const registerTab = (tab: { value: string }) => {
   tabs.value.push(tab);
   tabs.value.sort((a, b) => {
-    if (typeof a.value === 'number' && typeof b.value === 'number') {
-      return a.value - b.value;
-    }
+    // if (typeof a.value === 'number' && typeof b.value === 'number') {
+    //   return a.value - b.value;
+    // }
     return String(a.value).localeCompare(String(b.value));
   });
 };
 provide('registerTab', registerTab);
 
-const unregisterTab = (tab: { value: number | string }) => {
+const unregisterTab = (tab: { value: string }) => {
   const index = tabs.value.findIndex((t) => t.value === tab.value);
   if (index !== -1) {
     tabs.value.splice(index, 1);
