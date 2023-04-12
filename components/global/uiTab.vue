@@ -10,6 +10,15 @@ const props = defineProps({
   tabClass: { type: String, default: null }
 });
 
+const slots = useSlots();
+const slotContent = ref<string>('');
+const getSlotContent = (slotName = 'default') => {
+  slotContent.value = '';
+  const $slot = slots[slotName] as Function;
+  if ($slot && $slot().length) slotContent.value = $slot()[0].children;
+};
+getSlotContent();
+
 const activeTab = inject<Ref<number | string> | undefined>('activeTab');
 const setActiveTab = inject<(value: number | string, index: number) => void | undefined>('setActiveTab');
 const modelValueType = inject<string | undefined>('modelValueType');
