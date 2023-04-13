@@ -71,17 +71,59 @@ const openPopup = async () => {
         <uiTab>메뉴명2</uiTab>
         <uiTab>메뉴명3</uiTab>
       </uiTabs>
-      <div v-show="tabVal === 0">컨텐츠1</div>
-      <div v-show="tabVal === 1">컨텐츠2</div>
-      <div v-show="tabVal === 2">컨텐츠3</div>
+      <div v-show="tabVal === 0">
+        컨텐츠1 <br />
+        컨텐츠1 <br />
+        컨텐츠1 <br />
+        컨텐츠1 <br />
+        컨텐츠1 <br />
+      </div>
+      <div v-show="tabVal === 1">
+        컨텐츠2 <br />
+        컨텐츠2 <br />
+        컨텐츠2 <br />
+      </div>
+      <div v-show="tabVal === 2">
+        컨텐츠3 <br />
+        컨텐츠3 <br />
+        컨텐츠3 <br />
+        컨텐츠3 <br />
+        컨텐츠3 <br />
+        컨텐츠3 <br />
+        컨텐츠3 <br />
+      </div>
       <br /><br />
       <uiTabs v-model="tabVal2">
         <uiTab>메뉴명1</uiTab>
         <uiTab>메뉴명2</uiTab>
         <uiTab>메뉴명3</uiTab>
       </uiTabs>
+      {{ tabVal2 }}
+      <uiTabPanels v-model="tabVal2">
+        <uiTabPanel>
+          컨텐츠1 <br />
+          컨텐츠1 <br />
+          컨텐츠1 <br />
+          컨텐츠1 <br />
+          컨텐츠1 <br />
+        </uiTabPanel>
+        <uiTabPanel>
+          컨텐츠2 <br />
+          컨텐츠2 <br />
+          컨텐츠2 <br />
+        </uiTabPanel>
+        <uiTabPanel>
+          컨텐츠3 <br />
+          컨텐츠3 <br />
+          컨텐츠3 <br />
+          컨텐츠3 <br />
+          컨텐츠3 <br />
+          컨텐츠3 <br />
+          컨텐츠3 <br />
+        </uiTabPanel>
+      </uiTabPanels>
       <br /><br />
-      <ul>
+      <ul class="sample-list">
         <li v-for="(item, i) of listAry" :key="i">
           <a :href="item.link">
             <i v-if="item.isNew">NEW</i>
@@ -110,11 +152,29 @@ const openPopup = async () => {
         <li><a href="">공지사항입니다.</a></li>
         <li><a href="">공지사항입니다.</a></li>-->
       </ul>
-      <p><uiButton line @click="openPopup">팝업창</uiButton></p>
-      <div style="background-color: #f1f1f1; height: 200vh"></div>
+      <p class="mt-30"><uiButton line @click="openPopup">팝업창</uiButton></p>
+      <div style="background-color: #f1f1f1; height: 200vh" class="mt-30"></div>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>
     </uiBottomFixed>
   </uiPage>
 </template>
+<style lang="scss">
+.sample-list {
+  border-top: 2px solid #aaa;
+  border-bottom: 1px solid #ddd;
+  li {
+    + li {
+      border-top: 1px solid #ddd;
+    }
+    > a {
+      display: block;
+      padding: 1rem;
+      &:hover {
+        background-color: #f1f1f1;
+      }
+    }
+  }
+}
+</style>
