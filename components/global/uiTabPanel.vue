@@ -44,7 +44,7 @@ watch(activePanel, (newValue, oldValue) => {
 });
 </script>
 <template>
-  <div class="tab-panel" :class="{ active: isActive }">
+  <div :id="panelId" class="tab-panel" :class="{ active: isActive }" role="tabpanel" :aria-labelledby="tabId" :aria-expanded="isActive ? 'true' : 'false'">
     <slot />
   </div>
 </template>

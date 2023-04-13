@@ -171,6 +171,12 @@
     }
   }
 }
+.tab-panels {
+  &.transition {
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+  }
+}
 .tab-panel {
   display: none;
   &.active {
