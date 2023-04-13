@@ -10,7 +10,7 @@ const props = defineProps({
   tabClass: { type: String, default: null }
 });
 
-const activeTab = inject<Ref<number | string> | undefined>('activeTab');
+const activeTab = inject<Ref<number> | undefined>('activeTab');
 const setActiveTab = inject<(index: number) => void | undefined>('setActiveTab');
 
 if (!activeTab || !setActiveTab) {
@@ -39,7 +39,6 @@ const isEqual = (a: number | string, b: number | string): boolean => {
 const tabIndex = ref<number>(-1);
 const childIdx = inject<Ref<number> | undefined>('childIdx');
 if (childIdx) {
-  console.log(childIdx.value);
   tabIndex.value = childIdx.value;
   childIdx.value += 1;
 }

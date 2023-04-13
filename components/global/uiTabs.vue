@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const nuxtApp = useNuxtApp();
-const componentName = 'checkbox';
+const componentName = 'tabs';
 if (!nuxtApp.$globalCounters[componentName]) {
   nuxtApp.$globalCounters[componentName] = 1;
 } else {
