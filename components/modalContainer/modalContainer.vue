@@ -129,7 +129,6 @@ const like = (likeType: string): void => {
   });
   likeIdx.value += 1;
   setTimeout(() => {
-    console.log(idx);
     const $like = likes.value[idx];
     $like.show = true;
     let $type = $like.type;
@@ -220,8 +219,8 @@ onMounted(() => {
         <div>
           <div class="loading-lottie" role="img" :aria-label="!loadingTxt ? '화면을 불러오는중입니다.' : ''">
             <uiLottie path="/lottie/loading.json" autoplay loop aria-hidden="true"></uiLottie>
-            <div v-if="loadingTxt" class="txt">{{ loadingTxt }}</div>
           </div>
+          <div v-if="loadingTxt" class="txt">{{ loadingTxt }}</div>
         </div>
       </div>
     </div>

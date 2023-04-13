@@ -38,8 +38,14 @@ const openLike = () => {
   useNuxtApp().$like();
 };
 
+let isLoadingTxt = false;
 const openLoading = () => {
-  useNuxtApp().$loading();
+  const opt: boolean | string = !isLoadingTxt ? true : '로딩중입니다.';
+  isLoadingTxt = !isLoadingTxt;
+  useNuxtApp().$loading(opt);
+};
+const closeLoading = () => {
+  useNuxtApp().$loading(false);
 };
 </script>
 <template>
@@ -163,7 +169,8 @@ const openLoading = () => {
       <p class="mt-30">
         <uiButton line @click="openPopup">팝업창</uiButton>
         <uiButton line @click="openLike">like</uiButton>
-        <uiButton line @click="openLoading">Loading</uiButton>
+        <uiButton line @click="openLoading">Loading open</uiButton>
+        <uiButton line style="z-index: 9999" @click="closeLoading">Loading close</uiButton>
       </p>
       <div style="background-color: #f1f1f1; height: 200vh" class="mt-30"></div>
     </uiInner>
