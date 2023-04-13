@@ -1,5 +1,4 @@
 import anime, { AnimeParams } from 'animejs';
-// import mitt from 'mitt';
 
 interface ScrollOptions {
   left?: number;
@@ -216,9 +215,6 @@ const slideUp = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
 };
 
 export default defineNuxtPlugin((nuxtApp) => {
-  // const eventBus = mitt();
-  // nuxtApp.provide('eventBus', eventBus);
-
   nuxtApp.provide('globalCounters', {});
   nuxtApp.provide('anime', anime);
   nuxtApp.provide('scrollTo', scrollTo);
@@ -229,12 +225,4 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide('getIndex', getIndex);
   nuxtApp.provide('slideDown', slideDown);
   nuxtApp.provide('slideUp', slideUp);
-
-  // nuxtApp.provide('modal', (options: any) => {
-  //   eventBus.emit('addModal', options);
-  // });
-
-  // nuxtApp.provide('like', (options: any) => {
-  //   eventBus.emit('likeModal', options);
-  // });
 });

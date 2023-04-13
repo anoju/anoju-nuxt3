@@ -702,6 +702,11 @@ $bdTypes: (solid, dashed, dotted);
 }
 
 // etc
+.lottie {
+  svg {
+    vertical-align: top;
+  }
+}
 .scroll-x {
   @include scroll-x;
   .section & {

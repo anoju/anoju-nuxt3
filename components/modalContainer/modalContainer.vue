@@ -111,27 +111,69 @@ const onClose = (index: number | string, { payload }: { payload?: any } = {}): v
 
 interface Like {
   idx: number;
-  class: string;
+  type: string;
   show: boolean;
+  visible: boolean;
 }
 
 const likes = ref<Like[]>([]);
 const likeIdx = ref(0);
 
-const like = (addClass: string): void => {
+const like = (likeType: string): void => {
   const idx = likeIdx.value;
   likes.value.push({
     idx,
-    class: addClass,
-    show: false
+    type: likeType,
+    show: false,
+    visible: false
   });
   likeIdx.value += 1;
   setTimeout(() => {
-    likes.value[idx].show = true;
+    console.log(idx);
+    const $like = likes.value[idx];
+    $like.show = true;
+    let $type = $like.type;
+    let timer = 2000;
+    // if ($type === 'heart') timer = 4000;
     setTimeout(() => {
-      likes.value[idx].show = false;
-    }, 2000);
-  }, 50);
+      $like.show = false;
+      setTimeout(() => {
+        $like.visible = false;
+        const showLikes = likes.value.filter((obj) => obj.show);
+        if (showLikes.length === 0) {
+          likes.value = [];
+          likeIdx.value = 0;
+        }
+      }, 300);
+    }, timer);
+  }, 1);
+};
+
+interface Loading {
+  txt?: string;
+  type?: string;
+}
+const isObject = (options: Loading | string | boolean): options is Loading => {
+  return typeof options === 'object';
+};
+const isLoading: Ref<boolean> = ref(false);
+const loadingShow: Ref<boolean> = ref(false);
+const loadingTxt: Ref<string | null> = ref(null);
+const loading = (options: Loading | string | boolean) => {
+  if (options) {
+    isLoading.value = true;
+    if (isObject(options) && options.txt) loadingTxt.value = options.txt;
+    else if (typeof options === 'string') loadingTxt.value = options;
+    setTimeout(() => {
+      loadingShow.value = true;
+    }, 1);
+  } else if (options === false) {
+    loadingShow.value = false;
+    setTimeout(() => {
+      isLoading.value = false;
+      loadingTxt.value = null;
+    }, 200);
+  }
 };
 
 onMounted(() => {
@@ -141,9 +183,8 @@ onMounted(() => {
     const { resolve, component, componentProps, modalProps, returnFocus } = payload;
     addModal(resolve, component, componentProps, modalProps, returnFocus);
   });
-  eventBus.on('likeModal', (payload: any) => {
-    const { className } = payload;
-    like(className);
+  eventBus.on('likeModal', (likeType: any) => {
+    like(likeType);
   });
   eventBus.on('popOpen', (payload: any) => {
     const idx = payload[0];
@@ -156,18 +197,32 @@ onMounted(() => {
     const options = payload[1];
     onClose(idx, options);
   });
+  eventBus.on('loading', (payload: any) => {
+    loading(payload);
+  });
 });
 </script>
 <template>
-  <div v-if="modals.length || likes.length" ref="el" class="modal-container">
+  <div v-if="modals.length || likes.length || isLoading" ref="el" class="modal-container">
+    <!-- popup -->
     <div v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, { show: modal.show }]">
       <component :is="modal.component" v-bind="modal.componentProps" :data-idx="i" @close="onClose(i, $event)" />
     </div>
 
     <!-- like -->
-    <div v-if="likes.length" class="layer_like_wrap">
-      <div v-for="(lk, j) in likes" :key="j" class="layer_like" :class="{ show: lk.show }" aria-hidden="true">
-        <div :class="lk.class"></div>
+    <div v-for="(lk, j) in likes" :key="j" class="layer-like" :class="{ show: lk.show }" aria-hidden="true">
+      <uiLottie v-if="lk.type === 'heart'" path="/lottie/temp-love.json" autoplay></uiLottie>
+    </div>
+
+    <!-- loading -->
+    <div v-if="isLoading" class="loading-wrap" :class="{ show: loadingShow }">
+      <div class="tl">
+        <div>
+          <div class="loading-lottie" role="img" :aria-label="!loadingTxt ? '화면을 불러오는중입니다.' : ''">
+            <uiLottie path="/lottie/loading.json" autoplay loop aria-hidden="true"></uiLottie>
+            <div v-if="loadingTxt" class="txt">{{ loadingTxt }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -33,6 +33,14 @@ const openPopup = async () => {
     }
   });
 };
+
+const openLike = () => {
+  useNuxtApp().$like();
+};
+
+const openLoading = () => {
+  useNuxtApp().$loading();
+};
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
@@ -152,7 +160,11 @@ const openPopup = async () => {
         <li><a href="">공지사항입니다.</a></li>
         <li><a href="">공지사항입니다.</a></li>-->
       </ul>
-      <p class="mt-30"><uiButton line @click="openPopup">팝업창</uiButton></p>
+      <p class="mt-30">
+        <uiButton line @click="openPopup">팝업창</uiButton>
+        <uiButton line @click="openLike">like</uiButton>
+        <uiButton line @click="openLoading">Loading</uiButton>
+      </p>
       <div style="background-color: #f1f1f1; height: 200vh" class="mt-30"></div>
     </uiInner>
     <uiBottomFixed flex full>
