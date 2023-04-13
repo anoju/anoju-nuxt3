@@ -5,6 +5,7 @@ export default {
 </script>
 <script lang="ts" setup>
 const props = defineProps({
+  id: { type: String, default: null },
   panel: { type: String, default: null },
   tabClass: { type: String, default: null }
 });
@@ -28,7 +29,7 @@ getSlotContent();
 
 const href = computed<string>((): string => {
   let val = '#';
-  if (!!props.panel) val += props.panel;
+  if (panelId) val += panelId.value;
   return val;
 });
 
@@ -38,9 +39,29 @@ const isEqual = (a: number | string, b: number | string): boolean => {
 const tabIndex = ref<number>(-1);
 const childIdx = inject<Ref<number> | undefined>('childIdx');
 if (childIdx) {
+  console.log(childIdx.value);
   tabIndex.value = childIdx.value;
   childIdx.value += 1;
 }
+const tabsId = inject<Ref<string> | undefined>('tabsId');
+const panelsId = inject<Ref<string> | undefined>('panelsId');
+const tabId = computed<string | undefined>((): string | undefined => {
+  let rtnVal;
+  if (tabsId) {
+    rtnVal = `${tabsId.value}_${tabIndex.value}`;
+  }
+  if (props.id) rtnVal = props.id;
+  return rtnVal;
+});
+const panelId = computed<string | undefined>((): string | undefined => {
+  let rtnVal;
+  if (panelsId) {
+    rtnVal = `${panelsId.value}_${tabIndex.value}`;
+  }
+  if (props.panel) rtnVal = props.panel;
+  return rtnVal;
+});
+
 const firstActive = isEqual(tabIndex.value, activeTab.value);
 const isActive = ref(firstActive);
 
@@ -59,6 +80,12 @@ onMounted(() => {
     if (isActive.value) setActiveTab(tabIndex.value);
   });
 });
+//onUnmounted(() => {
+onBeforeUnmount(() => {
+  if (childIdx) {
+    childIdx.value -= 1;
+  }
+});
 watchEffect(() => {
   activeTabEvt();
 });
@@ -67,6 +94,6 @@ defineExpose({ isActive, selectTab });
 </script>
 <template>
   <li class="tab" :class="{ tabClass, active: isActive }" role="presentation">
-    <a :href="href" role="tab" :aria-selected="isActive ? true : false" :aria-controls="panel" v-bind="$attrs" @click="selectTab"><slot /></a>
+    <a :id="tabId" :href="href" role="tab" :aria-selected="isActive ? true : false" :aria-controls="panelId" v-bind="$attrs" @click="selectTab"><slot /></a>
   </li>
 </template>

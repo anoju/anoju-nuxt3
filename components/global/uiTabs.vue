@@ -1,6 +1,17 @@
 <script lang="ts" setup>
+const nuxtApp = useNuxtApp();
+const componentName = 'checkbox';
+if (!nuxtApp.$globalCounters[componentName]) {
+  nuxtApp.$globalCounters[componentName] = 1;
+} else {
+  nuxtApp.$globalCounters[componentName]++;
+}
+const instanceId = nuxtApp.$globalCounters[componentName];
+
 const props = defineProps({
   modelValue: { type: Number, default: null },
+  id: { type: String, default: null },
+  panels: { type: String, default: null },
   type: { type: String, default: null },
   line: { type: Boolean, default: false },
   round: { type: Boolean, default: false },
@@ -8,6 +19,19 @@ const props = defineProps({
   box: { type: Boolean, default: false },
   txt: { type: Boolean, default: false }
 });
+
+const tabsId = computed<string>((): string => {
+  let rtnVal = `tab_btn_${instanceId}`;
+  if (props.id) rtnVal = props.id;
+  return rtnVal;
+});
+const panelsId = computed<string>((): string => {
+  let rtnVal = `tab_panel_${instanceId}`;
+  if (props.panels) rtnVal = props.panels;
+  return rtnVal;
+});
+provide('tabsId', tabsId);
+provide('panelsId', panelsId);
 
 type Type = 'line' | 'round' | 'navi' | 'box' | 'txt';
 const typeAry: Type[] = ['line', 'round', 'navi', 'box', 'txt'];
@@ -66,6 +90,7 @@ onMounted(() => {
 });
 onUnmounted(() => {
   window.removeEventListener('resize', lineMoveEvt);
+  childIdx.value = 0;
 });
 </script>
 <template>
