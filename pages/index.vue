@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import popup from '~/pages/popup/popup.vue';
 useHead({
   title: '페이지 제목'
@@ -39,13 +39,16 @@ const openLike = () => {
 };
 
 let isLoadingTxt = false;
+const LoadingBtnZIndex = ref<number | null>(null);
 const openLoading = () => {
   const opt: boolean | string = !isLoadingTxt ? true : '로딩중입니다.';
   isLoadingTxt = !isLoadingTxt;
   useNuxtApp().$loading(opt);
+  LoadingBtnZIndex.value = 999;
 };
 const closeLoading = () => {
   useNuxtApp().$loading(false);
+  LoadingBtnZIndex.value = null;
 };
 </script>
 <template>
@@ -170,7 +173,7 @@ const closeLoading = () => {
         <uiButton line @click="openPopup">팝업창</uiButton>
         <uiButton line @click="openLike">like</uiButton>
         <uiButton line @click="openLoading">Loading open</uiButton>
-        <uiButton line style="z-index: 9999" @click="closeLoading">Loading close</uiButton>
+        <uiButton line :style="{ zIndex: LoadingBtnZIndex ? LoadingBtnZIndex : '' }" @click="closeLoading">Loading close</uiButton>
       </p>
       <div style="background-color: #f1f1f1; height: 200vh" class="mt-30"></div>
     </uiInner>
