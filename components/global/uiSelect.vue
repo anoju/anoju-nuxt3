@@ -13,11 +13,16 @@ interface Option {
 const props = defineProps({
   options: { type: Array as () => Option[], required: true },
   modelValue: { type: [String, Number], default: '' },
-  title: { type: String, default: '선택' },
+
   disabled: { type: Boolean, default: false },
-  inline: { type: Boolean, default: false },
+  class: { type: [String, Array], default: null },
   dir: { type: String, default: null },
-  wrapClass: { type: String, default: null }
+  title: { type: String, default: '선택' },
+
+  inline: { type: Boolean, default: false },
+  size: { type: String, default: null },
+  small: { type: Boolean, default: false },
+  large: { type: Boolean, default: false }
 });
 
 // const selectText = ref('');
@@ -35,6 +40,30 @@ const onSelectChange = (event: Event) => {
   emit('input', selectedValue.value);
 };
 
+type Size = 'small' | 'large';
+const sizeAry: Size[] = ['small', 'large'];
+const matchingSize = sizeAry.find((size) => props[size]);
+const $size = computed<Size | null>((): Size | null => {
+  if (props.size && sizeAry.includes(props.size as Size)) {
+    return props.size as Size;
+  } else if (matchingSize) {
+    return matchingSize;
+  }
+  return null;
+});
+
+const selectClass = computed(() => {
+  const rtnAry = [
+    {
+      inline: props.inline,
+      disabled: props.disabled
+    },
+    props.class,
+    $size.value
+  ];
+  return rtnAry;
+});
+
 // const focus = () => {
 //   this.$refs.select.focus();
 // };
@@ -43,7 +72,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="select" :class="wrapClass">
+  <div class="select" :class="selectClass">
     <div v-if="inline" class="btn-select-txt" aria-hidden="true">{{ selectText }}</div>
     <select
       ref="select"

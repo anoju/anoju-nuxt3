@@ -36,7 +36,7 @@ const props = defineProps({
   trueValue: { type: [String, Number, Boolean], default: true },
   falseValue: { type: [String, Number, Boolean], default: false },
 
-  wrapClass: { type: [String, Array], default: null },
+  class: { type: [String, Array], default: null },
   lblClass: { type: [String, Array], default: null },
   lblStyle: { type: String, default: null },
   dblclick: { type: Function, default: null }
@@ -71,19 +71,8 @@ const $size = computed<Size | null>((): Size | null => {
   return null;
 });
 
-interface CheckboxClass {
-  checkbox?: boolean;
-  radio?: boolean;
-  block?: boolean;
-  box?: boolean;
-  btn?: boolean;
-  switch?: boolean;
-  focus?: boolean;
-  disabled?: boolean;
-  checked?: boolean;
-}
-const checkboxClass = computed<Array<CheckboxClass | string>>((): Array<CheckboxClass | string> => {
-  const rtnAry = [
+const checkboxClass = computed(() => {
+  let rtnAry = [
     {
       checkbox: !props.radio,
       radio: props.radio,
@@ -94,9 +83,10 @@ const checkboxClass = computed<Array<CheckboxClass | string>>((): Array<Checkbox
       focus: isFocus.value,
       disabled: props.disabled,
       checked: isChecked.value
-    }
+    },
+    props.class,
+    $size.value
   ];
-  // if ($size.value) rtnAry.push($size.value);
   return rtnAry;
 });
 
@@ -152,7 +142,7 @@ const onInputChange = (e: Event) => {
 };
 </script>
 <template>
-  <div :class="[checkboxClass, wrapClass, $size]">
+  <div :class="checkboxClass">
     <label v-if="right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="chkboxId">
       <slot />
     </label>

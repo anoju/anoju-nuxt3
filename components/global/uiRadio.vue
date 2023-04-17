@@ -38,7 +38,7 @@ const props = defineProps({
   value: { type: [String, Number], default: null, require: true },
   modelValue: { type: [String, Number, Boolean, Array, Object], default: null },
 
-  wrapClass: { type: [String, Array], default: null },
+  class: { type: [String, Array], default: null },
   lblClass: { type: [String, Array], default: null },
   lblStyle: { type: String, default: null },
   dblclick: { type: Function, default: null }
@@ -70,17 +70,7 @@ const $size = computed<Size | null>((): Size | null => {
   return null;
 });
 
-interface RadioClass {
-  radio?: boolean;
-  checkbox?: boolean;
-  block?: boolean;
-  box?: boolean;
-  btn?: boolean;
-  focus?: boolean;
-  disabled?: boolean;
-  checked?: boolean;
-}
-const radioClass = computed<Array<RadioClass | string>>((): Array<RadioClass | string> => {
+const radioClass = computed(() => {
   const rtnAry = [
     {
       radio: !props.checkbox,
@@ -91,7 +81,9 @@ const radioClass = computed<Array<RadioClass | string>>((): Array<RadioClass | s
       focus: isFocus.value,
       disabled: props.disabled,
       checked: isChecked.value
-    }
+    },
+    props.class,
+    $size.value
   ];
   return rtnAry;
 });
@@ -137,7 +129,7 @@ const onInputChange = (e: Event) => {
 // });
 </script>
 <template>
-  <div :class="[radioClass, wrapClass, $size]">
+  <div :class="radioClass">
     <label v-if="right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="radioId">
       <slot />
     </label>
