@@ -1,21 +1,11 @@
 <script lang="ts" setup>
-const layout = 'guide';
 definePageMeta({
-  pageTransition: false,
-  // layout: layout,
-  layoutTransition: {
-    name: 'slide-in'
-  }
-});
-const pageTitle = 'Guide - Text Elements';
-provide('headerTitle', pageTitle);
-useHead({
-  title: pageTitle
+  pageTransition: false
 });
 </script>
 <template>
-  <NuxtLayout :name="layout">
-    <uiButton to="/guide/font" line>폰트확인</uiButton>
+  <uiInner>
+    <uiButton to="/guide/font/" line>폰트확인</uiButton>
 
     <h1 class="gd__h1">제목요소</h1>
     <uiTitleBar>
@@ -31,5 +21,5 @@ useHead({
     <h1 class="tit-h1">1번째 제목요소</h1>
     <h2 class="tit-h2">2번째 제목요소</h2>
     <h3 class="tit-h3">3번째 제목요소</h3>
-  </NuxtLayout>
+  </uiInner>
 </template>
