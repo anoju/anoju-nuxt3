@@ -5,6 +5,7 @@ export default {
 </script>
 <script lang="ts" setup>
 const props = defineProps({
+  to: { type: String, default: null },
   id: { type: String, default: null },
   panel: { type: String, default: null },
   tabClass: { type: String, default: null }
@@ -61,16 +62,32 @@ const panelId = computed<string | undefined>((): string | undefined => {
   return rtnVal;
 });
 
-const firstActive = isEqual(tabIndex.value, activeTab.value);
-const isActive = ref(firstActive);
+const firstActive = (): boolean => {
+  let rtnVal = isEqual(tabIndex.value, activeTab.value);
+  if (props.to) {
+    const route = useRoute();
+    rtnVal = isEqual(route.path, props.to);
+  }
+  return rtnVal;
+};
+const isActive = ref(false);
 
 const activeTabEvt = () => {
-  isActive.value = isEqual(tabIndex.value, activeTab.value);
+  if (props.to) {
+    const route = useRoute();
+    isActive.value = isEqual(route.path, props.to);
+  } else {
+    isActive.value = isEqual(tabIndex.value, activeTab.value);
+  }
 };
 
 const selectTab = (e: Event) => {
   e.preventDefault();
   setActiveTab(tabIndex.value);
+  if (props.to) {
+    const router = useRouter();
+    router.push({ path: props.to });
+  }
 };
 
 onMounted(() => {
