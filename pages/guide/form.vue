@@ -1,8 +1,4 @@
-<script lang="ts" setup>
-definePageMeta({
-  pageTransition: false
-});
-</script>
+<script lang="ts" setup></script>
 <template>
   <uiInner>
     <h1>폼요소들</h1>

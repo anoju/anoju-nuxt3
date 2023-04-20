@@ -1,8 +1,4 @@
-<script lang="ts" setup>
-definePageMeta({
-  pageTransition: false
-});
-</script>
+<script lang="ts" setup></script>
 <template>
   <uiInner>
     <uiButton to="/guide/font/" line>폰트확인</uiButton>

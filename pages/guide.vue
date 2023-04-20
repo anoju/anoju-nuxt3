@@ -1,10 +1,6 @@
 <script lang="ts" setup>
-// const headerTitle = inject('headerTitle', 'Guide page');
 definePageMeta({
-  // you can also pass a string or a computed property
-  // keepalive: {
-  //   exclude: ['guide/font']
-  // }
+  pageTransition: false
 });
 const isTabShow = ref(true);
 const route = useRoute();
