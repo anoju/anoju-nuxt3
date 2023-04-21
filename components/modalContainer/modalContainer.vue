@@ -209,6 +209,7 @@ onMounted(() => {
   <div v-if="modals.length || likes.length || isLoading" ref="el" class="modal-container">
     <!-- popup -->
     <div v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, { show: modal.show, open: modal.open }]">
+      <div class="pop-bg-close" role="button" aria-label="팝업창 닫기" @click="onClose(i)"></div>
       <component :is="modal.component" v-bind="modal.componentProps" :data-idx="i" @close="onClose(i, $event)" />
     </div>
 

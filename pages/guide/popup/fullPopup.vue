@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import modalPopup from '~/pages/guide/popup/modal-popup.vue';
+import modalPopup from '~/pages/guide/popup/modalPopup.vue';
 const props = defineProps({
   title: { type: String, default: null }
 });

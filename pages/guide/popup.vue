@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import fullPopup from '~/pages/guide/popup/full-popup.vue';
-import modalPopup from '~/pages/guide/popup/modal-popup.vue';
+import fullPopup from '~/pages/guide/popup/fullPopup.vue';
+import modalPopup from '~/pages/guide/popup/modalPopup.vue';
+import bottomPopup from '~/pages/guide/popup/bottomPopup.vue';
 
 const pageTitle = 'Guide - Popup Type';
 useHead({
@@ -22,6 +23,14 @@ const openModalPopup = async () => {
     component: modalPopup,
     componentProps: {
       number: 123456789
+    }
+  });
+};
+const openBottomPopup = async () => {
+  useNuxtApp().$modal({
+    component: bottomPopup,
+    componentProps: {
+      msg: '바텀팝업'
     }
   });
 };
@@ -50,6 +59,7 @@ const closeLoading = () => {
     <div class="flex full">
       <uiButton line @click="openFullPopup">풀팝업</uiButton>
       <uiButton line @click="openModalPopup">모달팝업</uiButton>
+      <uiButton line @click="openBottomPopup">바텀시트</uiButton>
     </div>
     <h2 class="gd__h2">로딩</h2>
     <div class="flex full">
