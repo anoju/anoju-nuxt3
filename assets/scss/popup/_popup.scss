@@ -153,7 +153,7 @@
 //   @include dimm-white;
 // }
 .popup {
-  // display: none;
+  display: none;
   position: fixed;
   left: 0;
   top: 0;
@@ -276,7 +276,7 @@
       flex: 1 1 auto;
       width: 100%;
     }
-    &.show {
+    &.open {
       background: rgba(255, 255, 255, 1);
     }
 
@@ -354,7 +354,7 @@
         //opacity: 0;
         // transition: opacity 0.3s;
       }
-      // &.show {
+      // &.open {
       //   .pop-wrap {
       //     opacity: 1;
       //   }
@@ -455,7 +455,7 @@
       }
     }
     &.morphing {
-      &.show {
+      &.open {
         background: transparent;
       }
       .pop-wrap {
@@ -587,7 +587,9 @@
 
   //show
   &.show {
-    display: flex !important;
+    display: flex;
+  }
+  &.open {
     @include dimm;
     transition-delay: 0s;
     > .pop-wrap {
@@ -637,7 +639,7 @@
   // box-shadow: 0 0 2rem 12rem #fff;
   // backdrop-filter: blur(2px);
   transform: translate(-50%, -40%);
-  &.show {
+  &.open {
     transform: translate(-50%, -50%);
     transition-delay: 0.2s, 0s;
     opacity: 1;

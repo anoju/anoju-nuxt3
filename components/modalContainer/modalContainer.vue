@@ -7,6 +7,7 @@ interface ModalObj {
   modalProps?: Record<string, any>;
   resolve?: (value: unknown) => void;
   show: boolean;
+  open: boolean;
   type: any;
   addClass: any;
   returnFocus?: HTMLElement | null;
@@ -42,6 +43,7 @@ const addModal = async (
     modalProps: modalProps || {},
     resolve,
     show: false,
+    open: false,
     type: '',
     addClass: '',
     returnFocus
@@ -65,8 +67,9 @@ const onOpen = (index: number, type?: string, addClass?: string[] | string): voi
     eventBus.emit('lockPage');
   }
 
+  modals.value[idx].show = true;
   setTimeout(() => {
-    modals.value[idx].show = true;
+    modals.value[idx].open = true;
     $popup.setAttribute('aria-hidden', 'false');
     if (idx > 0) {
       ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'true');
@@ -93,11 +96,12 @@ const onClose = (index: number | string, { payload }: { payload?: any } = {}): v
   const $popup = el.value.children[idx] as HTMLElement;
   const modal = modals.value[idx];
   if (modal.resolve) modal.resolve({ payload });
-  modals.value[idx].show = false;
+  modals.value[idx].open = false;
   if (idx > 0) ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'false');
   if (idx === 0) eventBus.emit('unlockPage');
   let focusEl = modal.returnFocus;
   setTimeout(() => {
+    modals.value[idx].show = false;
     // modals.value.splice(idx, 1);
     const showModals = modals.value.filter((obj) => obj.show);
     if (showModals.length === 0) modals.value = [];
@@ -204,7 +208,7 @@ onMounted(() => {
 <template>
   <div v-if="modals.length || likes.length || isLoading" ref="el" class="modal-container">
     <!-- popup -->
-    <div v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, { show: modal.show }]">
+    <div v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, { show: modal.show, open: modal.open }]">
       <component :is="modal.component" v-bind="modal.componentProps" :data-idx="i" @close="onClose(i, $event)" />
     </div>
 
