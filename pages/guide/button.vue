@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-const emit = defineEmits(['get-page-title']);
-emit('get-page-title', 'Guide - Button Elements');
+const pageTitle = 'Guide - Button Elements';
+useHead({
+  title: pageTitle
+});
+const emit = defineEmits(['page-title']);
+emit('page-title', pageTitle);
 </script>
 <template>
   <uiInner>

@@ -49,6 +49,6 @@ watch(
         <uiTab :to="tab.url">{{ tab.text }}</uiTab>
       </template>
     </uiTabs>
-    <NuxtPage @get-page-title="updatePageTitle" />
+    <NuxtPage @page-title="updatePageTitle" />
   </uiPage>
 </template>

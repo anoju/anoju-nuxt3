@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const pageTitle = 'Guide - Font';
+useHead({
+  title: pageTitle
+});
+const emit = defineEmits(['page-title']);
+emit('page-title', pageTitle);
+
 interface Option {
   label: string;
   value: string | number;

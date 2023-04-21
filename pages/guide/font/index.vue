@@ -1,4 +1,11 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const pageTitle = 'Guide - Font';
+useHead({
+  title: pageTitle
+});
+const emit = defineEmits(['page-title']);
+emit('page-title', pageTitle);
+</script>
 <template>
   <uiInner>
     <h1 class="gd__h1">font</h1>

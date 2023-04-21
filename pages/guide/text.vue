@@ -1,4 +1,11 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const pageTitle = 'Guide - Text Elements';
+useHead({
+  title: pageTitle
+});
+const emit = defineEmits(['page-title']);
+emit('page-title', pageTitle);
+</script>
 <template>
   <uiInner>
     <uiButton to="/guide/font/" line>폰트확인</uiButton>
