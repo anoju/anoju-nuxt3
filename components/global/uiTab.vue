@@ -65,16 +65,15 @@ const panelId = computed<string | undefined>((): string | undefined => {
 const firstActive = (): boolean => {
   let rtnVal = isEqual(tabIndex.value, activeTab.value);
   if (props.to) {
-    const route = useRoute();
     rtnVal = isEqual(route.path, props.to);
   }
   return rtnVal;
 };
 const isActive = ref(false);
 
+const route = useRoute();
 const activeTabEvt = () => {
   if (props.to) {
-    const route = useRoute();
     isActive.value = isEqual(route.path, props.to);
   } else {
     isActive.value = isEqual(tabIndex.value, activeTab.value);
@@ -83,13 +82,22 @@ const activeTabEvt = () => {
 
 const selectTab = (e: Event) => {
   e.preventDefault();
-  setActiveTab(tabIndex.value);
   if (props.to) {
     const router = useRouter();
     router.push({ path: props.to });
+  } else {
+    setActiveTab(tabIndex.value);
   }
 };
-
+watch(
+  route,
+  (value) => {
+    if (props.to && isEqual(value.path, props.to)) {
+      setActiveTab(tabIndex.value);
+    }
+  },
+  { deep: true }
+);
 onMounted(() => {
   activeTabEvt();
   nextTick(() => {
