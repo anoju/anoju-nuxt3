@@ -37,7 +37,7 @@ const addModal = async (
   }
 
   const modalObj: ModalObj = {
-    component,
+    component: markRaw(component),
     componentProps: componentProps || {},
     componentID,
     modalProps: modalProps || {},
