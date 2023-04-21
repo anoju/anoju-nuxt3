@@ -4,7 +4,11 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide('eventBus', eventBus);
 
   nuxtApp.provide('modal', (options: any) => {
-    eventBus.emit('addModal', options);
+    return new Promise((resolve) => {
+      const $opt = options;
+      $opt.resolve = resolve;
+      eventBus.emit('addModal', $opt);
+    });
   });
 
   nuxtApp.provide('like', (likeType: string = 'heart') => {

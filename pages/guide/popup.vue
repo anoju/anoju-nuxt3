@@ -11,12 +11,16 @@ const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
 
 const openFullPopup = async () => {
-  useNuxtApp().$modal({
-    component: fullPopup,
-    componentProps: {
-      title: '풀팝업입니다.'
-    }
-  });
+  useNuxtApp()
+    .$modal({
+      component: fullPopup,
+      componentProps: {
+        title: '풀팝업입니다.'
+      }
+    })
+    .then((result: any) => {
+      console.log(result);
+    });
 };
 const openModalPopup = async () => {
   useNuxtApp().$modal({
