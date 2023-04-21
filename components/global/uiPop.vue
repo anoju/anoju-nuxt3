@@ -72,7 +72,7 @@ const popClose = () => {
     props.close();
   } else if (isLayer.value) {
     // emitClose('close', idx.value);
-    eventBus.emit('popClose', [idx.value]);
+    eventBus.emit('popClose', idx.value);
   } else {
     window.history.back();
   }

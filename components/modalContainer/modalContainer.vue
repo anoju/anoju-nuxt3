@@ -196,9 +196,8 @@ onMounted(() => {
     onOpen(idx, type, addClass);
   });
   eventBus.on('popClose', (payload: any) => {
-    const idx = payload[0];
-    const options = payload[1];
-    onClose(idx, options);
+    const idx = payload;
+    onClose(idx);
   });
   eventBus.on('loading', (payload: any) => {
     loading(payload);
