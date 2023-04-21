@@ -4,26 +4,51 @@ definePageMeta({
 });
 const isTabShow = ref(true);
 const route = useRoute();
+interface Tab {
+  text: string;
+  url: string;
+}
+const tabInfo: Tab[] = [
+  { text: 'text', url: '/guide/text' },
+  { text: 'button', url: '/guide/button' },
+  { text: 'form', url: '/guide/form' },
+  { text: 'popup', url: '/guide/popup' }
+];
+const defaultTitle = 'Guide page';
+let beforeTitle = defaultTitle;
+const headerTitle = ref(defaultTitle);
+
+// watch(
+//   headerTitle,
+//   (value) => {
+//     console.log(value);
+//   },
+//   { deep: true, immediate: true }
+// );
+
+const updatePageTitle = (newVal: string) => {
+  if (beforeTitle === newVal) return;
+  headerTitle.value = newVal;
+  beforeTitle = newVal;
+};
+
 watch(
   route,
   (value) => {
-    if (value.path.indexOf('/font') === -1) {
-      isTabShow.value = true;
-    } else {
-      isTabShow.value = false;
-    }
+    isTabShow.value = tabInfo.some((tab) => tab.url === value.path);
+
+    console.log(headerTitle.value, beforeTitle);
   },
   { deep: true, immediate: true }
 );
 </script>
 <template>
-  <uiPage page-title="Guide" btn-back>
+  <uiPage :page-title="headerTitle" btn-back>
     <uiTabs v-if="isTabShow">
-      <uiTab to="/guide/text">text</uiTab>
-      <uiTab to="/guide/button">button</uiTab>
-      <uiTab to="/guide/form">form</uiTab>
-      <uiTab to="/guide/popup">popup</uiTab>
+      <template v-for="(tab, i) of tabInfo" :key="i">
+        <uiTab :to="tab.url">{{ tab.text }}</uiTab>
+      </template>
     </uiTabs>
-    <NuxtPage />
+    <NuxtPage @get-page-title="updatePageTitle" />
   </uiPage>
 </template>
