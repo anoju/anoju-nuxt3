@@ -8,21 +8,25 @@ emit('page-title', pageTitle);
 </script>
 <template>
   <uiInner>
-    <uiButton to="/guide/font/" line>폰트확인</uiButton>
+    <h1 class="gd__h1">텍스트</h1>
+    <h2 class="gd__h2">폰트</h2>
+    <div class="flex full">
+      <uiButton to="/guide/font/" line>자세한 폰트정보 확인</uiButton>
+    </div>
 
-    <h1 class="gd__h1">제목요소</h1>
+    <h2 class="gd__h2">타이틀요소(tit-h), title-bar</h2>
     <uiTitleBar>
-      <h1 class="tit-h1">제목타이틀</h1>
+      <h1 class="tit-h1">타이틀</h1>
     </uiTitleBar>
     <uiTitleBar>
-      <h1 class="tit-h1">제목타이틀</h1>
-      <template #right>제목서브요소</template>
+      <h1 class="tit-h1">타이틀</h1>
+      <template #right>서브요소</template>
     </uiTitleBar>
     <uiTitleBar>
-      <template #right>제목서브요소만 필요케이스</template>
+      <template #right>서브요소만 필요케이스</template>
     </uiTitleBar>
-    <h1 class="tit-h1">1번째 제목요소</h1>
-    <h2 class="tit-h2">2번째 제목요소</h2>
-    <h3 class="tit-h3">3번째 제목요소</h3>
+    <h1 class="tit-h1">1번 타이틀</h1>
+    <h2 class="tit-h2">2번 타이틀</h2>
+    <h3 class="tit-h3">3번 타이틀</h3>
   </uiInner>
 </template>

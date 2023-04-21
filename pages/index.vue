@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import popup from '~/pages/popup/popup.vue';
 useHead({
   title: '페이지 제목'
 });
@@ -24,32 +23,6 @@ const listAry = [
   { title: '공지사합니다.6', link: '#' },
   { title: '공지사합니다.7', link: '#' }
 ];
-
-const openPopup = async () => {
-  useNuxtApp().$modal({
-    component: popup,
-    componentProps: {
-      title: '팝업이다'
-    }
-  });
-};
-
-const openLike = () => {
-  useNuxtApp().$like();
-};
-
-let isLoadingTxt = false;
-const LoadingBtnZIndex = ref<number | null>(null);
-const openLoading = () => {
-  const opt: boolean | string = !isLoadingTxt ? true : '로딩중입니다.';
-  isLoadingTxt = !isLoadingTxt;
-  useNuxtApp().$loading(opt);
-  LoadingBtnZIndex.value = 999;
-};
-const closeLoading = () => {
-  useNuxtApp().$loading(false);
-  LoadingBtnZIndex.value = null;
-};
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
@@ -169,12 +142,6 @@ const closeLoading = () => {
         <li><a href="">공지사항입니다.</a></li>
         <li><a href="">공지사항입니다.</a></li>-->
       </ul>
-      <p class="mt-30">
-        <uiButton line @click="openPopup">팝업창</uiButton>
-        <uiButton line @click="openLike">like</uiButton>
-        <uiButton line @click="openLoading">Loading open</uiButton>
-        <uiButton line :style="{ zIndex: LoadingBtnZIndex ? LoadingBtnZIndex : '' }" @click="closeLoading">Loading close</uiButton>
-      </p>
       <div style="background-color: #f1f1f1; height: 200vh" class="mt-30"></div>
     </uiInner>
     <uiBottomFixed flex full>

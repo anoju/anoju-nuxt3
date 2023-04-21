@@ -1,13 +1,64 @@
 <script lang="ts" setup>
+import fullPopup from '~/pages/guide/popup/full-popup.vue';
+import modalPopup from '~/pages/guide/popup/modal-popup.vue';
+
 const pageTitle = 'Guide - Popup Type';
 useHead({
   title: pageTitle
 });
 const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
+
+const openFullPopup = async () => {
+  useNuxtApp().$modal({
+    component: fullPopup,
+    componentProps: {
+      title: '풀팝업입니다.'
+    }
+  });
+};
+const openModalPopup = async () => {
+  useNuxtApp().$modal({
+    component: modalPopup,
+    componentProps: {
+      number: 123456789
+    }
+  });
+};
+
+const openLike = () => {
+  useNuxtApp().$like();
+};
+
+let isLoadingTxt = false;
+const LoadingBtnZIndex = ref<number | null>(null);
+const openLoading = () => {
+  const opt: boolean | string = !isLoadingTxt ? true : '로딩중입니다.';
+  isLoadingTxt = !isLoadingTxt;
+  useNuxtApp().$loading(opt);
+  LoadingBtnZIndex.value = 999;
+};
+const closeLoading = () => {
+  useNuxtApp().$loading(false);
+  LoadingBtnZIndex.value = null;
+};
 </script>
 <template>
   <uiInner>
-    <h1>팝업들</h1>
+    <h1 class="gd__h1">팝업</h1>
+    <h2 class="gd__h2">레이어</h2>
+    <div class="flex full">
+      <uiButton line @click="openFullPopup">풀팝업</uiButton>
+      <uiButton line @click="openModalPopup">모달팝업</uiButton>
+    </div>
+    <h2 class="gd__h2">로딩</h2>
+    <div class="flex full">
+      <uiButton line @click="openLoading">Loading open</uiButton>
+      <uiButton line :style="{ zIndex: LoadingBtnZIndex ? LoadingBtnZIndex : '' }" @click="closeLoading">Loading close</uiButton>
+    </div>
+    <h2 class="gd__h2">기타</h2>
+    <div class="flex full">
+      <uiButton line @click="openLike">like</uiButton>
+    </div>
   </uiInner>
 </template>

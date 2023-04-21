@@ -82,6 +82,7 @@
   display: block;
   width: 3.6rem;
   height: 3.6rem;
+  padding: 0;
   overflow: hidden;
   @include bg-etc(2.4rem auto);
   // background-image: url(../images/icon/btn-close-24.png);
@@ -479,15 +480,14 @@
     }
     .pop-head {
       > div {
-        // padding: var(--base-padding) 5rem 1.2rem var(--base-padding);
-        padding: var(--base-padding) var(--base-padding) 1.2rem var(--base-padding);
+        padding: var(--base-padding) calc(var(--base-padding) + 3.6rem) 1.2rem var(--base-padding);
+        // padding: var(--base-padding) var(--base-padding) 1.2rem var(--base-padding);
         min-height: auto;
         text-align: left;
       }
       .pop-close {
         top: 2.1rem;
         right: 1.6rem;
-        display: none;
       }
     }
     .pop-body {
