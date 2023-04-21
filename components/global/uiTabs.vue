@@ -73,7 +73,7 @@ const lineEndEvt = () => {
   lineMoving.value = false;
 };
 
-defineExpose({ activeTab, setActiveTab });
+// defineExpose({ activeTab, setActiveTab });
 provide('activeTab', activeTab);
 provide('setActiveTab', setActiveTab);
 
