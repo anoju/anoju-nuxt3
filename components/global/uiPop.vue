@@ -96,8 +96,10 @@ onMounted(() => {
     <div v-if="!noHead" class="pop-head" :class="[{ no_title: (title == null || title == '') && !$slots.title }, titleClass]">
       <div>
         <slot name="title-prev" />
-        <h1 v-if="title != null" ref="title" tabindex="-1" v-html="title" />
-        <slot name="title" />
+        <h1 v-if="title || !!$slots.title" ref="title" tabindex="-1">
+          {{ title }}
+          <slot name="title" />
+        </h1>
         <slot name="title-next" />
         <template v-if="!noClose">
           <uiButton class="pop-close" not aria-label="팝업창 닫기" @click="popClose()">팝업창 닫기</uiButton>
