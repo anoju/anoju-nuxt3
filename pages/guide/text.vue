@@ -11,7 +11,7 @@ emit('page-title', pageTitle);
     <h1 class="gd__h1">텍스트</h1>
     <h2 class="gd__h2">폰트</h2>
     <div class="flex full">
-      <uiButton to="/guide/font/" line>자세한 폰트정보 확인</uiButton>
+      <uiButton to="/guide/font/" line>폰트정보 확인</uiButton>
     </div>
 
     <h2 class="gd__h2">타이틀요소(tit-h), title-bar</h2>
