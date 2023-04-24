@@ -20,7 +20,34 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
       </div>
     </uiSwiper>
     <h2 class="gd__h2">pagination</h2>
-    <uiSwiper pagination navi>
+    <uiSwiper pagination>
+      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+        <div class="swiper-box" :class="'box-' + index">
+          {{ slide.content }}
+        </div>
+      </div>
+    </uiSwiper>
+
+    <h2 class="gd__h2">Navigation</h2>
+    <uiSwiper navi>
+      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+        <div class="swiper-box" :class="'box-' + index">
+          {{ slide.content }}
+        </div>
+      </div>
+    </uiSwiper>
+
+    <h2 class="gd__h2">autoHeight</h2>
+    <uiSwiper auto-height>
+      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+        <div class="swiper-box" :class="['box-' + index, 'height-' + index]">
+          {{ slide.content }}
+        </div>
+      </div>
+    </uiSwiper>
+
+    <h2 class="gd__h2">loop</h2>
+    <uiSwiper loop>
       <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
         <div class="swiper-box" :class="'box-' + index">
           {{ slide.content }}
@@ -39,6 +66,9 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
   @for $i from 0 through 10 {
     &.box-#{$i} {
       background-color: lighten(#d00, $i * 5%);
+    }
+    &.height-#{$i} {
+      height: ($i + 1) * 50px;
     }
   }
 }
