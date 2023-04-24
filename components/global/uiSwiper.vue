@@ -7,23 +7,36 @@ import Swiper, { Swiper as SwiperInstance, Navigation, Pagination, Autoplay, Par
 const props = defineProps({
   pagination: { type: Boolean, default: null },
   paginationType: { type: String, default: 'bullets' },
+  paginationClass: { type: String, default: null },
   navi: { type: Boolean, default: null },
-  scrollbar: { type: Boolean, default: null },
+  // scrollbar: { type: Boolean, default: null },
 
   slidesPerView: { type: [Number, String], default: 'auto' },
   autoplay: { type: Boolean, default: false },
   autopDelay: { type: Number, default: 3000 },
+  spaceBetween: { type: Number, default: 0 },
+  slidesOffsetBefore: { type: Number, default: 0 },
+  slidesOffsetAfter: { type: Number, default: 0 },
   loop: { type: Boolean, default: false },
   autoHeight: { type: Boolean, default: false }
 });
 
 const el = ref<HTMLElement | null>(null);
 const swiperInstance = ref<SwiperInstance | null>(null);
+const isAutoplay = ref<Boolean>(true);
+const autoplayText = computed(() => {
+  let txt = '슬라이드 자동롤링 ';
+  txt += isAutoplay.value ? '중지' : '시작';
+  return txt;
+});
 
 Swiper.use([A11y]);
 const swiperOption = computed(() => {
   const returnVal: any = {
     slidesPerView: props.slidesPerView,
+    spaceBetween: props.spaceBetween,
+    slidesOffsetBefore: props.slidesOffsetBefore,
+    slidesOffsetAfter: props.slidesOffsetAfter,
     a11y: {
       prevSlideMessage: '이전 슬라이드',
       nextSlideMessage: '다음 슬라이드',
@@ -72,6 +85,16 @@ const swiperOption = computed(() => {
   return returnVal;
 });
 
+const autoPlayButton = () => {
+  isAutoplay.value = !isAutoplay.value;
+  if (!swiperInstance.value) return;
+  if (isAutoplay.value) {
+    swiperInstance.value.autoplay.start();
+  } else {
+    swiperInstance.value.autoplay.stop();
+  }
+};
+
 onMounted(() => {
   if (el.value) {
     const swiperEl = el.value.querySelector('.swiper') as HTMLElement;
@@ -88,7 +111,14 @@ onMounted(() => {
       <button v-if="navi" type="button" class="swiper-button swiper-button-prev"></button>
       <button v-if="navi" type="button" class="swiper-button swiper-button-next"></button>
     </div>
-    <div v-if="pagination" class="swiper-pagination"></div>
-    <div v-if="scrollbar" class="swiper-scrollbar"></div>
+    <div v-if="pagination && autoplay" class="swiper-pagination-wrap">
+      <div class="swiper-pagination" :class="paginationClass"></div>
+      <button class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
+    </div>
+    <div v-else-if="pagination" class="swiper-pagination" :class="paginationClass"></div>
+    <div v-else-if="autoplay" class="swiper-auto">
+      <button class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
+    </div>
+    <!-- <div v-if="scrollbar" class="swiper-scrollbar"></div> -->
   </div>
 </template>

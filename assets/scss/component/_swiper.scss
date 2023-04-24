@@ -23,7 +23,7 @@
     bottom: auto;
   }
 
-  &.swiper-items {
+  &.items {
     .section & {
       @include outer;
     }
@@ -81,6 +81,10 @@
       background: #606060;
     }
   }
+
+  .swiper-pagination-current {
+    font-weight: bold;
+  }
 }
 .swiper-button {
   position: absolute;
@@ -134,7 +138,12 @@
     width: auto;
   }
 }
-
+.swiper-auto {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+}
 .swiper-auto-ctl {
   flex: 0 0 auto;
   position: relative;

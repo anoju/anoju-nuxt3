@@ -11,49 +11,124 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
 <template>
   <uiInner>
     <h1 class="gd__h1">Swiper</h1>
-    <h2 class="gd__h2">default</h2>
-    <uiSwiper>
-      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
-        <div class="swiper-box" :class="'box-' + index">
-          {{ slide.content }}
+    <h2 class="gd__h2">기능</h2>
+    <div>
+      <h3 class="gd__h3">default</h3>
+      <uiSwiper>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
         </div>
-      </div>
-    </uiSwiper>
-    <h2 class="gd__h2">pagination</h2>
-    <uiSwiper pagination>
-      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
-        <div class="swiper-box" :class="'box-' + index">
-          {{ slide.content }}
-        </div>
-      </div>
-    </uiSwiper>
+      </uiSwiper>
 
-    <h2 class="gd__h2">Navigation</h2>
-    <uiSwiper navi>
-      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
-        <div class="swiper-box" :class="'box-' + index">
-          {{ slide.content }}
+      <h2 class="gd__h2">pagination</h2>
+      <uiSwiper pagination>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
         </div>
-      </div>
-    </uiSwiper>
+      </uiSwiper>
+      <br />
+      <uiSwiper pagination pagination-class="type2">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
 
-    <h2 class="gd__h2">autoHeight</h2>
-    <uiSwiper auto-height>
-      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
-        <div class="swiper-box" :class="['box-' + index, 'height-' + index]">
-          {{ slide.content }}
+      <h2 class="gd__h2">fraction</h2>
+      <uiSwiper pagination pagination-type="fraction">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
         </div>
-      </div>
-    </uiSwiper>
+      </uiSwiper>
 
-    <h2 class="gd__h2">loop</h2>
-    <uiSwiper loop>
-      <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
-        <div class="swiper-box" :class="'box-' + index">
-          {{ slide.content }}
+      <h3 class="gd__h3">Navigation</h3>
+      <uiSwiper navi>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
         </div>
-      </div>
-    </uiSwiper>
+      </uiSwiper>
+
+      <h3 class="gd__h3">slidesPerView</h3>
+      <uiSwiper slides-per-view="2">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="['box-' + index]">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+
+      <h3 class="gd__h3">autoHeight</h3>
+      <uiSwiper auto-height>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="['box-' + index, 'height-' + index]">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+
+      <h3 class="gd__h3">loop</h3>
+      <uiSwiper loop>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+
+      <h3 class="gd__h3">autoplay</h3>
+      <uiSwiper loop autoplay>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+      <br />
+      <uiSwiper pagination loop autoplay>
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+    </div>
+
+    <h2 class="gd__h2">style</h2>
+    <div>
+      <h3 class="gd__h3">full</h3>
+      <uiSwiper class="full">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+      <h3 class="gd__h3">items</h3>
+      <uiSwiper class="items">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+      <br />
+      <uiSwiper class="items">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide w-250">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+    </div>
   </uiInner>
 </template>
 <style lang="scss">
