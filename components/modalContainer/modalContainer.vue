@@ -124,6 +124,7 @@ const likes = ref<Like[]>([]);
 const likeIdx = ref(0);
 
 const like = (likeType: string): void => {
+  console.log('like');
   const idx = likeIdx.value;
   likes.value.push({
     idx,

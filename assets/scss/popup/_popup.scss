@@ -639,7 +639,7 @@
   // box-shadow: 0 0 2rem 12rem #fff;
   // backdrop-filter: blur(2px);
   transform: translate(-50%, -40%);
-  &.open {
+  &.show {
     transform: translate(-50%, -50%);
     transition-delay: 0.2s, 0s;
     opacity: 1;
