@@ -30,6 +30,7 @@ const props = defineProps({
   box: { type: Boolean, default: false },
   button: { type: Boolean, default: false },
   switch: { type: Boolean, default: false },
+  switch2: { type: Boolean, default: false },
 
   value: { type: [String, Number], default: null, require: true },
   modelValue: { type: [String, Number, Boolean, Array, Object], default: null },
@@ -80,6 +81,7 @@ const checkboxClass = computed(() => {
       box: props.box,
       btn: props.button,
       switch: props.switch,
+      switch2: props.switch2,
       focus: isFocus.value,
       disabled: props.disabled,
       checked: isChecked.value

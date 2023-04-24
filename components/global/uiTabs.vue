@@ -96,7 +96,13 @@ onUnmounted(() => {
 <template>
   <div :class="[`tab-${$type}-menu`, { 'tab-line-moving': lineMoving }]">
     <div class="tab-inner">
-      <i class="tab-line" aria-hidden="true" :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }" @transitionend="lineEndEvt"></i>
+      <i
+        v-if="$type !== 'round' && $type !== 'txt'"
+        class="tab-line"
+        aria-hidden="true"
+        :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }"
+        @transitionend="lineEndEvt"
+      ></i>
       <ul ref="tablist" class="tab-list" role="tablist">
         <slot />
       </ul>

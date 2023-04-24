@@ -379,7 +379,10 @@
 .tab-txt-menu {
   display: flex;
   flex-wrap: wrap;
-  > li {
+  .tab-line {
+    display: none;
+  }
+  .tab {
     position: relative;
     padding-right: 0.1rem;
     margin: 0.4rem 0;
