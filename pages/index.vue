@@ -34,10 +34,10 @@ const listAry = [
       <br /><br />
       <ul class="sample-list">
         <li v-for="(item, i) of listAry" :key="i">
-          <a :href="item.link">
+          <uiButton :to="item.link" anchor not>
             <i v-if="item.isNew">NEW</i>
             {{ item.title }}
-          </a>
+          </uiButton>
         </li>
       </ul>
     </uiInner>
