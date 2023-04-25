@@ -366,3 +366,82 @@
     opacity: 0;
   }
 }
+
+.code-highlight {
+  --highlight-left-padding: 2.5rem;
+  --highlight-body-padding: 0.8rem;
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  margin: 1rem 0 3rem;
+  font-size: 1.4rem;
+  background-color: #1e1e1e;
+  font-family: Consolas, Monaco, monospace;
+  overflow: hidden;
+  .code-highlight-header {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem 0.5rem var(--highlight-left-padding);
+    background: #2d2d2d;
+    color: #8c8c8c;
+    .tit {
+      font-weight: bold;
+      font-size: 1.15em;
+    }
+    .button {
+      font-size: 1.2rem;
+      height: auto;
+      padding: 0.3rem;
+      margin-left: auto;
+      &:before {
+        content: '';
+        display: block;
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-right: 0.4rem;
+        background: url("data:image/svg+xml,%3Csvg stroke='%23828282' fill='none' stroke-width='2' viewBox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3C/svg%3E") no-repeat center center / contain;
+      }
+      &:disabled {
+        opacity: 1;
+      }
+      &.copy {
+        &:before {
+          background-image: url("data:image/svg+xml,%3Csvg stroke='%23828282' fill='none' stroke-width='2' viewBox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+      }
+    }
+    border-bottom: 1px solid #414141;
+  }
+  .code-highlight-body {
+    position: relative;
+    line-height: 2rem;
+    padding-left: var(--highlight-left-padding);
+  }
+  .line-numbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    padding: var(--highlight-body-padding) 0;
+    color: #999;
+    user-select: none;
+    font-size: 0.75em;
+    width: var(--highlight-left-padding);
+    text-align: right;
+    border-right: 1px solid #414141;
+    background-color: #252526;
+  }
+
+  .line-numbers span {
+    display: block;
+    padding: 0 0.3rem;
+  }
+  pre {
+    display: flex;
+    padding: var(--highlight-body-padding) 0;
+  }
+  .hljs {
+    padding: 0 var(--highlight-body-padding);
+    width: 100%;
+  }
+}
