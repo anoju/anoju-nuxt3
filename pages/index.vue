@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 useHead({
-  title: '페이지 제목'
+  title: 'NUXT3 컴포넌트 가이드'
 });
 
 const count: Ref<number> = ref(0);
