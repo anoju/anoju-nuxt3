@@ -10,6 +10,7 @@ const instanceId = nuxtApp.$globalCounters[componentName];
 
 const props = defineProps({
   modelValue: { type: Number, default: null },
+  fixed: { type: Boolean, default: false },
   id: { type: String, default: null },
   panels: { type: String, default: null },
   type: { type: String, default: null },
@@ -94,7 +95,7 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <div :class="[`tab-${$type}-menu`, { 'tab-line-moving': lineMoving }]">
+  <div :class="[`tab-${$type}-menu`, { 'tab-fixed': fixed }, { 'tab-line-moving': lineMoving }]">
     <div class="tab-inner">
       <i
         v-if="$type !== 'round' && $type !== 'txt'"

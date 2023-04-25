@@ -32,7 +32,7 @@ watch(
 </script>
 <template>
   <uiPage :page-title="headerTitle" btn-back>
-    <uiTabs v-if="isTabShow">
+    <uiTabs v-if="isTabShow" fixed>
       <template v-for="(tab, i) of tabInfo" :key="i">
         <uiTab :to="tab.url">{{ tab.text }}</uiTab>
       </template>
