@@ -55,6 +55,29 @@ const closeLoading = () => {
   useNuxtApp().$loading(false);
   LoadingBtnZIndex.value = null;
 };
+
+const popupCode1 = `import fullPopup from '~/pages/guide/popup/fullPopup.vue';
+useNuxtApp()
+  .$modal({
+    component: fullPopup,
+    componentProps: {
+      title: '풀팝업입니다.'
+    }
+  })
+  .then((result: any) => {
+    console.log(result);
+  });`;
+
+const loadingCode1 = `// 로딩열기
+useNuxtApp().$loading(true);
+
+// 로딩열기 + 텍스트
+useNuxtApp().$loading('로딩중입니다.');
+
+// 로딩닫기
+useNuxtApp().$loading(false);`;
+
+const likeCode1 = `useNuxtApp().$like();`;
 </script>
 <template>
   <uiInner>
@@ -65,14 +88,19 @@ const closeLoading = () => {
       <uiButton line @click="openModalPopup">모달팝업</uiButton>
       <uiButton line @click="openBottomPopup">바텀시트</uiButton>
     </div>
+    <uiCodeHighlight lang="typescript" :code="popupCode1"></uiCodeHighlight>
+
     <h2 class="gd__h2">로딩</h2>
     <div class="flex full">
       <uiButton line @click="openLoading">Loading open</uiButton>
       <uiButton line :style="{ zIndex: LoadingBtnZIndex ? LoadingBtnZIndex : '' }" @click="closeLoading">Loading close</uiButton>
     </div>
+    <uiCodeHighlight lang="typescript" :code="loadingCode1"></uiCodeHighlight>
+
     <h2 class="gd__h2">기타</h2>
     <div class="flex full">
       <uiButton line @click="openLike">like</uiButton>
     </div>
+    <uiCodeHighlight lang="typescript" :code="likeCode1"></uiCodeHighlight>
   </uiInner>
 </template>

@@ -7,6 +7,59 @@ const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
 
 const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slide 3' }, { content: 'Slide 4' }, { content: 'Slide 5' }];
+
+const swiperCode1 = `<uiSwiper>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode2 = `<uiSwiper pagination>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>
+<uiSwiper pagination pagination-class="type2">
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode3 = `<uiSwiper pagination pagination-type="fraction">
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode4 = `<uiSwiper navi>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode5 = `<uiSwiper slides-per-view="2">
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode6 = `<uiSwiper auto-height>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode7 = `<uiSwiper loop>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperCode8 = `<uiSwiper loop autoplay>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>
+<uiSwiper pagination loop autoplay>
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperStyleCode1 = `<uiSwiper class="full">
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>`;
+const swiperStyleCode2 = `<uiSwiper class="items">
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>
+<uiSwiper class="items">
+  <div class="swiper-slide w-250">content</div>
+  ...
+</uiSwiper>`;
 </script>
 <template>
   <uiInner>
@@ -21,6 +74,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode1"></uiCodeHighlight>
 
       <h2 class="gd__h2">pagination</h2>
       <uiSwiper pagination>
@@ -38,6 +92,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode2"></uiCodeHighlight>
 
       <h2 class="gd__h2">fraction</h2>
       <uiSwiper pagination pagination-type="fraction">
@@ -47,6 +102,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode3"></uiCodeHighlight>
 
       <h3 class="gd__h3">Navigation</h3>
       <uiSwiper navi>
@@ -56,6 +112,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode4"></uiCodeHighlight>
 
       <h3 class="gd__h3">slidesPerView</h3>
       <uiSwiper slides-per-view="2">
@@ -65,6 +122,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode5"></uiCodeHighlight>
 
       <h3 class="gd__h3">autoHeight</h3>
       <uiSwiper auto-height>
@@ -74,6 +132,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode6"></uiCodeHighlight>
 
       <h3 class="gd__h3">loop</h3>
       <uiSwiper loop>
@@ -83,6 +142,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode7"></uiCodeHighlight>
 
       <h3 class="gd__h3">autoplay</h3>
       <uiSwiper loop autoplay>
@@ -100,6 +160,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperCode8"></uiCodeHighlight>
     </div>
 
     <h2 class="gd__h2">style</h2>
@@ -112,6 +173,8 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperStyleCode1"></uiCodeHighlight>
+
       <h3 class="gd__h3">items</h3>
       <uiSwiper class="items">
         <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
@@ -128,6 +191,7 @@ const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slid
           </div>
         </div>
       </uiSwiper>
+      <uiCodeHighlight lang="html" :code="swiperStyleCode2"></uiCodeHighlight>
     </div>
   </uiInner>
 </template>

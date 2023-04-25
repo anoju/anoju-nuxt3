@@ -371,7 +371,7 @@
   --highlight-left-padding: 2.5rem;
   --highlight-body-padding: 0.8rem;
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid #414141;
   border-radius: 0.5rem;
   margin: 1rem 0 3rem;
   font-size: 1.4rem;
@@ -385,8 +385,9 @@
     background: #2d2d2d;
     color: #8c8c8c;
     .tit {
-      font-weight: bold;
+      // font-weight: bold;
       font-size: 1.15em;
+      color: #bea279;
     }
     .button {
       font-size: 1.2rem;
