@@ -366,6 +366,21 @@
     opacity: 0;
   }
 }
+.gd__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  white-space: nowrap;
+  &.grid-col-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  &.grid-col-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  &.grid-col-5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
 
 .code-highlight {
   --highlight-left-padding: 2.5rem;
