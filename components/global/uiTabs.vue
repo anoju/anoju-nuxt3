@@ -47,6 +47,7 @@ const $type = computed<Type>((): Type => {
 });
 
 const emit = defineEmits(['update:modelValue']);
+const el = ref<HTMLElement | null>(null);
 const tablist = ref<HTMLElement | null>(null);
 
 const activeTab = ref(props.modelValue ?? 0);
@@ -84,18 +85,36 @@ provide('childIdx', childIdx);
 watch(activeTab, (newValue) => {
   emit('update:modelValue', newValue);
 });
+const isFixed = ref(false);
+const tabFixed = () => {
+  const $el = el.value;
+  if (!$el) return;
+  const $getOffset = nuxtApp.$getOffset($el);
+  const $top = $getOffset.top;
+  const $sclTop = window.pageYOffset;
+  if ($top < $sclTop) {
+    isFixed.value = true;
+  } else {
+    isFixed.value = false;
+  }
+};
 onMounted(() => {
   nextTick(() => {
+    if (props.fixed) {
+      tabFixed();
+      window.addEventListener('scroll', tabFixed);
+    }
     window.addEventListener('resize', lineMoveEvt);
   });
 });
 onUnmounted(() => {
+  if (props.fixed) window.removeEventListener('scroll', tabFixed);
   window.removeEventListener('resize', lineMoveEvt);
   childIdx.value = 0;
 });
 </script>
 <template>
-  <div :class="[`tab-${$type}-menu`, { 'tab-fixed': fixed }, { 'tab-line-moving': lineMoving }]">
+  <div ref="el" :class="[`tab-${$type}-menu`, { 'tab-fixed': fixed }, { 'top-fixed': isFixed }, { 'tab-line-moving': lineMoving }]">
     <div class="tab-inner">
       <i
         v-if="$type !== 'round' && $type !== 'txt'"

@@ -115,6 +115,11 @@ const unlockPage = (): void => {
     lockTop.value = null;
   }, 1);
 };
+const lockStyle = computed(() => {
+  const rtnVal: any = {};
+  if (lockTop.value) rtnVal.top = lockTop.value + 'px';
+  return rtnVal;
+});
 
 // life cycle
 onMounted(() => {
@@ -132,7 +137,7 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <article ref="el" class="page" :class="[pageClass, { lock: isLock }]" :style="`top:${lockTop}px`">
+  <article ref="el" class="page" :class="[pageClass, { lock: isLock }]" :style="lockStyle">
     <header v-if="!noHeader" class="page-head" :class="headClass">
       <div v-if="!!$slots.header">
         <slot name="header" />

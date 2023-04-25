@@ -213,6 +213,42 @@ const slideUp = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
     }
   });
 };
+const getTopFixedHeight = function (element: HTMLElement, className: string = 'top-fixed'): number {
+  let currentElement: HTMLElement = element;
+  let topFixedHeight: number = 0;
+
+  const plusHeight = function (target: HTMLElement): void {
+    let height: number = target.offsetHeight;
+    if (getComputedStyle(target).position !== 'sticky') height = target.children[0].clientHeight;
+    topFixedHeight += height;
+  };
+
+  if (document.querySelectorAll('.' + className).length) {
+    while (currentElement.tagName.toLowerCase() !== 'body') {
+      const prevAll: HTMLElement[] = Array.from(currentElement.parentElement!.children).slice(
+        0,
+        Array.from(currentElement.parentElement!.children).indexOf(currentElement)
+      ) as HTMLElement[];
+
+      if (prevAll.length) {
+        prevAll.forEach(function (el: HTMLElement) {
+          if (el.classList.contains(className!)) {
+            plusHeight(el);
+          } else {
+            const child: NodeListOf<HTMLElement> = el.querySelectorAll('.' + className!);
+            if (child.length) {
+              child.forEach(function (childEl: HTMLElement) {
+                plusHeight(childEl);
+              });
+            }
+          }
+        });
+      }
+      currentElement = currentElement.parentElement!;
+    }
+  }
+  return topFixedHeight;
+};
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide('globalCounters', {});
@@ -225,4 +261,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide('getIndex', getIndex);
   nuxtApp.provide('slideDown', slideDown);
   nuxtApp.provide('slideUp', slideUp);
+  nuxtApp.provide('getTopFixedHeight', getTopFixedHeight);
 });
