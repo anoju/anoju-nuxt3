@@ -3,6 +3,7 @@
   position: relative;
   overflow: hidden;
   display: inline-block;
+  vertical-align: middle;
   &:not(.not) {
     display: inline-flex;
     height: 4.8rem;
@@ -18,7 +19,6 @@
     align-items: center;
     font-size: 1.6rem;
     font-weight: 500;
-    vertical-align: middle;
     opacity: 1;
     transition: 0.3s, visibility 0s, margin 0s, width 0s;
     appearance: none;
@@ -47,7 +47,9 @@
     transition: clip-path 0.5s;
     color: transparent !important;
     clip-path: circle(100% at 50% 50%);
+    user-select: none;
     pointer-events: none;
+    opacity: 1 !important;
     .loading-svg {
       display: flex;
       align-items: center;

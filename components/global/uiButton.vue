@@ -5,6 +5,7 @@ const props = defineProps({
   title: { type: String, default: null },
   target: { type: String, default: null },
   disabled: { type: Boolean, default: false },
+  loading: { type: Boolean, default: false },
   noEffect: { type: Boolean, default: false },
   dblclick: { type: Function, default: null },
 
@@ -82,6 +83,7 @@ const btnClass = computed<Array<string | Object>>((): Array<string | Object> => 
       line2: props.line2,
       icon: props.icon,
       disabled: props.disabled,
+      loading: props.loading,
       'btn-clicking-active': isClick.value
     }
   ];
@@ -130,7 +132,7 @@ const focusOut = () => {
 };
 const clickEvt = (e: any): void => {
   if ((props.anchor && href.value === '#') || (!!props.to && props.to.startsWith('#'))) e.preventDefault();
-  if (!props.disabled) {
+  if (!props.disabled || !props.loading) {
     if (props.target === '_blank' && (!!props.to || !!href)) {
       e.preventDefault();
       const url = props.to !== null ? props.to : href.value;
@@ -202,12 +204,18 @@ const clickEndEvt = (): void => {
     :class="buttonClass"
     :title="title"
     :target="target"
+    :aria-disabled="disabled || loading"
     v-bind="$attrs"
     @focus="focusIn"
     @blur="focusOut"
     @click="clickEvt"
   >
     <slot />
+    <div v-if="loading" class="loading-svg" role="img">
+      <svg width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+      </svg>
+    </div>
     <i
       v-if="isClick"
       ref="clickIn"
@@ -218,8 +226,13 @@ const clickEndEvt = (): void => {
   </a>
 
   <!-- button일때 -->
-  <button v-else ref="button" type="button" :class="buttonClass" :disabled="disabled" :title="title" v-bind="$attrs" @focus="focusIn" @blur="focusOut" @click="clickEvt">
+  <button v-else ref="button" type="button" :class="buttonClass" :disabled="disabled || loading" :title="title" v-bind="$attrs" @focus="focusIn" @blur="focusOut" @click="clickEvt">
     <slot />
+    <div v-if="loading" class="loading-svg" role="img">
+      <svg width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+      </svg>
+    </div>
     <i
       v-if="isClick"
       ref="clickIn"

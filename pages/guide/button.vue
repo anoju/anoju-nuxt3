@@ -6,6 +6,11 @@ useHead({
 const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
 
+const isBtnLoading = ref(false);
+const toggleLoading = () => {
+  isBtnLoading.value = !isBtnLoading.value;
+};
+
 const tabVal = ref(0);
 const tabVal2 = ref(1);
 const tabVal3 = ref(2);
@@ -15,7 +20,6 @@ const tabVal5 = ref(1);
 const buttonCode1 = `<uiButton>버튼</uiButton>
 <uiButton line>button 태그</uiButton>
 <uiButton line anchor>a 태그</uiButton>`;
-
 const buttonCode2 = `<uiButton primary>primary</uiButton>
 <uiButton gray>gray</uiButton>
 <uiButton gray2>gray2</uiButton>
@@ -23,15 +27,14 @@ const buttonCode2 = `<uiButton primary>primary</uiButton>
 <uiButton line>line</uiButton>
 <uiButton line primary>line+primary</uiButton>
 <uiButton line gray>line+gray</uiButton>`;
-
 const buttonCode3 = `<uiButton line h24>h24</uiButton>
 <uiButton line h32>h32</uiButton>
 <uiButton line h38>h38</uiButton>
 <uiButton line>기본</uiButton>
 <uiButton line h60>h60</uiButton>`;
-
 const buttonCode4 = `<uiButton line round>round</uiButton>
 <uiButton line round2>round2</uiButton>`;
+const buttonCode5 = `<uiButton line :loading="isBtnLoading">button loading</uiButton>`;
 
 const tabCode1 = `<uiTabs v-model="tabVal">
   <uiTab>메뉴명1</uiTab>
@@ -43,7 +46,6 @@ const tabCode1 = `<uiTabs v-model="tabVal">
   <uiTabPanel>컨텐츠2</uiTabPanel>
   <uiTabPanel>컨텐츠3</uiTabPanel>
 </uiTabPanels>`;
-
 const tabCode2 = `<uiTabs v-model="tabVal" round>
   <uiTab>메뉴명1</uiTab>
   <uiTab>메뉴명2</uiTab>
@@ -54,7 +56,6 @@ const tabCode2 = `<uiTabs v-model="tabVal" round>
   <uiTabPanel>컨텐츠2</uiTabPanel>
   <uiTabPanel>컨텐츠3</uiTabPanel>
 </uiTabPanels>`;
-
 const tabCode3 = `<uiTabs v-model="tabVal" navi>
   <uiTab>메뉴명1</uiTab>
   <uiTab>메뉴명2</uiTab>
@@ -65,7 +66,6 @@ const tabCode3 = `<uiTabs v-model="tabVal" navi>
   <uiTabPanel>컨텐츠2</uiTabPanel>
   <uiTabPanel>컨텐츠3</uiTabPanel>
 </uiTabPanels>`;
-
 const tabCode4 = `<uiTabs v-model="tabVal" box>
   <uiTab>메뉴명1</uiTab>
   <uiTab>메뉴명2</uiTab>
@@ -76,7 +76,6 @@ const tabCode4 = `<uiTabs v-model="tabVal" box>
   <uiTabPanel>컨텐츠2</uiTabPanel>
   <uiTabPanel>컨텐츠3</uiTabPanel>
 </uiTabPanels>`;
-
 const tabCode5 = `<uiTabs v-model="tabVal" txt>
   <uiTab>메뉴명1</uiTab>
   <uiTab>메뉴명2</uiTab>
@@ -129,6 +128,13 @@ const tabCode5 = `<uiTabs v-model="tabVal" txt>
       <uiButton line round2>round2</uiButton>
     </div>
     <uiCodeHighlight lang="html" :code="buttonCode4"></uiCodeHighlight>
+
+    <h2 class="gd__h2">button loading</h2>
+    <div class="flex">
+      <uiButton line :loading="isBtnLoading" @click="toggleLoading">button loading</uiButton>
+      <uiButton v-if="isBtnLoading" line class="ml-auto" @click="toggleLoading">button loading off</uiButton>
+    </div>
+    <uiCodeHighlight lang="html" :code="buttonCode5"></uiCodeHighlight>
 
     <h1 class="gd__h1">Tabmenu</h1>
     <div>
