@@ -6,34 +6,49 @@ useHead({
 const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
 
-const titleCode1 = `// 태그는 상관없이 클래스로 스타일 적용
+const alignCode1 = `<!-- 간격이 필요한 경우 -->
+<div class="flex full">
+  <div class="bg-ddd t-center">full</div>
+  <div class="bg-ddd t-center">full</div>
+</div>
+
+<!-- 간격이 필요없는 경우 -->
+<div class="flex full no-gap">
+  <div class="bg-ddd t-center">full + no-gap</div>
+  <div class="bg-ddd t-center">full + no-gap</div>
+</div>`;
+const titleCode1 = `<!-- 태그는 상관없이 클래스로 스타일 적용 -->
 <h1 class="tit-h1">타이틀1</h1>
 <h2 class="tit-h2">타이틀2</h2>
 <h3 class="tit-h3">타이틀3</h3>
 <h4 class="tit-h4">타이틀4</h4>`;
-
 const titleCode2 = `<uiTitleBar>
   <h1 class="tit-h1">타이틀</h1>
 </uiTitleBar>`;
-
 const titleCode3 = `<uiTitleBar>
   <h1 class="tit-h1">타이틀</h1>
   <template #right>서브요소</template>
 </uiTitleBar>`;
-
 const titleCode4 = `<uiTitleBar>
   <template #right>서브요소만 필요케이스</template>
-</uiTitleBar>`;
+</uiTitleBar>
+<!-- .t-right 으로 대체가능하면 변경해서 사용해도 무방 -->
+<div class="t-right mt-20">서브요소만 필요케이스</div>`;
+
+const lineCode1 = `<hrLine thick />
+<hrLine inset />
+<hrLine ty2 />
+<hrLine ty2 inset />`;
 </script>
 <template>
   <uiInner>
-    <h1 class="gd__h1">텍스트</h1>
+    <h1 class="gd__h1">Text Elements</h1>
     <h2 class="gd__h2">font</h2>
-    <p><strong>Noto Sans KR, Roboto</strong></p>
-    <div class="flex full">
+    <p><strong>Noto Sans KR(v27), Roboto(v30)</strong></p>
+    <div class="flex full mt-10">
       <uiButton to="/guide/font/" line>폰트정보</uiButton>
     </div>
-    <h2 class="gd__h2">text common class</h2>
+    <h2 class="gd__h2">Text Common Class</h2>
     <h3 class="gd__h3">color</h3>
     <div class="gd__grid grid-col-3">
       <div>기본:#606060</div>
@@ -65,7 +80,7 @@ const titleCode4 = `<uiTitleBar>
       <span class="fw-bold">fw-bold</span>
       <span v-for="i in 9" :key="i" :class="`fw-${i}00`">fw-{{ i }}00</span>
     </div>
-    <h2 class="gd__h2">정렬</h2>
+    <h2 class="gd__h2">Align</h2>
     <h3 class="gd__h3">text-align</h3>
     <div>
       <div class="t-left">t-left</div>
@@ -94,6 +109,8 @@ const titleCode4 = `<uiTitleBar>
         <div class="bg-ddd t-center">full + no-gap</div>
         <div class="bg-ddd t-center">full + no-gap</div>
       </div>
+      <uiCodeHighlight lang="html" :code="alignCode1"></uiCodeHighlight>
+
       <div class="flex h-100 space-between">
         <div class="flex align-start">
           <div>align-start</div>
@@ -167,7 +184,7 @@ const titleCode4 = `<uiTitleBar>
       </div>
     </div>
 
-    <h2 class="gd__h2">타이틀요소</h2>
+    <h2 class="gd__h2">Title Elements</h2>
     <h3 class="gd__h3">title</h3>
     <h1 class="tit-h1">타이틀1 - font-size: 2.2rem</h1>
     <h2 class="tit-h2">타이틀2 - font-size: 2rem</h2>
@@ -191,5 +208,17 @@ const titleCode4 = `<uiTitleBar>
       <template #right>서브요소만 필요케이스</template>
     </uiTitleBar>
     <uiCodeHighlight lang="html" :code="titleCode4"></uiCodeHighlight>
+
+    <h2 class="gd__h2">line</h2>
+    <div>
+      <hrLine thick />
+      <br />
+      <hrLine inset />
+      <br />
+      <hrLine ty2 />
+      <br />
+      <hrLine ty2 inset />
+    </div>
+    <uiCodeHighlight lang="html" :code="lineCode1"></uiCodeHighlight>
   </uiInner>
 </template>
