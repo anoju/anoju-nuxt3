@@ -1,26 +1,29 @@
 //버튼
 .button {
   position: relative;
-  display: inline-flex;
-  height: 4.8rem;
-  line-height: inherit;
-  padding: 0 1.2rem;
-  border: 0 solid transparent;
-  text-align: center;
-  font-size: inherit;
-  text-decoration: none;
   overflow: hidden;
-  box-sizing: border-box;
-  border-radius: 1rem;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.6rem;
-  font-weight: 500;
-  vertical-align: middle;
-  opacity: 1;
-  transition: 0.3s, visibility 0s, margin 0s, width 0s;
-  appearance: none;
-  // white-space:nowrap;
+  display: inline-block;
+  &:not(.not) {
+    display: inline-flex;
+    height: 4.8rem;
+    line-height: inherit;
+    padding: 0 1.2rem;
+    border: 0 solid transparent;
+    text-align: center;
+    font-size: inherit;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 500;
+    vertical-align: middle;
+    opacity: 1;
+    transition: 0.3s, visibility 0s, margin 0s, width 0s;
+    appearance: none;
+    // white-space:nowrap;
+  }
   i {
     pointer-events: none;
   }
