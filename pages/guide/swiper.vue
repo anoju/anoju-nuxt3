@@ -24,7 +24,7 @@ const swiperCode3 = `<uiSwiper pagination pagination-type="fraction">
   <div class="swiper-slide">content</div>
   ...
 </uiSwiper>`;
-const swiperCode4 = `<uiSwiper navi>
+const swiperCode4 = `<uiSwiper navigation>
   <div class="swiper-slide">content</div>
   ...
 </uiSwiper>`;
@@ -105,7 +105,7 @@ const swiperStyleCode2 = `<uiSwiper class="items">
       <uiCodeHighlight lang="html" :code="swiperCode3"></uiCodeHighlight>
 
       <h3 class="gd__h3">Navigation</h3>
-      <uiSwiper navi>
+      <uiSwiper navigation>
         <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
           <div class="swiper-box" :class="'box-' + index">
             {{ slide.content }}
@@ -161,6 +161,15 @@ const swiperStyleCode2 = `<uiSwiper class="items">
         </div>
       </uiSwiper>
       <uiCodeHighlight lang="html" :code="swiperCode8"></uiCodeHighlight>
+
+      <h3 class="gd__h3">initialSlide</h3>
+      <uiSwiper :initial-slide="2">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
     </div>
 
     <h2 class="gd__h2">style</h2>
