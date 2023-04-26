@@ -7,6 +7,7 @@ const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
 
 const slides = [{ content: 'Slide 1' }, { content: 'Slide 2' }, { content: 'Slide 3' }, { content: 'Slide 4' }, { content: 'Slide 5' }];
+const swiperVal = ref(1);
 
 const swiperCode1 = `<uiSwiper>
   <div class="swiper-slide">content</div>
@@ -48,10 +49,16 @@ const swiperCode8 = `<uiSwiper loop autoplay>
   <div class="swiper-slide">content</div>
   ...
 </uiSwiper>`;
+const swiperCode9 = `<uiSwiper v-model="swiperVal">
+  <div class="swiper-slide">content</div>
+  ...
+</uiSwiper>
+`;
 const swiperStyleCode1 = `<uiSwiper class="full">
   <div class="swiper-slide">content</div>
   ...
-</uiSwiper>`;
+</uiSwiper>
+<uiInput v-model="swiperVal" class="mt-10"></uiInput>`;
 const swiperStyleCode2 = `<uiSwiper class="items">
   <div class="swiper-slide">content</div>
   ...
@@ -75,6 +82,17 @@ const swiperStyleCode2 = `<uiSwiper class="items">
         </div>
       </uiSwiper>
       <uiCodeHighlight lang="html" :code="swiperCode1"></uiCodeHighlight>
+
+      <h3 class="gd__h3">v-model</h3>
+      <uiSwiper v-model="swiperVal">
+        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
+          <div class="swiper-box" :class="'box-' + index">
+            {{ slide.content }}
+          </div>
+        </div>
+      </uiSwiper>
+      <uiInput v-model="swiperVal" class="mt-10"></uiInput>
+      <uiCodeHighlight lang="html" :code="swiperCode9"></uiCodeHighlight>
 
       <h2 class="gd__h2">pagination</h2>
       <uiSwiper pagination>

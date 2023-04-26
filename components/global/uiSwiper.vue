@@ -18,6 +18,8 @@ import Swiper, {
 // import 'swiper/css/bundle';
 
 const props = defineProps({
+  modelValue: { type: Number, default: null },
+
   slidesPerView: { type: [Number, String], default: 'auto' },
   loop: { type: Boolean, default: false },
   autoHeight: { type: Boolean, default: false },
@@ -27,7 +29,7 @@ const props = defineProps({
   slidesOffsetBefore: { type: Number, default: null },
   slidesOffsetAfter: { type: Number, default: null },
   speed: { type: Number, default: null },
-  initialSlide: { type: Number, default: null },
+  // initialSlide: { type: Number, default: null },
   direction: { type: String, default: null },
 
   effect: { type: String, default: null },
@@ -95,9 +97,11 @@ const props = defineProps({
   update: { type: Function, default: null }
 });
 
+const emit = defineEmits(['update:modelValue']);
 const el = ref<HTMLElement | null>(null);
 const swiperInstance = ref<SwiperInstance | null>(null);
 const isAutoplay = ref<Boolean>(true);
+const swiperIdx = ref(props.modelValue ?? 0);
 const autoplayText = computed(() => {
   let txt = '슬라이드 자동롤링 ';
   txt += isAutoplay.value ? '중지' : '시작';
@@ -201,6 +205,7 @@ const swiperOption = computed(() => {
         if (props.setTranslate) props.setTranslate(swiper, translate);
       },
       slideChange: function (swiper: Swiper) {
+        if (swiperIdx.value !== swiper.realIndex) swiperIdx.value = swiper.realIndex;
         if (props.slideChange) props.slideChange(swiper);
       },
       slideChangeTransitionEnd: function (swiper: Swiper) {
@@ -286,7 +291,7 @@ const swiperOption = computed(() => {
   if (props.slidesOffsetBefore) returnVal.slidesOffsetBefore = props.slidesOffsetBefore;
   if (props.slidesOffsetAfter) returnVal.slidesOffsetAfter = props.slidesOffsetAfter;
   if (props.speed) returnVal.speed = props.speed;
-  if (props.initialSlide) returnVal.initialSlide = props.initialSlide;
+  if (props.modelValue) returnVal.initialSlide = props.modelValue;
 
   const directionAry = ['horizontal', 'vertical'];
   if (props.direction) returnVal.direction = props.direction;
@@ -343,6 +348,20 @@ const autoPlayButton = () => {
     swiperInstance.value.autoplay.stop();
   }
 };
+
+watch(swiperIdx, (newValue) => {
+  if (props.modelValue && props.modelValue !== newValue) {
+    emit('update:modelValue', newValue);
+  }
+});
+watch(
+  () => props.modelValue,
+  (newValue, oldValue) => {
+    if (!swiperInstance.value || !newValue) return;
+    const $realIndex = swiperInstance.value.realIndex;
+    if (newValue !== $realIndex) swiperInstance.value.slideTo(newValue, 300);
+  }
+);
 
 onMounted(() => {
   if (el.value) {
