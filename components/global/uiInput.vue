@@ -19,6 +19,7 @@ const instanceId = nuxtApp.$globalCounters[componentName];
 const props = defineProps({
   id: { type: String, default: null },
   type: { type: String, default: 'text' },
+  class: { type: [String, Array], default: null },
   disabled: { type: Boolean, default: false },
   readonly: { type: Boolean, default: false },
   line: { type: Boolean, default: false },
@@ -51,6 +52,22 @@ const inputId = computed<string>((): string => {
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });
+const inputClass = computed(() => {
+  let rtnAry = [
+    {
+      focus: isFocus && !readonly,
+      readonly: readonly,
+      disabled: props.disabled,
+      line: props.line,
+      date: props.date,
+      time: props.time,
+      file: props.file,
+      datepicker: props.datepicker || props.monthpicker || props.yearpicker
+    },
+    props.class
+  ];
+  return rtnAry;
+});
 const focusIn = () => {
   isFocus.value = true;
 };
@@ -73,20 +90,7 @@ const calendarOpen = (e: any): void => {
 };
 </script>
 <template>
-  <div
-    ref="el"
-    class="input"
-    :class="{
-      focus: isFocus && !readonly,
-      readonly: readonly,
-      disabled: disabled,
-      line: line,
-      date: date,
-      time: time,
-      file: file,
-      datepicker: datepicker || monthpicker || yearpicker
-    }"
-  >
+  <div ref="el" class="input" :class="inputClass">
     <label v-if="frontUnit != null" class="unit front" :for="inputId">
       {{ frontUnit }}
     </label>

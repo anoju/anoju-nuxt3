@@ -116,9 +116,8 @@ const inputCode1 = `<uiInput v-model="inpVal"></uiInput>`;
     <div>
       <h2 class="gd__h2">base</h2>
       <uiInput v-model="inpVal"></uiInput>
+      inpVal: {{ inpVal }}
       <uiCodeHighlight lang="html" :code="inputCode1"></uiCodeHighlight>
     </div>
-    <br />
-    {{ inpVal }}
   </uiInner>
 </template>
