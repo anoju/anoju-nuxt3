@@ -454,10 +454,9 @@
   }
   pre {
     display: flex;
-    padding: var(--highlight-body-padding) 0;
   }
   .hljs {
-    padding: 0 var(--highlight-body-padding);
+    padding: var(--highlight-body-padding);
     width: 100%;
   }
 }
