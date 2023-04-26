@@ -426,3 +426,16 @@
     }
   }
 }
+
+.spy-scroll {
+  position: relative;
+  .spy-scroll-navi {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+  }
+  .spy-scroll-body {
+    position: relative;
+  }
+}

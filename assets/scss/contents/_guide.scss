@@ -460,3 +460,34 @@
     width: 100%;
   }
 }
+.gd__spy-scroll {
+  position: relative;
+  section {
+    height: calc(100vh - 8.8rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 3rem;
+
+    $bgColors: #f66fa0, #fbc846, #00caca, #5846ff, #fd7e64;
+    @for $i from 1 through length($bgColors) {
+      $color: nth($bgColors, $i);
+      &.sec-#{$i} {
+        background-color: $color;
+      }
+    }
+  }
+  .spy-scroll-navi {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    a {
+      color: #fff;
+      font-size: 1.6rem;
+      &.active {
+        font-weight: bold;
+        font-size: 2rem;
+      }
+    }
+  }
+}

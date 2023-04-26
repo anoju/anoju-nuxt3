@@ -4,11 +4,14 @@ interface Section {
   name: string;
 }
 const props = defineProps({
-  sections: { type: Array as () => Section[], required: true }
+  sections: { type: Array as () => Section[], required: true },
+  naviSticky: { type: Boolean, default: false },
+  naviStickyCenter: { type: Boolean, default: false }
 });
 
 const activeSectionId = ref<string | null>(null);
-
+const el = ref<HTMLElement | null>(null);
+const navi = ref<HTMLElement | null>(null);
 const $scrollTo = useNuxtApp().$scrollTo;
 const $getOffset = useNuxtApp().$getOffset;
 const $getTopFixedHeight = useNuxtApp().$getTopFixedHeight;
@@ -22,6 +25,26 @@ const scrollTo = (id: string) => {
     $scrollTo('window', { top: $top - $topFixedH }, 300);
   }
 };
+const naviTop = ref<number | null>(null);
+const setNaviTop = () => {
+  const $sclTop = window.pageYOffset;
+  const $el = el.value;
+  const $navi = navi.value;
+  if (!$el || !$navi) return;
+  const $elTop = $getOffset($el).top;
+  const $topFixedH = $getTopFixedHeight($el);
+  const $maxTop = $el.offsetHeight - $navi.offsetHeight;
+  if ($sclTop + $topFixedH > $elTop) {
+    naviTop.value = Math.min($maxTop, $sclTop + $topFixedH - $elTop);
+  } else {
+    naviTop.value = null;
+  }
+};
+const naviStyle = computed(() => {
+  const $obj: any = {};
+  if (naviTop.value) $obj.top = naviTop.value + 'px';
+  return $obj;
+});
 
 const onScroll = () => {
   let closestSection = null;
@@ -38,6 +61,7 @@ const onScroll = () => {
     }
   }
   activeSectionId.value = closestSection;
+  if (props.naviSticky) setNaviTop();
 };
 
 onMounted(() => {
@@ -50,11 +74,16 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <nav class="spy-scroll-navi">
-    <ul>
-      <li v-for="(section, i) in sections" :key="i">
-        <a :href="`#${section.id}`" :class="{ active: section.id === activeSectionId }" @click.prevent="scrollTo(section.id)">{{ section.name }}</a>
-      </li>
-    </ul>
-  </nav>
+  <div ref="el" class="spy-scroll">
+    <nav ref="navi" class="spy-scroll-navi" :style="naviStyle">
+      <ul>
+        <li v-for="(section, i) in sections" :key="i">
+          <a :href="`#${section.id}`" :class="{ active: section.id === activeSectionId }" @click.prevent="scrollTo(section.id)">{{ section.name }}</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="spy-scroll-body">
+      <slot />
+    </div>
+  </div>
 </template>
