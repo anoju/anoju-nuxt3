@@ -1,13 +1,5 @@
 <script lang="ts" setup>
 const nuxtApp = useNuxtApp();
-const componentName = 'tabs';
-if (!nuxtApp.$globalCounters[componentName]) {
-  nuxtApp.$globalCounters[componentName] = 1;
-} else {
-  nuxtApp.$globalCounters[componentName]++;
-}
-const instanceId = nuxtApp.$globalCounters[componentName];
-
 const props = defineProps({
   modelValue: { type: Number, default: null },
   fixed: { type: Boolean, default: false },
@@ -20,6 +12,16 @@ const props = defineProps({
   box: { type: Boolean, default: false },
   txt: { type: Boolean, default: false }
 });
+let instanceId = 0;
+if (props.modelValue) {
+  const componentName = 'tabs';
+  if (!nuxtApp.$globalCounters[componentName]) {
+    nuxtApp.$globalCounters[componentName] = 1;
+  } else {
+    nuxtApp.$globalCounters[componentName]++;
+  }
+  instanceId = nuxtApp.$globalCounters[componentName];
+}
 
 const tabsId = computed<string>((): string => {
   let rtnVal = `tab_btn_${instanceId}`;

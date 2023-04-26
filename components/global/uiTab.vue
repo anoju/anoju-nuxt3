@@ -31,6 +31,7 @@ getSlotContent();
 const href = computed<string>((): string => {
   let val = '#';
   if (panelId) val += panelId.value;
+  if (props.to) val = '#';
   return val;
 });
 
@@ -47,6 +48,7 @@ const tabsId = inject<Ref<string> | undefined>('tabsId');
 const panelsId = inject<Ref<string> | undefined>('panelsId');
 const tabId = computed<string | undefined>((): string | undefined => {
   let rtnVal;
+  if (props.to) return undefined;
   if (tabsId) {
     rtnVal = `${tabsId.value}_${tabIndex.value}`;
   }
@@ -55,6 +57,7 @@ const tabId = computed<string | undefined>((): string | undefined => {
 });
 const panelId = computed<string | undefined>((): string | undefined => {
   let rtnVal;
+  if (props.to) return undefined;
   if (panelsId) {
     rtnVal = `${panelsId.value}_${tabIndex.value}`;
   }
@@ -62,13 +65,13 @@ const panelId = computed<string | undefined>((): string | undefined => {
   return rtnVal;
 });
 
-const firstActive = (): boolean => {
-  let rtnVal = isEqual(tabIndex.value, activeTab.value);
-  if (props.to) {
-    rtnVal = isEqual(route.path, props.to);
-  }
-  return rtnVal;
-};
+// const firstActive = (): boolean => {
+//   let rtnVal = isEqual(tabIndex.value, activeTab.value);
+//   if (props.to) {
+//     rtnVal = isEqual(route.path, props.to);
+//   }
+//   return rtnVal;
+// };
 const isActive = ref(false);
 
 const route = useRoute();
@@ -118,6 +121,7 @@ defineExpose({ isActive, selectTab });
 </script>
 <template>
   <li class="tab" :class="{ tabClass, active: isActive }" role="presentation">
-    <a :id="tabId" :href="href" role="tab" :aria-selected="isActive ? true : false" :aria-controls="panelId" v-bind="$attrs" @click="selectTab"><slot /></a>
+    <NuxtLink v-if="to" :to="to" role="tab" :aria-selected="isActive ? true : false"><slot /></NuxtLink>
+    <a v-else :id="tabId" :href="href" role="tab" :aria-selected="isActive ? true : false" :aria-controls="panelId" v-bind="$attrs" @click="selectTab"><slot /></a>
   </li>
 </template>

@@ -1,12 +1,5 @@
 <script lang="ts" setup>
 const nuxtApp = useNuxtApp();
-const componentName = 'tabPanels';
-if (!nuxtApp.$globalCounters[componentName]) {
-  nuxtApp.$globalCounters[componentName] = 1;
-} else {
-  nuxtApp.$globalCounters[componentName]++;
-}
-const instanceId = nuxtApp.$globalCounters[componentName];
 
 const props = defineProps({
   modelValue: { type: Number, default: null },
@@ -14,6 +7,16 @@ const props = defineProps({
   tabs: { type: String, default: null }
 });
 
+let instanceId = 0;
+if (props.modelValue) {
+  const componentName = 'tabPanels';
+  if (!nuxtApp.$globalCounters[componentName]) {
+    nuxtApp.$globalCounters[componentName] = 1;
+  } else {
+    nuxtApp.$globalCounters[componentName]++;
+  }
+  instanceId = nuxtApp.$globalCounters[componentName];
+}
 const el = ref<HTMLElement | null>(null);
 
 const tabsId = computed<string>((): string => {
@@ -60,12 +63,17 @@ watch(
     }, 1);
   }
 );
+const panelStyle = computed(() => {
+  const rtnVal: any = {};
+  if (setHeight.value) rtnVal.height = setHeight.value + 'px';
+  return rtnVal;
+});
 onUnmounted(() => {
   childIdx.value = 0;
 });
 </script>
 <template>
-  <div ref="el" class="tab-panels" :class="{ transition: isTransition }" :style="{ height: setHeight ? setHeight + 'px' : '' }" @transitionend="setHeightEnd">
+  <div ref="el" class="tab-panels" :class="{ transition: isTransition }" :style="panelStyle" @transitionend="setHeightEnd">
     <slot />
   </div>
 </template>
