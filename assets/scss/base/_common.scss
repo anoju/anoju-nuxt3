@@ -1,9 +1,9 @@
 :root {
   --vh: 1vh;
-  --primary-color: #{$primary};
+  --primary-color: #{$primary-color};
   accent-color: var(--primary-color);
   --spl-highlight-color: var(--primary-color);
-  --primary-color-rgb: rgb($primary);
+  --primary-color-rgb: rgb($primary-color);
   --item-margin-x: 0.8rem;
   --item-margin-y: 0.8rem;
 

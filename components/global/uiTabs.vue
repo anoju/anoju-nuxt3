@@ -51,6 +51,7 @@ const $type = computed<Type>((): Type => {
 const emit = defineEmits(['update:modelValue']);
 const el = ref<HTMLElement | null>(null);
 const tablist = ref<HTMLElement | null>(null);
+const line = ref<HTMLElement | null>(null);
 
 const activeTab = ref(props.modelValue ?? 0);
 const lineWidth = ref(0);
@@ -65,7 +66,8 @@ const setActiveTab = (index: number) => {
 };
 const lineMoveEvt = () => {
   const $tablist = tablist.value;
-  if (!$tablist) return;
+  const $line = line.value;
+  if (!$tablist || !$line) return;
   const $tabs = $tablist.querySelectorAll<HTMLElement>('.tab');
   if (!$tabs.length || moveIndex < 0) return;
   const $tab = $tabs[moveIndex];
@@ -118,13 +120,7 @@ onUnmounted(() => {
 <template>
   <div ref="el" :class="[`tab-${$type}-menu`, { 'tab-fixed': fixed }, { 'top-fixed': isFixed }, { 'tab-line-moving': lineMoving }]">
     <div class="tab-inner">
-      <i
-        v-if="$type !== 'round' && $type !== 'txt'"
-        class="tab-line"
-        aria-hidden="true"
-        :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }"
-        @transitionend="lineEndEvt"
-      ></i>
+      <i v-if="$type !== 'txt'" ref="line" class="tab-line" aria-hidden="true" :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }" @transitionend="lineEndEvt"></i>
       <ul ref="tablist" class="tab-list" role="tablist">
         <slot />
       </ul>
