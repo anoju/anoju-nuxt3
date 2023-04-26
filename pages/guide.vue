@@ -13,7 +13,8 @@ const tabInfo: Tab[] = [
   { text: 'button', url: '/guide/button' },
   { text: 'form', url: '/guide/form' },
   { text: 'popup', url: '/guide/popup' },
-  { text: 'swiper', url: '/guide/swiper' }
+  { text: 'swiper', url: '/guide/swiper' },
+  { text: 'etc', url: '/guide/etc' }
 ];
 const defaultTitle = 'Guide page';
 const headerTitle = ref(defaultTitle);
