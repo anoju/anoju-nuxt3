@@ -160,7 +160,7 @@ onUnmounted(() => {
     </main>
     <div class="floating-btn" :style="{ bottom: `${spaceHeight + 10}px` }">
       <slot name="floating" />
-      <uiButton to="#none" class="btn-page-top" :class="{ on: isBtnTopOn }" title="컨텐츠 상단으로 이동" aria-label="컨텐츠 상단으로 이동" @click="btnTopClick">TOP</uiButton>
+      <uiButton to="#none" not class="btn-page-top" :class="{ on: isBtnTopOn }" title="컨텐츠 상단으로 이동" aria-label="컨텐츠 상단으로 이동" @click="btnTopClick">TOP</uiButton>
     </div>
     <div class="bottom-fixed-space" aria-hidden="true" :style="{ height: `${spaceHeight}px` }"></div>
   </article>
