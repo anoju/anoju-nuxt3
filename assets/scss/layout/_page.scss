@@ -84,5 +84,6 @@
   -webkit-overflow-scrolling: none;
   @include media-min-width(1024) {
     @include web-center-fixed;
+    width: 102.4rem;
   }
 }
