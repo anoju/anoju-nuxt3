@@ -217,6 +217,13 @@ const getTopFixedHeight = function (element: HTMLElement, className: string = 't
   let currentElement: HTMLElement = element;
   let topFixedHeight: number = 0;
 
+  // header 계산
+  const $page = currentElement.closest('.page');
+  if ($page) {
+    const $head: HTMLElement | null = $page.querySelector('.page-head');
+    if ($head) topFixedHeight += $head.offsetHeight;
+  }
+
   const plusHeight = function (target: HTMLElement): void {
     let height: number = target.offsetHeight;
     if (getComputedStyle(target).position !== 'sticky') height = target.children[0].clientHeight;
