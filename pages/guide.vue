@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-definePageMeta({
-  pageTransition: false
-});
+// definePageMeta({
+//   pageTransition: false
+// });
 const isTabShow = ref(true);
 const route = useRoute();
 interface Tab {
