@@ -40,7 +40,7 @@ const openModalPopup = async () => {
     <template #foot>
       <div class="flex full">
         <uiButton line @click="openModalPopup">모달팝업</uiButton>
-        <button type="button" class="button primary h60" @click="popClose">확인</button>
+        <uiButton primary h60 @click="popClose">확인</uiButton>
       </div>
     </template>
   </uiPop>

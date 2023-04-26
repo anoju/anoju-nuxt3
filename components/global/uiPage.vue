@@ -144,13 +144,13 @@ onUnmounted(() => {
       </div>
       <div v-else>
         <div v-if="!!btnBack || !!$slots.headLeft" class="head-left">
-          <button v-if="!!btnBack" type="button" class="head-back button" aria-label="이전화면" @click="backClick"></button>
+          <uiButton v-if="!!btnBack" not class="head-back" aria-label="이전화면" @click="backClick"></uiButton>
           <slot name="headLeft" />
         </div>
         <h1 v-if="pageTitle">{{ pageTitle }}</h1>
         <div v-if="!!btnClose || !!$slots.headRight" class="head-right">
           <slot name="headRight" />
-          <button v-if="!!btnClose" type="button" class="head-close button" role="button" aria-label="화면닫기" @click="closeClick"></button>
+          <uiButton v-if="!!btnClose" not class="head-close" aria-label="화면닫기" @click="closeClick"></uiButton>
         </div>
       </div>
     </header>
