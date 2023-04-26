@@ -51,8 +51,8 @@ type Color = 'primary' | 'gray' | 'gray2' | 'gray3';
 const colorAry: Color[] = ['primary', 'gray', 'gray2', 'gray3'];
 const matchingColor = colorAry.find((color) => props[color]);
 const $color = computed<Color | null>((): Color | null => {
-  if (props.size && colorAry.includes(props.size as Color)) {
-    return props.size as Color;
+  if (props.color && colorAry.includes(props.color as Color)) {
+    return props.color as Color;
   } else if (matchingColor) {
     return matchingColor;
   }
