@@ -48,25 +48,87 @@ const badgeCode1 = `<badge>base</badge>
 <badge blue>blue</badge>
 <badge blue2>blue2</badge>
 <badge orange>orange</badge>
-<badge black>black</badge>
-
-<!-- size -->
+<badge black>black</badge>`;
+const badgeCode2 = `<!-- size -->
 <badge gray small>small</badge>
 <badge red>default</badge>
 <badge green large>large</badge>
-<badge blue h28>h28</badge>
-
-<!-- line -->
+<badge blue h28>h28</badge>`;
+const badgeCode3 = `<!-- line -->
 <badge line>line</badge>
-<badge line round h28 primary>line2</badge>
-
-<!-- square, round -->
+<badge line round h28 primary>line2</badge>`;
+const badgeCode4 = `<!-- square, round -->
 <badge line square>line + square</badge>
-<badge line round>line + round</badge>
-
-<!-- ty2, ty3 -->
+<badge line round>line + round</badge>`;
+const badgeCode5 = `<!-- ty2, ty3 -->
 <badge ty2>ty2</badge>
 <badge ty3>ty3</badge>`;
+
+const iconCode1 = `<!-- icon -->
+<icon name="arr-right-16" />
+<icon name="arr-right-24" />
+<icon name="arr-down-24" />
+<icon name="warning-28" />
+<icon name="notice-16" />
+<icon name="warning-red-16" />
+<icon name="card-16" />
+<icon name="search-24" />
+<icon name="check-off-14" />
+<icon name="check-on-14" />
+<icon name="new" />
+<icon name="tooltip" />
+<icon name="refresh" />
+<icon name="refresh2" />
+<icon name="refresh3" />
+<icon name="refresh-small" />
+<icon name="date" />
+<icon name="user" />
+<icon name="percent" />
+<icon name="tit-arrow" />
+<icon name="filter" />
+<icon name="filter2" />
+<icon name="filter-alt" />
+<icon name="heart" />
+<icon name="heart on" />
+<icon name="chatbubble" />
+<icon name="eye" />
+<icon name="camera" />
+<icon name="img-close" />
+<icon name="agree-arrow" />
+<icon name="agree-arrow2" />
+<icon name="arrow-primary" />
+<icon name="arrow-left-primary" />
+<icon name="setting" />
+<icon name="header-info" />
+<icon name="btn-my" />
+<icon name="btn-alarm" />
+<icon name="btn-alarm new" />
+<icon name="exclamation" />
+<icon name="plus" />
+<icon name="plus2" />
+<icon name="plus-24" />
+<icon name="arr-right-w-16" />
+<icon name="check-w-on-14" />
+<icon name="alarm" />
+<icon name="edit" />
+<icon name="trash" />
+<icon name="point-label" />`;
+const iconCode2 = `<!-- icon -->
+<icon type="btn" name="back-24" />
+<icon type="btn" name="close-24" />
+<icon type="btn" name="close2-24" />
+<icon type="btn" name="search-24" />
+<icon type="btn" name="close-w-24" />`;
+const iconCode3 = `<!-- header -->
+<icon type="head" name="alarm" />
+<icon type="head" name="alarm new" arai-label="새소식" />
+<icon type="head" name="setting" />`;
+const iconCode4 = `<!-- floating bar -->
+<icon name="floating-home" />
+<icon name="floating-match" />
+<icon name="floating-invest" />
+<icon name="floating-my" />
+<icon name="floating-more" />`;
 </script>
 <template>
   <uiInner>
@@ -271,6 +333,8 @@ const badgeCode1 = `<badge>base</badge>
         <badge orange>orange</badge>
         <badge black>black</badge>
       </div>
+      <uiCodeHighlight lang="html" :code="badgeCode1"></uiCodeHighlight>
+
       <h2 class="gd__h2">size</h2>
       <div>
         <badge gray small>small</badge>
@@ -278,22 +342,128 @@ const badgeCode1 = `<badge>base</badge>
         <badge green large>large</badge>
         <badge blue h28>h28</badge>
       </div>
+      <uiCodeHighlight lang="html" :code="badgeCode2"></uiCodeHighlight>
+
       <h2 class="gd__h2">line</h2>
       <div>
         <badge line>line</badge>
         <badge line round h28 primary>line2</badge>
       </div>
+      <uiCodeHighlight lang="html" :code="badgeCode3"></uiCodeHighlight>
+
       <h2 class="gd__h2">square, round</h2>
       <div>
         <badge line square>line + square</badge>
         <badge line round>line + round</badge>
       </div>
+      <uiCodeHighlight lang="html" :code="badgeCode4"></uiCodeHighlight>
+
       <h2 class="gd__h2">ty2, ty3</h2>
       <div>
         <badge ty2>ty2</badge>
         <badge ty3>ty3</badge>
       </div>
-      <uiCodeHighlight lang="html" :code="badgeCode1"></uiCodeHighlight>
+      <uiCodeHighlight lang="html" :code="badgeCode5"></uiCodeHighlight>
+    </div>
+
+    <h1 class="gd__h1">Icon</h1>
+    <div>
+      <h2 class="gd__h2">icon</h2>
+      <div>
+        <icon name="arr-right-16" />
+        <icon name="arr-right-24" />
+        <icon name="arr-down-24" />
+        <icon name="warning-28" />
+        <icon name="notice-16" />
+        <icon name="warning-red-16" />
+        <icon name="card-16" />
+        <icon name="search-24" />
+        <icon name="check-off-14" />
+        <icon name="check-on-14" />
+        <icon name="new" />
+        <icon name="tooltip" />
+        <icon name="refresh" />
+        <icon name="refresh2" />
+        <icon name="refresh3" />
+        <icon name="refresh-small" />
+        <icon name="date" />
+        <icon name="user" />
+        <icon name="percent" />
+        <icon name="tit-arrow" />
+        <icon name="filter" />
+        <icon name="filter2" />
+        <icon name="filter-alt" />
+        <icon name="heart" />
+        <icon name="heart on" />
+        <icon name="chatbubble" />
+        <icon name="eye" />
+        <icon name="camera" />
+        <icon name="img-close" />
+        <icon name="agree-arrow" />
+        <icon name="agree-arrow2" />
+        <icon name="arrow-primary" />
+        <icon name="arrow-left-primary" />
+        <icon name="setting" />
+        <icon name="header-info" />
+        <icon name="btn-my" />
+        <icon name="btn-alarm" />
+        <icon name="btn-alarm new" />
+        <icon name="exclamation" />
+        <icon name="plus" />
+        <icon name="plus2" />
+        <icon name="plus-24" />
+        <br />
+        <div class="pd-10" style="background: #000">
+          <icon name="arr-right-w-16" />
+          <icon name="check-w-on-14" />
+          <icon name="alarm" />
+          <icon name="edit" />
+          <icon name="trash" />
+          <icon name="point-label" />
+        </div>
+      </div>
+      <uiCodeHighlight lang="html" :code="iconCode1"></uiCodeHighlight>
+
+      <h2 class="gd__h2">btn</h2>
+      <div>
+        <icon type="btn" name="back-24" />
+        <icon type="btn" name="close-24" />
+        <icon type="btn" name="close2-24" />
+        <icon type="btn" name="search-24" />
+        <br />
+        <div class="pd-10" style="background: #000">
+          <icon type="btn" name="close-w-24" />
+        </div>
+      </div>
+      <uiCodeHighlight lang="html" :code="iconCode2"></uiCodeHighlight>
+
+      <h2 class="gd__h2">header</h2>
+      <div class="gd__icon flex">
+        <uiButton not class="head-back" aria-label="이전화면"></uiButton>
+        <uiButton not class="head-close" aria-label="화면닫기"></uiButton>
+        <icon type="head" name="alarm" />
+        <icon type="head" name="alarm new" arai-label="새소식" />
+        <icon type="head" name="setting" />
+      </div>
+      <uiCodeHighlight lang="html" :code="iconCode3"></uiCodeHighlight>
+
+      <h2 class="gd__h2">floating bar</h2>
+      <div>
+        <icon name="floating-home" />
+        <icon name="floating-match" />
+        <icon name="floating-invest" />
+        <icon name="floating-my" />
+        <icon name="floating-more" />
+        <br />
+        <span class="on">
+          <icon name="floating-home" />
+          <icon name="floating-match" />
+          <icon name="floating-invest" />
+          <icon name="floating-my" />
+          <icon name="floating-more" />
+        </span>
+      </div>
+      <uiCodeHighlight lang="html" :code="iconCode4"></uiCodeHighlight>
     </div>
   </uiInner>
 </template>
