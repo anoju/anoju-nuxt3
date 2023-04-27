@@ -482,6 +482,7 @@
   .spy-scroll-navi {
     padding: 1rem 0;
     width: 11rem;
+    text-align: right;
     &.fixed {
       position: fixed;
       top: 8.8rem;
@@ -491,7 +492,6 @@
       display: block;
       font-size: 1.6rem;
       line-height: 2.8rem;
-      text-align: right;
       &.active {
         font-weight: bold;
         color: var(--primary-color);

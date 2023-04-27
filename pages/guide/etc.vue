@@ -13,11 +13,13 @@ const sections = [
   { id: 'section4', name: 'Section 4' },
   { id: 'section5', name: 'Section 5' }
 ];
+
+const spyScrollVal = ref(0);
 </script>
 <template>
   <uiInner>
     <h1 class="gd__h1">SpyScroll</h1>
-    <uiSpyScroll :sections="sections" navi-sticky class="gd__spy-scroll">
+    <uiSpyScroll v-model="spyScrollVal" :sections="sections" navi-sticky class="gd__spy-scroll">
       <section id="section1" class="sec-1">Section 1</section>
       <section id="section2" class="sec-2">Section 2</section>
       <section id="section3" class="sec-3">Section 3</section>
@@ -25,5 +27,11 @@ const sections = [
       <section id="section5" class="sec-5">Section 5</section>
     </uiSpyScroll>
     <div style="height: 200vh; background: #fafafa"></div>
+    <uiBottomFixed>
+      <div class="flex">
+        <div class="nowrap align-self-center">spyScroll value</div>
+        <uiInput v-model="spyScrollVal"></uiInput>
+      </div>
+    </uiBottomFixed>
   </uiInner>
 </template>

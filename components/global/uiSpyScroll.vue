@@ -4,11 +4,18 @@ interface Section {
   name?: string;
 }
 const props = defineProps({
+  modelValue: { type: Number, default: null },
   sections: { type: Array as () => Section[], required: true },
   notNavi: { type: Boolean, default: false },
   naviSticky: { type: Boolean, default: false },
   naviStickyCenter: { type: Boolean, default: false }
 });
+
+const emit = defineEmits(['update:modelValue']);
+const activeIndex = ref(props.modelValue ?? 0);
+const getArryIndex = (ary: Section[], val: string) => {
+  return ary.findIndex((item) => item.id === val);
+};
 
 const activeSectionId = ref<string | null>(null);
 const el = ref<HTMLElement | null>(null);
@@ -56,6 +63,20 @@ const naviStyle = computed(() => {
   return $obj;
 });
 
+watch(activeIndex, (newValue) => {
+  if (props.modelValue !== null && props.modelValue !== newValue) {
+    emit('update:modelValue', newValue);
+  }
+});
+watch(
+  () => props.modelValue,
+  (newValue, oldValue) => {
+    if (!newValue || newValue === activeIndex.value) return;
+    const $targetId = props.sections[newValue].id;
+    scrollTo($targetId);
+  }
+);
+
 const onScroll = () => {
   let closestSection = null;
   let minDistance = Number.MAX_VALUE;
@@ -71,6 +92,10 @@ const onScroll = () => {
     }
   }
   activeSectionId.value = closestSection;
+  if (closestSection) {
+    const idx = getArryIndex(props.sections, closestSection);
+    activeIndex.value = idx;
+  }
   if (props.naviSticky) setNaviTop();
 };
 
@@ -91,6 +116,7 @@ onUnmounted(() => {
           <a :href="`#${section.id}`" :class="{ active: section.id === activeSectionId }" @click.prevent="scrollTo(section.id)">{{ section.name }}</a>
         </li>
       </ul>
+      <slot name="navi" />
     </nav>
     <div class="spy-scroll-body">
       <slot />
