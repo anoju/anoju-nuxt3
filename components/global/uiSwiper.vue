@@ -108,7 +108,7 @@ const autoplayText = computed(() => {
   return txt;
 });
 
-const chkArry = (ary: string[], val: string) => {
+const isArryInclude = (ary: string[], val: string) => {
   return ary.includes(val);
 };
 
@@ -298,10 +298,10 @@ const swiperOption = computed(() => {
   if (props.modelValue) returnVal.initialSlide = props.modelValue;
 
   const directionAry = ['horizontal', 'vertical'];
-  if (props.direction && chkArry(directionAry, props.direction)) returnVal.direction = props.direction;
+  if (props.direction && isArryInclude(directionAry, props.direction)) returnVal.direction = props.direction;
 
   const effectAry = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'creative', 'cards'];
-  if (props.effect && chkArry(effectAry, props.effect)) returnVal.effect = props.effect;
+  if (props.effect && isArryInclude(effectAry, props.effect)) returnVal.effect = props.effect;
 
   if (props.breakpoints) returnVal.breakpoints = props.breakpoints;
 
@@ -354,7 +354,7 @@ const autoPlayButton = () => {
 };
 
 watch(swiperIdx, (newValue) => {
-  if (props.modelValue && props.modelValue !== newValue) {
+  if (props.modelValue !== null && props.modelValue !== newValue) {
     emit('update:modelValue', newValue);
   }
 });
