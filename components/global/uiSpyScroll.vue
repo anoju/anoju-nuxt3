@@ -7,8 +7,7 @@ const props = defineProps({
   modelValue: { type: Number, default: null },
   sections: { type: Array as () => Section[], required: true },
   notNavi: { type: Boolean, default: false },
-  naviSticky: { type: Boolean, default: false },
-  naviStickyCenter: { type: Boolean, default: false }
+  naviSticky: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['update:modelValue']);

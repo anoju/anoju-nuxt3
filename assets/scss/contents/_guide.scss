@@ -393,6 +393,9 @@
   background-color: #1e1e1e;
   font-family: Consolas, Monaco, monospace;
   overflow: hidden;
+  + .code-highlight {
+    margin-top: -2rem;
+  }
   .code-highlight-header {
     display: flex;
     align-items: center;
@@ -487,6 +490,12 @@
       position: fixed;
       top: 8.8rem;
       right: var(--base-padding);
+      @include media-min-width(1024) {
+        left: 50%;
+        right: auto;
+        margin-left: calc(51.2rem - var(--base-padding));
+        transform: translateX(-100%);
+      }
     }
     a {
       display: block;
