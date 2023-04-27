@@ -24,5 +24,6 @@ const sections = [
       <section id="section4" class="sec-4">Section 4</section>
       <section id="section5" class="sec-5">Section 5</section>
     </uiSpyScroll>
+    <div style="height: 200vh; background: #fafafa"></div>
   </uiInner>
 </template>

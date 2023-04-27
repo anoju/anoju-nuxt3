@@ -27,18 +27,27 @@ const scrollTo = (id: string) => {
   }
 };
 const naviTop = ref<number | null>(null);
+const naviFixed = ref<boolean>(false);
 const setNaviTop = () => {
   const $sclTop = window.pageYOffset;
   const $el = el.value;
   const $navi = navi.value;
   if (!$el || !$navi) return;
   const $elTop = $getOffset($el).top;
+  const $elBottom = $elTop + $el.offsetHeight;
+  if ($elBottom + 100 < $sclTop) return;
   const $topFixedH = $getTopFixedHeight($el);
   const $maxTop = $el.offsetHeight - $navi.offsetHeight;
-  if ($sclTop + $topFixedH > $elTop) {
-    naviTop.value = Math.min($maxTop, $sclTop + $topFixedH - $elTop);
+  if ($elBottom - $topFixedH - $navi.offsetHeight < $sclTop) {
+    naviTop.value = $maxTop;
+    naviFixed.value = false;
+  } else if ($sclTop + $topFixedH > $elTop) {
+    // naviTop.value = Math.min($maxTop, $sclTop + $topFixedH - $elTop);
+    naviTop.value = null;
+    naviFixed.value = true;
   } else {
     naviTop.value = null;
+    naviFixed.value = false;
   }
 };
 const naviStyle = computed(() => {
@@ -76,7 +85,7 @@ onUnmounted(() => {
 </script>
 <template>
   <div ref="el" class="spy-scroll">
-    <nav v-if="!notNavi" ref="navi" class="spy-scroll-navi" :style="naviStyle">
+    <nav v-if="!notNavi" ref="navi" class="spy-scroll-navi" :class="{ fixed: naviFixed }" :style="naviStyle">
       <ul>
         <li v-for="(section, i) in sections" :key="i">
           <a :href="`#${section.id}`" :class="{ active: section.id === activeSectionId }" @click.prevent="scrollTo(section.id)">{{ section.name }}</a>

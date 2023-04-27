@@ -462,6 +462,7 @@
 }
 .gd__spy-scroll {
   position: relative;
+  padding-right: 11rem;
   section {
     height: calc(100vh - 8.8rem);
     display: flex;
@@ -479,13 +480,21 @@
     }
   }
   .spy-scroll-navi {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 1rem;
+    padding: 1rem 0;
+    width: 11rem;
+    &.fixed {
+      position: fixed;
+      top: 8.8rem;
+      right: var(--base-padding);
+    }
     a {
-      color: #fff;
+      display: block;
       font-size: 1.6rem;
+      line-height: 2.8rem;
+      text-align: right;
       &.active {
         font-weight: bold;
+        color: var(--primary-color);
         font-size: 2rem;
       }
     }
