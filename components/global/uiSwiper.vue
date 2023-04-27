@@ -108,6 +108,10 @@ const autoplayText = computed(() => {
   return txt;
 });
 
+const chkArry = (ary: string[], val: string) => {
+  return ary.includes(val);
+};
+
 Swiper.use([Parallax, A11y, EffectCoverflow, EffectCube, EffectFade, EffectFlip, EffectCreative, EffectCards]);
 const swiperOption = computed(() => {
   const returnVal: any = {
@@ -294,10 +298,10 @@ const swiperOption = computed(() => {
   if (props.modelValue) returnVal.initialSlide = props.modelValue;
 
   const directionAry = ['horizontal', 'vertical'];
-  if (props.direction) returnVal.direction = props.direction;
+  if (props.direction && chkArry(directionAry, props.direction)) returnVal.direction = props.direction;
 
   const effectAry = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'creative', 'cards'];
-  if (props.effect) returnVal.effect = props.effect;
+  if (props.effect && chkArry(effectAry, props.effect)) returnVal.effect = props.effect;
 
   if (props.breakpoints) returnVal.breakpoints = props.breakpoints;
 
