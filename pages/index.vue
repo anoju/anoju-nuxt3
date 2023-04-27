@@ -35,7 +35,7 @@ const listAry = [
       <ul class="sample-list">
         <li v-for="(item, i) of listAry" :key="i">
           <uiButton :to="item.link" anchor not>
-            <i v-if="item.isNew">NEW</i>
+            <badge v-if="item.isNew" small red>NEW</badge>
             {{ item.title }}
           </uiButton>
         </li>
