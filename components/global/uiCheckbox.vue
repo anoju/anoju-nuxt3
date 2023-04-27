@@ -164,8 +164,8 @@ const onInputChange = (e: Event) => {
     <label v-if="!right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="chkboxId">
       <slot />
     </label>
-    <div v-if="!!$slots.summary" class="lbl-child">
-      <slot name="summary" />
+    <div v-if="!!$slots.child" class="lbl-child">
+      <slot name="child" />
     </div>
     <slot name="last" />
   </div>

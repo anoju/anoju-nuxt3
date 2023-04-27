@@ -443,17 +443,47 @@ div.checkbox.ty2:not(.btn):not(.switch):not(.switch2) {
         }
       }
     }
+  }
 
-    &.only-active {
-      > input {
-        + i {
-          background: var(--primary-color);
-          &:before,
-          &:after {
-            color: #fff;
-          }
-        }
-      }
+  .lbl-child {
+    padding: 2rem 0 1rem;
+    margin: 0 2rem;
+    border: 0 solid var(--line-color);
+    border-bottom-width: 0.1rem;
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+  &.box {
+    display: block;
+    margin-right: 0;
+    border-radius: 1.2rem;
+    background: #f2f4f6;
+    border: 1px solid #f2f4f6;
+    &.checked {
+      border-color: var(--primary-color);
+    }
+    + .box:is(.checkbox, .radio) {
+      margin-top: var(--item-margin-y);
+    }
+    > input,
+    > i {
+      left: 2rem;
+      top: 1.55rem;
+    }
+    > .lbl {
+      padding: 1.6rem 2rem 1.6rem 5.4rem;
+      margin-left: 0;
+      line-height: 2.3rem;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--strong-txt-color2);
+    }
+    .lbl-child {
+      border-top-width: 0.1rem;
+      border-bottom-width: 0;
+      padding: 1.5rem 0 2rem;
+      margin: 0 2rem;
+      font-size: 1.4rem;
     }
   }
 }
@@ -612,6 +642,7 @@ div.checkbox.ty2:not(.btn):not(.switch):not(.switch2) {
   > .checkbox,
   > .radio {
     display: block;
+    margin-right: 0;
     > input,
     > i {
       left: 2rem;
