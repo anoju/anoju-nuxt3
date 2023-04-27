@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 interface Section {
   id: string;
-  name: string;
+  name?: string;
 }
 const props = defineProps({
   sections: { type: Array as () => Section[], required: true },
+  notNavi: { type: Boolean, default: false },
   naviSticky: { type: Boolean, default: false },
   naviStickyCenter: { type: Boolean, default: false }
 });
@@ -75,7 +76,7 @@ onUnmounted(() => {
 </script>
 <template>
   <div ref="el" class="spy-scroll">
-    <nav ref="navi" class="spy-scroll-navi" :style="naviStyle">
+    <nav v-if="!notNavi" ref="navi" class="spy-scroll-navi" :style="naviStyle">
       <ul>
         <li v-for="(section, i) in sections" :key="i">
           <a :href="`#${section.id}`" :class="{ active: section.id === activeSectionId }" @click.prevent="scrollTo(section.id)">{{ section.name }}</a>
