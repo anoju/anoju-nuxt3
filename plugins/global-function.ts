@@ -144,9 +144,22 @@ const getIndex = (elem: Element): number | null => {
 };
 
 const slideDown = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
-  if (getStyle(elem, 'display') !== 'none' || elem.classList.contains('_slide_ing')) return;
-  elem.classList.add('_slide_ing');
-  if (speed === undefined) speed = 500;
+  // if (getStyle(elem, 'display') !== 'none') return;
+  let isIng = false;
+  let ingStyle: any = null;
+  if (elem.classList.contains('_slide_ing')) {
+    anime.remove(elem);
+    isIng = true;
+    ingStyle = {
+      height: getStyle(elem, 'height'),
+      marginTop: getStyle(elem, 'margin-top'),
+      marginBottom: getStyle(elem, 'margin-bottom'),
+      paddingTop: getStyle(elem, 'padding-top'),
+      paddingBottom: getStyle(elem, 'padding-bottom')
+    };
+  } else {
+    elem.classList.add('_slide_ing');
+  }
   elem.removeAttribute('style');
   let isHide = false;
   if (getStyle(elem, 'display') === 'none') {
@@ -164,11 +177,19 @@ const slideDown = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
   const elPdB = pdB ? parseInt(pdB, 10) : 0;
 
   elem.style.overflow = 'hidden';
-  elem.style.height = '0px';
-  elem.style.marginTop = '0px';
-  elem.style.marginBottom = '0px';
-  elem.style.paddingTop = '0px';
-  elem.style.paddingBottom = '0px';
+  if (isIng) {
+    elem.style.height = ingStyle.height;
+    elem.style.marginTop = ingStyle.marginTop;
+    elem.style.marginBottom = ingStyle.marginBottom;
+    elem.style.paddingTop = ingStyle.paddingTop;
+    elem.style.paddingBottom = ingStyle.paddingBottom;
+  } else {
+    elem.style.height = '0px';
+    elem.style.marginTop = '0px';
+    elem.style.marginBottom = '0px';
+    elem.style.paddingTop = '0px';
+    elem.style.paddingBottom = '0px';
+  }
 
   anime({
     targets: elem,
@@ -191,8 +212,12 @@ const slideDown = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
 };
 
 const slideUp = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
-  if (getStyle(elem, 'display') === 'none' || elem.classList.contains('_slide_ing')) return;
-  elem.classList.add('_slide_ing');
+  // if (getStyle(elem, 'display') === 'none') return;
+  if (elem.classList.contains('_slide_ing')) {
+    anime.remove(elem);
+  } else {
+    elem.classList.add('_slide_ing');
+  }
   elem.style.overflow = 'hidden';
   anime({
     targets: elem,
@@ -204,8 +229,8 @@ const slideUp = (elem: HTMLElement, speed: number = 500, fn?: () => void) => {
     duration: speed,
     easing: 'easeInOutQuad',
     complete: () => {
-      elem.removeAttribute('style');
       elem.classList.remove('_slide_ing');
+      elem.removeAttribute('style');
       elem.style.display = 'none';
       if (fn !== undefined && typeof fn === 'function') {
         fn();

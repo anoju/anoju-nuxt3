@@ -6,15 +6,20 @@ useHead({
 const emit = defineEmits(['page-title']);
 emit('page-title', pageTitle);
 
+const fdPanelVal: Ref<boolean> = ref(false);
 const chkVal: Ref<boolean> = ref(false);
 const chkVal2: Ref<string> = ref('N');
+const chkVal3: Ref<string[]> = ref([]);
 const rdoVal: Ref<string> = ref('');
 const rdoVal2: Ref<string> = ref('');
 const rdoVal3: Ref<string> = ref('');
 const inpVal: Ref<string> = ref('');
 
 const checkCode1 = `<uiCheckbox v-model="chkVal" />
-<uiCheckbox v-model="chkVal">텍스트 있음</uiCheckbox>`;
+<uiCheckbox v-model="chkVal">텍스트 있음</uiCheckbox>
+<uiCheckbox v-model="chkVal" value="1">1</uiCheckbox>
+<uiCheckbox v-model="chkVal" value="2">2</uiCheckbox>
+<uiCheckbox v-model="chkVal" value="3">3</uiCheckbox>`;
 const checkCode2 = `<uiCheckbox v-model="chkVal" true-value="Y" false-value="N">선택</uiCheckbox>`;
 const checkCode3 = `<uiCheckbox v-model="chkVal" large>large</uiCheckbox>
 <uiCheckbox v-model="chkVal">default</uiCheckbox>
@@ -45,6 +50,12 @@ const inputCode1 = `<uiInput v-model="inpVal"></uiInput>`;
       <div class="flex">
         <uiCheckbox v-model="chkVal">텍스트 있음</uiCheckbox>
         <div class="ml-auto">value : {{ chkVal }}</div>
+      </div>
+      <div class="flex">
+        <uiCheckbox v-model="chkVal3" value="1">1</uiCheckbox>
+        <uiCheckbox v-model="chkVal3" value="2">2</uiCheckbox>
+        <uiCheckbox v-model="chkVal3" value="3">3</uiCheckbox>
+        <div class="ml-auto">value : {{ chkVal3 }}</div>
       </div>
       <uiCodeHighlight lang="html" :code="checkCode1"></uiCodeHighlight>
 
@@ -80,6 +91,42 @@ const inputCode1 = `<uiInput v-model="inpVal"></uiInput>`;
         <uiCheckbox v-model="chkVal2" switch2 true-value="Y" false-value="N">switch2</uiCheckbox>
       </div>
       <uiCodeHighlight lang="html" :code="checkCode5"></uiCodeHighlight>
+
+      <h2 class="gd__h2">etc</h2>
+      <div>
+        <uiCheckbox v-model="chkVal" radio>radio모양 checkbox</uiCheckbox>
+        <br />
+        <br />
+        <uiCheckbox v-model="chkVal" box>박스형태</uiCheckbox>
+        <br />
+        <uiCheckbox v-model="chkVal" box>
+          박스형태2
+          <template #child>기타 텍스트를 넣을수 있습니다.</template>
+        </uiCheckbox>
+        <br />
+        <div class="chk-item">
+          <uiCheckbox v-model="chkVal">박스형태</uiCheckbox>
+        </div>
+
+        <div class="chk-item folding">
+          <uiCheckbox v-model="chkVal">
+            박스형태
+            <template #last>
+              <uiButton not class="ui-folding-btn" :class="{ open: fdPanelVal }" @click="fdPanelVal = !fdPanelVal"><icon name="arr-down-24"></icon></uiButton>
+            </template>
+          </uiCheckbox>
+          <uiFoldingPanel v-model="fdPanelVal">
+            슬라이드 영역입니다. <br />
+            슬라이드 영역입니다. <br />
+            슬라이드 영역입니다. <br />
+            슬라이드 영역입니다. <br />
+            슬라이드 영역입니다. <br />
+            슬라이드 영역입니다. <br />
+          </uiFoldingPanel>
+        </div>
+
+        {{ fdPanelVal }}
+      </div>
     </div>
     <h1 class="gd__h1">radio</h1>
     <div>
