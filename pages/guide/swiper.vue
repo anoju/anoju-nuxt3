@@ -229,10 +229,14 @@ const swiperStyleCode2 = `<uiSwiper class="items">
   align-items: center;
   justify-content: center;
   color: #fff;
-  @for $i from 0 through 10 {
-    &.box-#{$i} {
-      background-color: lighten(#d00, $i * 5%);
+  $bgColors: #f66fa0, #fbc846, #00caca, #5846ff, #fd7e64;
+  @for $i from 1 through length($bgColors) {
+    $color: nth($bgColors, $i);
+    &.box-#{$i - 1} {
+      background-color: $color;
     }
+  }
+  @for $i from 0 through 10 {
     &.height-#{$i} {
       height: ($i + 1) * 50px;
     }
