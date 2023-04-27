@@ -83,7 +83,7 @@ const swiperStyleCode2 = `<uiSwiper class="items">
       </uiSwiper>
       <uiCodeHighlight lang="html" :code="swiperCode1"></uiCodeHighlight>
 
-      <h3 class="gd__h3">v-model</h3>
+      <h3 class="gd__h3">v-model(+ initialSlide 기능)</h3>
       <uiSwiper v-model="swiperVal">
         <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
           <div class="swiper-box" :class="'box-' + index">
@@ -179,15 +179,6 @@ const swiperStyleCode2 = `<uiSwiper class="items">
         </div>
       </uiSwiper>
       <uiCodeHighlight lang="html" :code="swiperCode8"></uiCodeHighlight>
-
-      <h3 class="gd__h3">initialSlide</h3>
-      <uiSwiper :initial-slide="2">
-        <div v-for="(slide, index) in slides" :key="index" class="swiper-slide">
-          <div class="swiper-box" :class="'box-' + index">
-            {{ slide.content }}
-          </div>
-        </div>
-      </uiSwiper>
     </div>
 
     <h2 class="gd__h2">style</h2>
