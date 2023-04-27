@@ -96,7 +96,7 @@ const tabFixed = () => {
   const $getOffset = nuxtApp.$getOffset($el);
   const $top = $getOffset.top;
   const $sclTop = window.pageYOffset;
-  if ($top < $sclTop) {
+  if ($top <= $sclTop) {
     isFixed.value = true;
   } else {
     isFixed.value = false;
