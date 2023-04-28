@@ -41,7 +41,7 @@ const setNaviTop = () => {
   if (!$el || !$navi) return;
   const $elTop = $getOffset($el).top;
   const $elBottom = $elTop + $el.offsetHeight;
-  if ($elBottom + 100 < $sclTop) return;
+  if ($elBottom + window.innerHeight / 2 < $sclTop) return;
   const $topFixedH = $getTopFixedHeight($el);
   const $maxTop = $el.offsetHeight - $navi.offsetHeight;
   if ($elBottom - $topFixedH - $navi.offsetHeight < $sclTop) {
