@@ -136,6 +136,12 @@ const tabCode5 = `<uiTabs v-model="tabVal" txt>
     </div>
     <uiCodeHighlight lang="html" :code="buttonCode5"></uiCodeHighlight>
 
+    <h1 class="gd__h1">Tooltip</h1>
+    <div>
+      <h2 class="gd__h1">base</h2>
+      <uiTooltip>툴팁내용입니다.</uiTooltip>
+    </div>
+
     <h1 class="gd__h1">Tabmenu</h1>
     <div>
       <h2 class="gd__h2">line type</h2>
