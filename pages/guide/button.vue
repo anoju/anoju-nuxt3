@@ -40,6 +40,13 @@ const buttonCode4 = `<uiButton line round>round</uiButton>
 <uiButton line round2>round2</uiButton>`;
 const buttonCode5 = `<uiButton line :loading="isBtnLoading">button loading</uiButton>`;
 
+const tooltipCode1 = `<uiTooltip>툴팁내용입니다.</uiTooltip>`;
+const tooltipCode2 = `<uiTooltip @click="tooltipClick" />`;
+const tooltipCode3 = `<uiTooltip>
+  <template #btn><uiButton h24 line>툴팁</uiButton></template>
+  툴팁내용입니다. 툴팁내용입니다.
+</uiTooltip>`;
+
 const tabCode1 = `<uiTabs v-model="tabVal">
   <uiTab>메뉴명1</uiTab>
   <uiTab>메뉴명2</uiTab>
@@ -144,13 +151,18 @@ const tabCode5 = `<uiTabs v-model="tabVal" txt>
     <div>
       <h2 class="gd__h2">base</h2>
       <uiTooltip>툴팁내용입니다.</uiTooltip>
+      <uiCodeHighlight lang="html" :code="tooltipCode1"></uiCodeHighlight>
+
       <h2 class="gd__h2">only btn</h2>
       <uiTooltip @click="tooltipClick" />
+      <uiCodeHighlight lang="html" :code="tooltipCode2"></uiCodeHighlight>
+
       <h2 class="gd__h2">custom btn</h2>
       <uiTooltip>
-        <template #btn><uiButton h24 line>툴팁</uiButton> </template>
+        <template #btn><uiButton h24 line>툴팁</uiButton></template>
         툴팁내용입니다. 툴팁내용입니다.
       </uiTooltip>
+      <uiCodeHighlight lang="html" :code="tooltipCode3"></uiCodeHighlight>
     </div>
 
     <h1 class="gd__h1">Tabmenu</h1>
