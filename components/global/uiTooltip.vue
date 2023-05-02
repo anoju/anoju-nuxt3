@@ -1,9 +1,18 @@
 <script lang="ts" setup>
+// props
+const props = defineProps({
+  class: { type: [String, Array], default: null }
+});
+
 const wrapper = ref<HTMLElement | null>(null);
 const content = ref<HTMLElement | null>(null);
 const isShow = ref(false);
 const isOpen = ref(false);
 
+const tooltipClass = computed(() => {
+  let rtnAry = [props.class];
+  return rtnAry;
+});
 const handleClickOutside = (event: Event) => {
   if (wrapper.value && !wrapper.value.contains(event.target as Node)) {
     onClose();
@@ -15,7 +24,11 @@ const setStyle = () => {
   const $wrap = wrapper.value;
   const $content = content.value;
   if ($wrap && $content) {
-    const tooltipBtn = $wrap.querySelector('.tooltip-btn') as HTMLElement;
+    let tooltipBtn = $wrap.querySelector('.tooltip-btn') as HTMLElement;
+    if (!tooltipBtn) {
+      const $head = $wrap.querySelector('.tooltip-head');
+      if ($head && $head.firstElementChild) tooltipBtn = $head.firstElementChild as HTMLElement;
+    }
     const $left = $getOffset(tooltipBtn).left;
     contentWidth.value = document.body.clientWidth;
     contentLeft.value = $left * -1;
@@ -58,11 +71,17 @@ const onClose = () => {
 const bodyTransitionEnd = () => {
   if (!isOpen.value) isShow.value = false;
 };
+const slots = useSlots();
+
 onMounted(() => {
   const $wrap = wrapper.value;
   const $content = content.value;
   if ($content) contentWidth.value = document.body.clientWidth;
   if ($wrap) {
+    if (!!slots.btn) {
+      const $head = $wrap.querySelector('.tooltip-head');
+      if ($head && $head.firstElementChild) $head.firstElementChild.classList.add('tooltip-btn');
+    }
     const tooltipBtn = $wrap.querySelector('.tooltip-btn');
     if (tooltipBtn) {
       tooltipBtn.addEventListener('click', () => {
@@ -85,9 +104,9 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <div ref="wrapper" class="tooltip-wrap" @click.stop>
+  <div ref="wrapper" class="tooltip-wrap" :classs="tooltipClass" @click.stop>
     <div class="tooltip-head">
-      <uiButton v-if="!$slots.btn" no-effect not class="tooltip-btn" aria-label="자세한 내용 확인">
+      <uiButton v-if="!$slots.btn" no-effect not class="tooltip-btn" aria-label="자세한 내용 확인" v-bind="$attrs">
         <icon name="tooltip"></icon>
       </uiButton>
       <slot name="btn" />

@@ -17,6 +17,10 @@ const tabVal3 = ref(2);
 const tabVal4 = ref(0);
 const tabVal5 = ref(1);
 
+const tooltipClick = () => {
+  console.log('tooltipClick');
+};
+
 const buttonCode1 = `<uiButton>버튼</uiButton>
 <uiButton line>button 태그</uiButton>
 <uiButton line anchor>a 태그</uiButton>`;
@@ -140,6 +144,13 @@ const tabCode5 = `<uiTabs v-model="tabVal" txt>
     <div>
       <h2 class="gd__h2">base</h2>
       <uiTooltip>툴팁내용입니다.</uiTooltip>
+      <h2 class="gd__h2">only btn</h2>
+      <uiTooltip @click="tooltipClick" />
+      <h2 class="gd__h2">custom btn</h2>
+      <uiTooltip>
+        <template #btn><uiButton h24 line>툴팁</uiButton> </template>
+        툴팁내용입니다. 툴팁내용입니다.
+      </uiTooltip>
     </div>
 
     <h1 class="gd__h1">Tabmenu</h1>

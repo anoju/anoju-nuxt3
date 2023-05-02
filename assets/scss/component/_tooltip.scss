@@ -1,4 +1,9 @@
 // tooltip
+:root {
+  --tooltop-arr-width: 1rem;
+  --tooltop-arr-height: 0.8rem;
+  --tooltop-bg: rgba(0, 0, 0, 0.7);
+}
 .tooltip-wrap {
   position: relative;
   display: inline-flex;
@@ -33,9 +38,11 @@
     margin-bottom: 1rem;
     .tooltip-arr {
       top: auto;
-      bottom: -0.8rem;
-      border-width: 0.8rem 0.5rem 0;
-      border-bottom-color: rgba(0, 0, 0, 0.7);
+      bottom: calc(var(--tooltop-arr-height) * -1);
+      border-top-width: var(--tooltop-arr-height);
+      border-top-color: var(--tooltop-bg);
+      border-bottom-width: 0;
+      border-bottom-color: transparent;
       // filter: drop-shadow(0 0.1rem 0.3rem rgba(0, 0, 0, 0.05));
     }
   }
@@ -59,18 +66,20 @@
   border-radius: 0.8rem;
   // box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
   color: #fff;
-  @include dimm(0.7);
+  background-color: var(--tooltop-bg);
+  backdrop-filter: blur(1px);
   @include media-min-width(1024) {
     @include web-center(true);
   }
 }
 .tooltip-arr {
   position: absolute;
-  top: -0.8rem;
-  margin-left: -0.5rem;
+  top: calc(var(--tooltop-arr-height) * -1);
+  margin-left: calc(var(--tooltop-arr-width) * -0.5);
   border: 0 solid transparent;
-  border-width: 0 0.5rem 0.8rem;
-  border-bottom-color: rgba(0, 0, 0, 0.7);
+  border-width: 0 calc(var(--tooltop-arr-width) / 2) var(--tooltop-arr-height);
+  border-bottom-color: var(--tooltop-bg);
+  backdrop-filter: blur(1px);
   // filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
 }
 .tooltip-close {
