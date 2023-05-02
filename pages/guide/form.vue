@@ -194,7 +194,9 @@ const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextar
     <div>
       <h2 class="gd__h2">base</h2>
       <uiInput v-model="inpVal"></uiInput>
+      <div class="flex">readonly</div>
       <uiInput v-model="inpVal" readonly></uiInput>
+      <div class="flex">disabled</div>
       <uiInput v-model="inpVal" disabled></uiInput>
       <uiInput v-model="inpVal" type="password"></uiInput>
       inpVal: {{ inpVal }}
@@ -219,7 +221,9 @@ const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextar
 
       <h2 class="gd__h2">box</h2>
       <uiInput v-model="inpVal2" box></uiInput>
+      <div class="flex">readonly</div>
       <uiInput v-model="inpVal2" box readonly></uiInput>
+      <div class="flex">disabled</div>
       <uiInput v-model="inpVal2" box disabled></uiInput>
       <uiInput v-model="inpVal2" type="password" box></uiInput>
       inpVal: {{ inpVal2 }}
@@ -234,7 +238,9 @@ const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextar
     <div>
       <h2 class="gd__h2">base</h2>
       <uiTextarea v-model="textareaVal1"></uiTextarea>
+      <div class="flex">readonly</div>
       <uiTextarea v-model="textareaVal1" readonly></uiTextarea>
+      <div class="flex">disabled</div>
       <uiTextarea v-model="textareaVal1" disabled></uiTextarea>
       <uiTextarea v-model="textareaVal2" rows="2"></uiTextarea>
       textareaVal1: {{ textareaVal1 }} <br />
@@ -243,7 +249,9 @@ const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextar
 
       <h2 class="gd__h2">box</h2>
       <uiTextarea v-model="textareaVal1" box></uiTextarea>
+      <div class="flex">readonly</div>
       <uiTextarea v-model="textareaVal1" box readonly></uiTextarea>
+      <div class="flex">disabled</div>
       <uiTextarea v-model="textareaVal1" box disabled></uiTextarea>
       <uiTextarea v-model="textareaVal2" box rows="2"></uiTextarea>
       textareaVal1: {{ textareaVal1 }} <br />

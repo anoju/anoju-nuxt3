@@ -325,7 +325,7 @@ html.pc {
 }
 .flex {
   display: flex;
-  & + .flex {
+  & + :is(.flex, .input, .select, .textarea) {
     margin-top: var(--item-margin-y);
   }
   // &:not(.not-full, .justify-start, .justify-center, .justify-end, .space-between, .space-around, .space-evenly, .flex-11, .flex-10, .flex-01, .flex-00, .flex-wrap, .flex-column) {
