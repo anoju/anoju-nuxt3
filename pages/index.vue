@@ -56,9 +56,10 @@ const listAry = [
     }
     > a {
       display: block;
-      padding: 1rem;
+      padding: 1.5rem 1rem;
       &:hover {
-        background-color: #f1f1f1;
+        font-weight: bold;
+        color: var(--primary-color);
       }
     }
   }
