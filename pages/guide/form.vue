@@ -50,12 +50,12 @@ const inputCode1_2 = `<uiInput v-model="inpVal"><uiButton line h24>버튼</uiBut
 <uiInput v-model="inpVal">
   <uiButton h32 class="search" aria-label="검색"><icon type="btn" name="search-24"></icon></uiButton>
 </uiInput>`;
-const inputCode2 = `<uiInput v-model="inpVal" line></uiInput>
-<uiInput v-model="inpVal" line readonly></uiInput>
-<uiInput v-model="inpVal" line disabled></uiInput>
-<uiInput v-model="inpVal" type="password" line></uiInput>`;
-const inputCode3 = `<uiInput v-model="inpVal" line-lbl="입력" placeholder="입력"></uiInput>
-<uiInput v-model="inpVal" line-lbl="금액입력" placeholder="금액입력" unit="원"></uiInput>`;
+const inputCode2 = `<uiInput v-model="inpVal" box></uiInput>
+<uiInput v-model="inpVal" box readonly></uiInput>
+<uiInput v-model="inpVal" box disabled></uiInput>
+<uiInput v-model="inpVal" type="password" box></uiInput>`;
+const inputCode3 = `<uiInput v-model="inpVal" line placeholder="입력"></uiInput>
+<uiInput v-model="inpVal" line placeholder="금액입력" unit="원"></uiInput>`;
 </script>
 <template>
   <uiInner>
@@ -205,17 +205,17 @@ const inputCode3 = `<uiInput v-model="inpVal" line-lbl="입력" placeholder="입
       </uiInput>
       <uiCodeHighlight lang="html" :code="inputCode1_2"></uiCodeHighlight>
 
-      <h2 class="gd__h2">line</h2>
-      <uiInput v-model="inpVal2" line></uiInput>
-      <uiInput v-model="inpVal2" line readonly></uiInput>
-      <uiInput v-model="inpVal2" line disabled></uiInput>
-      <uiInput v-model="inpVal2" type="password" line></uiInput>
+      <h2 class="gd__h2">box</h2>
+      <uiInput v-model="inpVal2" box></uiInput>
+      <uiInput v-model="inpVal2" box readonly></uiInput>
+      <uiInput v-model="inpVal2" box disabled></uiInput>
+      <uiInput v-model="inpVal2" type="password" box></uiInput>
       inpVal: {{ inpVal2 }}
       <uiCodeHighlight lang="html" :code="inputCode2"></uiCodeHighlight>
 
-      <h2 class="gd__h2">line-lbl</h2>
-      <uiInput v-model="inpVal3" line-lbl="입력" placeholder="입력"></uiInput>
-      <uiInput v-model="inpVal3" line-lbl="금액입력" placeholder="금액입력" unit="원"></uiInput>
+      <h2 class="gd__h2">line</h2>
+      <uiInput v-model="inpVal3" line placeholder="입력"></uiInput>
+      <uiInput v-model="inpVal3" line placeholder="금액입력" unit="원"></uiInput>
       <uiCodeHighlight lang="html" :code="inputCode3"></uiCodeHighlight>
     </div>
   </uiInner>

@@ -21,8 +21,8 @@ const props = defineProps({
   class: { type: [String, Array], default: null },
   disabled: { type: Boolean, default: false },
   readonly: { type: Boolean, default: false },
-  line: { type: Boolean, default: false },
-  lineLbl: { type: [Boolean, String], default: false },
+  box: { type: Boolean, default: false },
+  line: { type: [Boolean, String], default: false },
   date: { type: Boolean, default: false },
   time: { type: Boolean, default: false },
   file: { type: Boolean, default: false },
@@ -30,6 +30,7 @@ const props = defineProps({
   comma: { type: Boolean, default: false },
   frontUnit: { type: String, default: null },
   unit: { type: String, default: null },
+  placeholder: { type: String, default: null },
 
   value: { type: [String, Number], default: null, require: true },
   modelValue: { type: [String, Number, Boolean, Array, Object], default: null },
@@ -58,8 +59,8 @@ const inputClass = computed(() => {
       focus: isFocus.value && !props.readonly,
       readonly: props.readonly,
       disabled: props.disabled,
+      box: props.box,
       line: props.line,
-      'line-lbl-inp': props.lineLbl,
       date: props.date,
       time: props.time,
       file: props.file,
@@ -104,6 +105,7 @@ const calendarOpen = (e: any): void => {
       :value="modelValue"
       :disabled="disabled"
       :readonly="readonly"
+      :placeholder="placeholder"
       v-bind="$attrs"
       @input="updateValue"
       @focus="focusIn"
@@ -120,6 +122,6 @@ const calendarOpen = (e: any): void => {
       <uiButton not class="ui-datepicker-btn" aria-label="달력팝업으로 기간조회" @click="calendarOpen">달력팝업으로 기간조회</uiButton>
     </div>
     <slot />
-    <label v-if="lineLbl" :for="inputId" class="lbl">{{ props.lineLbl === true ? '입력' : props.lineLbl }}</label>
+    <label v-if="line && placeholder" :for="inputId" class="lbl">{{ placeholder }}</label>
   </div>
 </template>
