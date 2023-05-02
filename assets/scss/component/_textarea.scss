@@ -2,9 +2,9 @@
   position: relative;
   border: 0.1rem solid #fafafa;
   border-radius: 1rem;
-  min-height: 4.8rem;
+  // min-height: 4.8rem;
   background: #fafafa;
-  &.line {
+  &.box {
     border-color: var(--line-color);
     background-color: #fff;
   }
@@ -17,9 +17,9 @@
     border: 0 none;
     outline: none;
     padding: 1.1rem 1.6rem;
-    min-height: 4.6rem;
+    // min-height: 4.6rem;
     resize: none;
-    line-height: 2.2rem;
+    line-height: 2.4rem;
     font-size: 1.6rem;
     font-weight: 500;
     color: var(--strong-txt-color);

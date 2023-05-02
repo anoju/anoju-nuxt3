@@ -15,7 +15,9 @@ const rdoVal2: Ref<string> = ref('');
 const rdoVal3: Ref<string> = ref('');
 const inpVal: Ref<string> = ref('');
 const inpVal2: Ref<string> = ref('');
-const inpVal3: Ref<string | null> = ref('');
+const inpVal3: Ref<string> = ref('');
+const textareaVal1: Ref<string> = ref('');
+const textareaVal2: Ref<string> = ref('');
 
 const checkCode1 = `<uiCheckbox v-model="chkVal" />
 <uiCheckbox v-model="chkVal">텍스트 있음</uiCheckbox>
@@ -56,6 +58,16 @@ const inputCode2 = `<uiInput v-model="inpVal" box></uiInput>
 <uiInput v-model="inpVal" type="password" box></uiInput>`;
 const inputCode3 = `<uiInput v-model="inpVal" line placeholder="입력"></uiInput>
 <uiInput v-model="inpVal" line placeholder="금액입력" unit="원"></uiInput>`;
+
+const textareaCode1 = `<uiTextarea v-model="textareaVal1"></uiTextarea>
+<uiTextarea v-model="textareaVal1" readonly></uiTextarea>
+<uiTextarea v-model="textareaVal1" disabled></uiTextarea>
+<uiTextarea v-model="textareaVal2" rows="2"></uiTextarea>`;
+const textareaCode2 = `<uiTextarea v-model="textareaVal1" box></uiTextarea>
+<uiTextarea v-model="textareaVal1" box readonly></uiTextarea>
+<uiTextarea v-model="textareaVal1" box disabled></uiTextarea>
+<uiTextarea v-model="textareaVal2" box rows="2"></uiTextarea>`;
+const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextarea>`;
 </script>
 <template>
   <uiInner>
@@ -217,6 +229,30 @@ const inputCode3 = `<uiInput v-model="inpVal" line placeholder="입력"></uiInpu
       <uiInput v-model="inpVal3" line placeholder="입력"></uiInput>
       <uiInput v-model="inpVal3" line placeholder="금액입력" unit="원"></uiInput>
       <uiCodeHighlight lang="html" :code="inputCode3"></uiCodeHighlight>
+    </div>
+    <h1 class="gd__h1">textarea</h1>
+    <div>
+      <h2 class="gd__h2">base</h2>
+      <uiTextarea v-model="textareaVal1"></uiTextarea>
+      <uiTextarea v-model="textareaVal1" readonly></uiTextarea>
+      <uiTextarea v-model="textareaVal1" disabled></uiTextarea>
+      <uiTextarea v-model="textareaVal2" rows="2"></uiTextarea>
+      textareaVal1: {{ textareaVal1 }} <br />
+      textareaVal2: {{ textareaVal2 }}
+      <uiCodeHighlight lang="html" :code="textareaCode1"></uiCodeHighlight>
+
+      <h2 class="gd__h2">box</h2>
+      <uiTextarea v-model="textareaVal1" box></uiTextarea>
+      <uiTextarea v-model="textareaVal1" box readonly></uiTextarea>
+      <uiTextarea v-model="textareaVal1" box disabled></uiTextarea>
+      <uiTextarea v-model="textareaVal2" box rows="2"></uiTextarea>
+      textareaVal1: {{ textareaVal1 }} <br />
+      textareaVal2: {{ textareaVal2 }}
+      <uiCodeHighlight lang="html" :code="textareaCode2"></uiCodeHighlight>
+
+      <h2 class="gd__h2">autoHeight</h2>
+      <uiTextarea v-model="textareaVal1" auto-height></uiTextarea>
+      <uiCodeHighlight lang="html" :code="textareaCode3"></uiCodeHighlight>
     </div>
   </uiInner>
 </template>
