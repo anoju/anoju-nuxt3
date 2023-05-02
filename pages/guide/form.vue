@@ -14,6 +14,8 @@ const rdoVal: Ref<string> = ref('');
 const rdoVal2: Ref<string> = ref('');
 const rdoVal3: Ref<string> = ref('');
 const inpVal: Ref<string> = ref('');
+const inpVal2: Ref<string> = ref('');
+const inpVal3: Ref<string | null> = ref('');
 
 const checkCode1 = `<uiCheckbox v-model="chkVal" />
 <uiCheckbox v-model="chkVal">텍스트 있음</uiCheckbox>
@@ -36,7 +38,24 @@ const radioCode2 = `<uiRadio v-model="rdoVal" large value="large">large</uiRadio
 const radioCode3 = `<uiRadio v-model="rdoVal3" button value="남자">남자</uiRadio>
 <uiRadio v-model="rdoVal3" button value="여자">여자</uiRadio>`;
 
-const inputCode1 = `<uiInput v-model="inpVal"></uiInput>`;
+const inputCode1 = `<uiInput v-model="inpVal"></uiInput>
+<uiInput v-model="inpVal" readonly></uiInput>
+<uiInput v-model="inpVal" disabled></uiInput>
+<uiInput v-model="inpVal2" type="password"></uiInput>`;
+const inputCode1_2 = `<uiInput v-model="inpVal"><uiButton line h24>버튼</uiButton></uiInput>
+<div class="flex">
+  <uiInput v-model="inpVal"></uiInput>
+  <uiButton line class="w-80f">버튼</uiButton>
+</div>
+<uiInput v-model="inpVal">
+  <uiButton h32 class="search" aria-label="검색"><icon type="btn" name="search-24"></icon></uiButton>
+</uiInput>`;
+const inputCode2 = `<uiInput v-model="inpVal" line></uiInput>
+<uiInput v-model="inpVal" line readonly></uiInput>
+<uiInput v-model="inpVal" line disabled></uiInput>
+<uiInput v-model="inpVal" type="password" line></uiInput>`;
+const inputCode3 = `<uiInput v-model="inpVal" line-lbl="입력" placeholder="입력"></uiInput>
+<uiInput v-model="inpVal" line-lbl="금액입력" placeholder="금액입력" unit="원"></uiInput>`;
 </script>
 <template>
   <uiInner>
@@ -163,8 +182,41 @@ const inputCode1 = `<uiInput v-model="inpVal"></uiInput>`;
     <div>
       <h2 class="gd__h2">base</h2>
       <uiInput v-model="inpVal"></uiInput>
+      <uiInput v-model="inpVal" readonly></uiInput>
+      <uiInput v-model="inpVal" disabled></uiInput>
+      <uiInput v-model="inpVal" type="password"></uiInput>
       inpVal: {{ inpVal }}
       <uiCodeHighlight lang="html" :code="inputCode1"></uiCodeHighlight>
+
+      <h2 class="gd__h2">base+</h2>
+      <uiInput v-model="inpVal" unit="원"></uiInput>
+      <br />
+      <uiInput v-model="inpVal" front-unit="약" unit="원"></uiInput>
+      <br />
+      <uiInput v-model="inpVal"><uiButton line h24>버튼</uiButton></uiInput>
+      <br />
+      <div class="flex">
+        <uiInput v-model="inpVal"></uiInput>
+        <uiButton line class="w-80f">버튼</uiButton>
+      </div>
+      <br />
+      <uiInput v-model="inpVal">
+        <uiButton h32 class="search"><icon type="btn" name="search-24"></icon></uiButton>
+      </uiInput>
+      <uiCodeHighlight lang="html" :code="inputCode1_2"></uiCodeHighlight>
+
+      <h2 class="gd__h2">line</h2>
+      <uiInput v-model="inpVal2" line></uiInput>
+      <uiInput v-model="inpVal2" line readonly></uiInput>
+      <uiInput v-model="inpVal2" line disabled></uiInput>
+      <uiInput v-model="inpVal2" type="password" line></uiInput>
+      inpVal: {{ inpVal2 }}
+      <uiCodeHighlight lang="html" :code="inputCode2"></uiCodeHighlight>
+
+      <h2 class="gd__h2">line-lbl</h2>
+      <uiInput v-model="inpVal3" line-lbl="입력" placeholder="입력"></uiInput>
+      <uiInput v-model="inpVal3" line-lbl="금액입력" placeholder="금액입력" unit="원"></uiInput>
+      <uiCodeHighlight lang="html" :code="inputCode3"></uiCodeHighlight>
     </div>
   </uiInner>
 </template>

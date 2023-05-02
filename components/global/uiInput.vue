@@ -18,11 +18,11 @@ const instanceId = nuxtApp.$globalCounters[componentName];
 // props
 const props = defineProps({
   id: { type: String, default: null },
-  type: { type: String, default: 'text' },
   class: { type: [String, Array], default: null },
   disabled: { type: Boolean, default: false },
   readonly: { type: Boolean, default: false },
   line: { type: Boolean, default: false },
+  lineLbl: { type: [Boolean, String], default: false },
   date: { type: Boolean, default: false },
   time: { type: Boolean, default: false },
   file: { type: Boolean, default: false },
@@ -55,10 +55,11 @@ const inputId = computed<string>((): string => {
 const inputClass = computed(() => {
   let rtnAry = [
     {
-      focus: isFocus && !readonly,
-      readonly: readonly,
+      focus: isFocus.value && !props.readonly,
+      readonly: props.readonly,
       disabled: props.disabled,
       line: props.line,
+      'line-lbl-inp': props.lineLbl,
       date: props.date,
       time: props.time,
       file: props.file,
@@ -109,15 +110,16 @@ const calendarOpen = (e: any): void => {
       @blur="focusOut"
     />
     <input v-if="date" type="date" :min="min" :max="max" :value="modelValue" @change="dateChange" @focus="focusIn" @blur="focusOut" />
-    <label v-if="unit != null" class="unit" :for="inputId">
-      {{ unit }}
-    </label>
     <div v-if="modelValue != '' && !notDel && !readonly && !disabled && !date && !time && !datepicker && !monthpicker && !yearpicker" class="del">
       <uiButton not class="btn-inp-del" aria-label="입력내용삭제" @click="valueReset">입력내용삭제</uiButton>
     </div>
+    <label v-if="unit != null" class="unit" :for="inputId">
+      {{ unit }}
+    </label>
     <div v-if="datepicker || monthpicker || yearpicker" class="datepicker_btn">
       <uiButton not class="ui-datepicker-btn" aria-label="달력팝업으로 기간조회" @click="calendarOpen">달력팝업으로 기간조회</uiButton>
     </div>
     <slot />
+    <label v-if="lineLbl" :for="inputId" class="lbl">{{ props.lineLbl === true ? '입력' : props.lineLbl }}</label>
   </div>
 </template>

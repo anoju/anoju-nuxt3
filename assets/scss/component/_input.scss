@@ -12,28 +12,15 @@
     border-color: var(--line-color);
     background-color: #fff;
   }
-  // &.readonly {
-  //   background: none;
-  //   border-width: 0;
-  // }
-  &.readonly input,
-  input[readonly] {
-    color: var(--base-txt-color);
-  }
-  &.disabled {
+  &.disabled:not(.line) {
     background: #f8f8f8;
-  }
-  &.disabled {
-    border-color: #eee;
-  }
-  &.disabled input,
-  input:disabled {
-    opacity: 0.4;
+    border-color: #f8f8f8;
   }
   &.focus {
     border-color: var(--primary-color);
   }
   &.is-error {
+    border-color: var(--alert-txt-color);
     input:not(:focus) {
       color: var(--alert-txt-color);
       // @include bg-etc(1.6rem auto, right 1.2rem center);
@@ -76,7 +63,9 @@
     &:last-child {
       padding-right: 1.6rem;
     }
-
+    &[readonly] {
+      color: var(--base-txt-color);
+    }
     &:disabled {
       color: var(--placeholder-txt-color);
     }
@@ -177,6 +166,11 @@
   .unit {
     flex-shrink: 0;
     color: var(--strong-txt-color2);
+    margin-right: 0.8rem;
+    &.front {
+      margin-right: 0;
+      margin-left: 0.8rem;
+    }
   }
   .dash {
     padding: 0 0.5rem;
@@ -200,6 +194,12 @@
 
     > div:last-child {
       margin-right: 0;
+    }
+    .unit {
+      margin-right: 0rem;
+      &.front {
+        margin-left: 0rem;
+      }
     }
     input {
       height: 3.6rem;
