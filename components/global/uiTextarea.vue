@@ -20,7 +20,7 @@ const props = defineProps({
   autoHeight: { type: Boolean, default: false },
 
   value: { type: [String, Number], default: null, require: true },
-  modelValue: { type: [String, Number, Boolean, Array, Object], default: null }
+  modelValue: { type: [String, Number, String, Array] as PropType<string | number | string[] | undefined>, default: null }
 });
 
 const el = ref<HTMLElement | null>(null);
@@ -99,7 +99,7 @@ onMounted(() => {
       :id="textareaId"
       ref="textareaEl"
       :rows="rows"
-      :value="modelValue"
+      :value="modelValue ? modelValue.toString() : undefined"
       :disabled="disabled"
       :readonly="readonly"
       :placeholder="placeholder"
