@@ -86,7 +86,7 @@ const onOpen = () => {
     isOpen.value = true;
     setTimeout(() => {
       setStyle();
-    });
+    }, 1);
   });
 };
 const onClose = () => {
@@ -138,7 +138,7 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <div ref="wrapper" class="tooltip-wrap" :classs="tooltipClass" @click.stop>
+  <div ref="wrapper" class="tooltip-wrap" :classs="tooltipClass">
     <div class="tooltip-head">
       <uiButton v-if="!$slots.btn" no-effect not class="tooltip-btn" aria-label="자세한 내용 확인" v-bind="$attrs">
         <icon name="tooltip"></icon>
