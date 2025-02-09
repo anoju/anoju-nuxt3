@@ -83,6 +83,7 @@ const onOpen = (): void => {
   isShow.value = true;
   setTimeout(() => {
     isOpen.value = true;
+    isBottom.value = false;
     setTimeout(() => setStyle(currentTarget.value || undefined), 1);
   });
 };

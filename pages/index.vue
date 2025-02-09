@@ -24,20 +24,24 @@ const addBtns = (): void => {
 };
 
 //툴팁관련
-// Map을 배열로 변환하여 tooltip 컴포넌트에 전달
 const triggerRefs = ref<Map<number, HTMLElement>>(new Map());
-const triggersArray = computed(() => Array.from(triggerRefs.value.values()));
-const setTriggerRef = (el: HTMLElement | null, id: number) => {
-  if (el) {
-    triggerRefs.value.set(id, el);
-  } else {
+const triggersArray = computed(() => Array.from(triggerRefs.value.values()).filter(Boolean));
+const setTriggerRef = (el: HTMLElement | null, id: number): void => {
+  if (!el) {
     triggerRefs.value.delete(id);
+    return;
   }
+  triggerRefs.value.set(id, el);
 };
-// 툴팁 대상이 변할때마다 uiTooltip 컴포넌트의 트리거를 초기화
-watch(btns, () => {
-  triggerRefs.value.clear();
-});
+watch(
+  () => btns.value?.length,
+  (newLength, oldLength) => {
+    if (newLength !== oldLength) {
+      triggerRefs.value.clear();
+    }
+  },
+  { immediate: true }
+);
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
@@ -65,8 +69,10 @@ watch(btns, () => {
       <p><ui-tooltip>툴팁입니다.4444</ui-tooltip></p>
 
       <!-- data 속성을 사용하는 경우 -->
-      <button v-for="(btn, i) in btns" :key="i" :ref="el => setTriggerRef(el as HTMLElement, i)">{{ btn }}</button>
-      <ui-tooltip not-head :triggers="triggersArray">공통 툴팁 내용</ui-tooltip>
+      <button v-for="(btn, i) in btns" :key="i" :ref="el => setTriggerRef(el as HTMLElement | null, i)" type="button">
+        {{ btn }}
+      </button>
+      <ui-tooltip v-if="triggersArray.length" not-head :triggers="triggersArray">공통 툴팁 내용</ui-tooltip>
       <br />
       <button @click="addBtns">버튼 추가</button>
     </uiInner>
