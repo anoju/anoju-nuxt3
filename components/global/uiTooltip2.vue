@@ -9,18 +9,15 @@ interface StyleObject extends CSSProperties {
 interface Props {
   class: string | string[] | null;
   notHead?: boolean;
-  targetSelector?: string;
-  isMobile?: boolean;
+  targetSelector?: string; // 클래스나 data 속성 선택자
 }
 
 const props = withDefaults(defineProps<Props>(), {
   class: null,
   notHead: false,
-  targetSelector: '',
-  isMobile: true
+  targetSelector: ''
 });
 
-const slots = useSlots();
 const wrapper = ref<HTMLDivElement | null>(null);
 const content = ref<HTMLDivElement | null>(null);
 const targetElements = ref<HTMLElement[]>([]);
@@ -37,7 +34,6 @@ const isBottom = ref<boolean>(false);
 const isMax = ref<boolean>(false);
 
 const setStyle = (targetBtn?: HTMLElement): void => {
-  if (!isShow.value || !isOpen.value) return;
   const $wrap = wrapper.value;
   const $content = content.value;
 
@@ -120,34 +116,6 @@ const bodyTransitionEnd = (): void => {
   if (!isOpen.value) isShow.value = false;
 };
 
-// PC용 이벤트 핸들러
-const handleMouseEnter = (event: MouseEvent): void => {
-  if (props.isMobile) return;
-  const targetElement = event.currentTarget as HTMLElement;
-  currentTarget.value = targetElement;
-  onOpen();
-  setTimeout(() => setStyle(targetElement));
-};
-
-const handleMouseLeave = (event: MouseEvent): void => {
-  if (props.isMobile) return;
-  onClose();
-};
-
-const handleFocus = (event: FocusEvent): void => {
-  if (props.isMobile) return;
-  const targetElement = event.currentTarget as HTMLElement;
-  currentTarget.value = targetElement;
-  onOpen();
-  setTimeout(() => setStyle(targetElement));
-};
-
-const handleBlur = (event: FocusEvent): void => {
-  if (props.isMobile) return;
-  onClose();
-};
-
-// 모바일용 이벤트 핸들러
 const handleTargetClick = (event: MouseEvent): void => {
   const clickedTarget = event.currentTarget as HTMLElement;
 
@@ -160,87 +128,61 @@ const handleTargetClick = (event: MouseEvent): void => {
   }
 };
 
-// 외부클릭시 닫힘
 const handleClickOutside = (event: MouseEvent): void => {
   const target = event.target as Node;
   if (wrapper.value && !wrapper.value.contains(target) && !targetElements.value.some((el) => el.contains(target))) {
     onClose();
   }
 };
+const slots = useSlots();
 
 let isEvt = false;
-
-// 이벤트 바인딩
-const bindEvents = (element: HTMLElement): void => {
-  if (props.isMobile) {
-    element.addEventListener('click', handleTargetClick);
-  } else {
-    element.addEventListener('mouseenter', handleMouseEnter);
-    element.addEventListener('mouseleave', handleMouseLeave);
-    element.addEventListener('focus', handleFocus);
-    element.addEventListener('blur', handleBlur);
-  }
-};
-
-const unbindEvents = (element: HTMLElement): void => {
-  if (props.isMobile) {
-    element.removeEventListener('click', handleTargetClick);
-  } else {
-    element.removeEventListener('mouseenter', handleMouseEnter);
-    element.removeEventListener('mouseleave', handleMouseLeave);
-    element.removeEventListener('focus', handleFocus);
-    element.removeEventListener('blur', handleBlur);
-  }
-};
 
 onMounted((): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
 
-  if (!$wrap) return;
-  if (props.notHead && props.targetSelector) {
-    const targets = document.querySelectorAll<HTMLElement>(props.targetSelector);
-    targetElements.value = Array.from(targets);
-    targetElements.value.forEach((target) => {
-      bindEvents(target);
-    });
-  } else if (slots.btn) {
-    const $head = $wrap.querySelector('.tooltip-head');
-    const $btn = $wrap.querySelector('.tooltip-btn');
-    if (!$btn && $head?.firstElementChild) {
-      $head.firstElementChild.classList.add('tooltip-btn');
+  if ($wrap) {
+    if (props.notHead && props.targetSelector) {
+      const targets = document.querySelectorAll<HTMLElement>(props.targetSelector);
+      targetElements.value = Array.from(targets);
+      targetElements.value.forEach((target) => {
+        target.addEventListener('click', handleTargetClick);
+      });
+    } else if (slots.btn) {
+      const $head = $wrap.querySelector('.tooltip-head');
+      if ($head?.firstElementChild) {
+        $head.firstElementChild.classList.add('tooltip-btn');
+      }
     }
-  }
 
-  if (!props.notHead) {
-    const tooltipBtn = $wrap.querySelector('.tooltip-btn');
-    if (tooltipBtn) bindEvents(tooltipBtn as HTMLElement);
-  }
+    if (!props.notHead) {
+      const tooltipBtn = $wrap.querySelector('.tooltip-btn');
+      if (tooltipBtn) {
+        tooltipBtn.addEventListener('click', handleTargetClick as EventListener);
+      }
+    }
 
-  if ($content) {
-    isEvt = true;
-    document.addEventListener('click', handleClickOutside);
-    window.addEventListener('resize', () => setStyle(currentTarget.value || undefined));
-    window.addEventListener('scroll', () => setStyle(currentTarget.value || undefined));
+    if ($content) {
+      isEvt = true;
+      document.addEventListener('click', handleClickOutside);
+      window.addEventListener('resize', () => setStyle(currentTarget.value || undefined));
+      window.addEventListener('scroll', () => setStyle(currentTarget.value || undefined));
+    }
   }
 });
 
 onUnmounted((): void => {
-  const $wrap = wrapper.value;
-  if (!$wrap) return;
   if (isEvt) {
     document.removeEventListener('click', handleClickOutside);
     window.removeEventListener('resize', () => setStyle(currentTarget.value || undefined));
     window.removeEventListener('scroll', () => setStyle(currentTarget.value || undefined));
+    if (props.notHead) {
+      targetElements.value.forEach((target) => {
+        target.removeEventListener('click', handleTargetClick);
+      });
+    }
     isEvt = false;
-  }
-  if (props.notHead) {
-    targetElements.value.forEach((target) => {
-      unbindEvents(target);
-    });
-  } else {
-    const tooltipBtn = $wrap.querySelector('.tooltip-btn');
-    if (tooltipBtn) unbindEvents(tooltipBtn as HTMLElement);
   }
 });
 </script>
