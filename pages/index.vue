@@ -17,10 +17,31 @@ const listAry = [
   { title: '공지사합니다.6', link: '#' },
   { title: '공지사합니다.7', link: '#' }
 ];
+const containerRef = ref<HTMLElement | null>(null);
+const btns = ref(['버튼 1', '버튼 2', '버튼 3']);
+const addBtns = (): void => {
+  btns.value.push(`버튼 ${btns.value.length + 1}`);
+};
+
+//툴팁관련
+// Map을 배열로 변환하여 tooltip 컴포넌트에 전달
+const triggerRefs = ref<Map<number, HTMLElement>>(new Map());
+const triggersArray = computed(() => Array.from(triggerRefs.value.values()));
+const setTriggerRef = (el: HTMLElement | null, id: number) => {
+  if (el) {
+    triggerRefs.value.set(id, el);
+  } else {
+    triggerRefs.value.delete(id);
+  }
+};
+// 툴팁 대상이 변할때마다 uiTooltip 컴포넌트의 트리거를 초기화
+watch(btns, () => {
+  triggerRefs.value.clear();
+});
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
-    <uiInner>
+    <uiInner ref="containerRef">
       <h1 class="tit-h1"><ui-tooltip>툴팁입니다.</ui-tooltip>NUXT3 컴포넌트 가이드 제작</h1>
       <p class="t-right">by. 안효주 <ui-tooltip>툴팁입니다.22</ui-tooltip></p>
       <br />
@@ -44,10 +65,10 @@ const listAry = [
       <p><ui-tooltip>툴팁입니다.4444</ui-tooltip></p>
 
       <!-- data 속성을 사용하는 경우 -->
-      <button data-tooltip="help">버튼 1</button>
-      <button data-tooltip="help">버튼 2</button>
-      <button data-tooltip="help">버튼 3</button>
-      <ui-tooltip not-head target-selector="[data-tooltip='help']">공통 툴팁 내용</ui-tooltip>
+      <button v-for="(btn, i) in btns" :key="i" :ref="el => setTriggerRef(el as HTMLElement, i)">{{ btn }}</button>
+      <ui-tooltip not-head :triggers="triggersArray">공통 툴팁 내용</ui-tooltip>
+      <br />
+      <button @click="addBtns">버튼 추가</button>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>
