@@ -117,11 +117,13 @@ const onOpen = (): void => {
 
 const onClose = (): void => {
   isOpen.value = false;
-  isBottom.value = false;
 };
 
 const bodyTransitionEnd = (): void => {
-  if (!isOpen.value) isShow.value = false;
+  if (!isOpen.value) {
+    isShow.value = false;
+    isBottom.value = false;
+  }
 };
 
 // PC용 이벤트 핸들러
