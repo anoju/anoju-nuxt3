@@ -34,14 +34,20 @@ const listAry = [
       <br /><br />
       <ul class="sample-list">
         <li v-for="(item, i) of listAry" :key="i">
-          <uiButton :to="item.link" anchor not>
+          <ui-button :to="item.link" anchor not>
             <badge v-if="item.isNew" small red>NEW</badge>
             {{ item.title }}
-          </uiButton>
+          </ui-button>
         </li>
       </ul>
       <p><ui-tooltip>툴팁입니다.333</ui-tooltip></p>
       <p><ui-tooltip>툴팁입니다.4444</ui-tooltip></p>
+
+      <!-- data 속성을 사용하는 경우 -->
+      <button data-tooltip="help">버튼 1</button>
+      <button data-tooltip="help">버튼 2</button>
+      <button data-tooltip="help">버튼 3</button>
+      <ui-tooltip not-head target-selector="[data-tooltip='help']">공통 툴팁 내용</ui-tooltip>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>

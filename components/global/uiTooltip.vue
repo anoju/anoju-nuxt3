@@ -8,14 +8,20 @@ interface StyleObject extends CSSProperties {
 
 interface Props {
   class: string | string[] | null;
+  notHead?: boolean;
+  targetSelector?: string; // 클래스나 data 속성 선택자
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  class: null
+  class: null,
+  notHead: false,
+  targetSelector: ''
 });
 
 const wrapper = ref<HTMLDivElement | null>(null);
 const content = ref<HTMLDivElement | null>(null);
+const targetElements = ref<HTMLElement[]>([]);
+const currentTarget = ref<HTMLElement | null>(null);
 const isShow = ref<boolean>(false);
 const isOpen = ref<boolean>(false);
 
@@ -23,26 +29,25 @@ const tooltipClass = computed((): (string | string[] | null | undefined)[] => {
   return [props.class];
 });
 
-const handleClickOutside = (event: MouseEvent): void => {
-  const target = event.target as Node;
-  if (wrapper.value && !wrapper.value.contains(target)) {
-    onClose();
-  }
-};
-
 const $getOffset = useNuxtApp().$getOffset;
 const isBottom = ref<boolean>(false);
 const isMax = ref<boolean>(false);
 
-const setStyle = (): void => {
+const setStyle = (targetBtn?: HTMLElement): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
 
   if ($wrap && $content) {
-    let tooltipBtn = $wrap.querySelector('.tooltip-btn') as HTMLElement | null;
-    if (!tooltipBtn) {
-      const $head = $wrap.querySelector('.tooltip-head');
-      if ($head?.firstElementChild) tooltipBtn = $head.firstElementChild as HTMLElement;
+    let tooltipBtn: HTMLElement | null = null;
+
+    if (props.notHead && targetBtn) {
+      tooltipBtn = targetBtn;
+    } else {
+      tooltipBtn = $wrap.querySelector('.tooltip-btn') as HTMLElement | null;
+      if (!tooltipBtn) {
+        const $head = $wrap.querySelector('.tooltip-head');
+        if ($head?.firstElementChild) tooltipBtn = $head.firstElementChild as HTMLElement;
+      }
     }
 
     if (!tooltipBtn) return;
@@ -111,6 +116,24 @@ const bodyTransitionEnd = (): void => {
   if (!isOpen.value) isShow.value = false;
 };
 
+const handleTargetClick = (event: MouseEvent): void => {
+  const clickedTarget = event.currentTarget as HTMLElement;
+
+  if (isShow.value && currentTarget.value === clickedTarget) {
+    onClose();
+  } else {
+    currentTarget.value = clickedTarget;
+    onOpen();
+    setTimeout(() => setStyle(clickedTarget));
+  }
+};
+
+const handleClickOutside = (event: MouseEvent): void => {
+  const target = event.target as Node;
+  if (wrapper.value && !wrapper.value.contains(target) && !targetElements.value.some((el) => el.contains(target))) {
+    onClose();
+  }
+};
 const slots = useSlots();
 
 let isEvt = false;
@@ -120,31 +143,31 @@ onMounted((): void => {
   const $content = content.value;
 
   if ($wrap) {
-    if (slots.btn) {
+    if (props.notHead && props.targetSelector) {
+      const targets = document.querySelectorAll<HTMLElement>(props.targetSelector);
+      targetElements.value = Array.from(targets);
+      targetElements.value.forEach((target) => {
+        target.addEventListener('click', handleTargetClick);
+      });
+    } else if (slots.btn) {
       const $head = $wrap.querySelector('.tooltip-head');
       if ($head?.firstElementChild) {
         $head.firstElementChild.classList.add('tooltip-btn');
       }
     }
 
-    const tooltipBtn = $wrap.querySelector('.tooltip-btn');
-    if (tooltipBtn) {
-      tooltipBtn.addEventListener('click', () => {
-        if ($content) {
-          if (isShow.value) {
-            onClose();
-          } else {
-            onOpen();
-          }
-        }
-      });
+    if (!props.notHead) {
+      const tooltipBtn = $wrap.querySelector('.tooltip-btn');
+      if (tooltipBtn) {
+        tooltipBtn.addEventListener('click', handleTargetClick as EventListener);
+      }
     }
 
     if ($content) {
       isEvt = true;
       document.addEventListener('click', handleClickOutside);
-      window.addEventListener('resize', setStyle);
-      window.addEventListener('scroll', setStyle);
+      window.addEventListener('resize', () => setStyle(currentTarget.value || undefined));
+      window.addEventListener('scroll', () => setStyle(currentTarget.value || undefined));
     }
   }
 });
@@ -152,8 +175,13 @@ onMounted((): void => {
 onUnmounted((): void => {
   if (isEvt) {
     document.removeEventListener('click', handleClickOutside);
-    window.removeEventListener('resize', setStyle);
-    window.removeEventListener('scroll', setStyle);
+    window.removeEventListener('resize', () => setStyle(currentTarget.value || undefined));
+    window.removeEventListener('scroll', () => setStyle(currentTarget.value || undefined));
+    if (props.notHead) {
+      targetElements.value.forEach((target) => {
+        target.removeEventListener('click', handleTargetClick);
+      });
+    }
     isEvt = false;
   }
 });
@@ -161,7 +189,7 @@ onUnmounted((): void => {
 
 <template>
   <div ref="wrapper" class="tooltip-wrap" :classs="tooltipClass">
-    <div class="tooltip-head">
+    <div v-if="!notHead" class="tooltip-head">
       <uiButton v-if="!$slots.btn" no-effect not class="tooltip-btn" aria-label="자세한 내용 확인" v-bind="$attrs">
         <icon name="tooltip"></icon>
       </uiButton>
