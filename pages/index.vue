@@ -22,7 +22,7 @@ const listAry = [
   <uiPage page-title="Index page" btn-back>
     <uiInner>
       <h1 class="tit-h1"><ui-tooltip>툴팁입니다.</ui-tooltip>NUXT3 컴포넌트 가이드 제작</h1>
-      <p class="t-right">by. 안효주 <ui-tooltip>툴팁입니다.</ui-tooltip></p>
+      <p class="t-right">by. 안효주 <ui-tooltip>툴팁입니다.22</ui-tooltip></p>
       <br />
       <br />
       <div class="flex space-between align-center">
@@ -40,7 +40,8 @@ const listAry = [
           </uiButton>
         </li>
       </ul>
-      <ui-tooltip>툴팁입니다.</ui-tooltip>
+      <p><ui-tooltip>툴팁입니다.333</ui-tooltip></p>
+      <p><ui-tooltip>툴팁입니다.4444</ui-tooltip></p>
     </uiInner>
     <uiBottomFixed flex full>
       <uiButton to="/guide/text" primary>Go to Guide</uiButton>

@@ -1,49 +1,64 @@
 <script lang="ts" setup>
-// props
-const props = defineProps({
-  class: { type: [String, Array], default: null }
+import { CSSProperties } from 'vue';
+
+interface StyleObject extends CSSProperties {
+  left?: string;
+  top?: string;
+}
+
+interface Props {
+  class: string | string[] | null;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  class: null
 });
 
-const wrapper = ref<HTMLElement | null>(null);
-const content = ref<HTMLElement | null>(null);
-const isShow = ref(false);
-const isOpen = ref(false);
+const wrapper = ref<HTMLDivElement | null>(null);
+const content = ref<HTMLDivElement | null>(null);
+const isShow = ref<boolean>(false);
+const isOpen = ref<boolean>(false);
 
-const tooltipClass = computed(() => {
-  let rtnAry = [props.class];
-  return rtnAry;
+const tooltipClass = computed((): (string | string[] | null | undefined)[] => {
+  return [props.class];
 });
-const handleClickOutside = (event: Event) => {
-  if (wrapper.value && !wrapper.value.contains(event.target as Node)) {
+
+const handleClickOutside = (event: MouseEvent): void => {
+  const target = event.target as Node;
+  if (wrapper.value && !wrapper.value.contains(target)) {
     onClose();
   }
 };
 
 const $getOffset = useNuxtApp().$getOffset;
-const isBottom = ref(false);
-const isMax = ref(false);
+const isBottom = ref<boolean>(false);
+const isMax = ref<boolean>(false);
 
-const setStyle = () => {
+const setStyle = (): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
+
   if ($wrap && $content) {
-    let tooltipBtn = $wrap.querySelector('.tooltip-btn') as HTMLElement;
+    let tooltipBtn = $wrap.querySelector('.tooltip-btn') as HTMLElement | null;
     if (!tooltipBtn) {
       const $head = $wrap.querySelector('.tooltip-head');
-      if ($head && $head.firstElementChild) tooltipBtn = $head.firstElementChild as HTMLElement;
+      if ($head?.firstElementChild) tooltipBtn = $head.firstElementChild as HTMLElement;
     }
+
+    if (!tooltipBtn) return;
+
     const tooltipWidth = $content.offsetWidth;
     const tooltipHeight = $content.offsetHeight;
     const maxWidth = 760;
     const windowHeight = window.innerHeight;
-    if (tooltipWidth >= maxWidth) isMax.value = true;
-    else isMax.value = false;
+
+    isMax.value = tooltipWidth >= maxWidth;
+
     const $btnCenter = $getOffset(tooltipBtn).left + tooltipBtn.offsetWidth / 2;
     let $left = $btnCenter - tooltipWidth / 2 - window.scrollX;
     const $leftMax = document.body.clientWidth - tooltipWidth - 16;
-    if ($leftMax < $left) $left = $leftMax;
-    const $leftMin = 16;
-    if ($left < $leftMin) $left = $leftMin;
+
+    $left = Math.min(Math.max($left, 16), $leftMax);
 
     let $top = $getOffset(tooltipBtn).top + tooltipBtn.offsetHeight - window.scrollY;
     if ($top + tooltipHeight > windowHeight - tooltipHeight) {
@@ -52,35 +67,32 @@ const setStyle = () => {
     } else {
       isBottom.value = false;
     }
+
     contentLeft.value = $left;
     contentTop.value = $top;
     arrLeft.value = $btnCenter - $left;
   }
 };
-const contentLeft = ref(0);
-const contentTop = ref(0);
-const contentStyle = computed(() => {
-  const $obj: any = {};
-  if (contentLeft.value) $obj.left = contentLeft.value + 'px';
-  if (contentTop.value) $obj.top = contentTop.value + 'px';
-  return $obj;
+
+const contentLeft = ref<number>(0);
+const contentTop = ref<number>(0);
+
+const contentStyle = computed((): StyleObject => {
+  const styleObject: StyleObject = {};
+  if (contentLeft.value) styleObject.left = `${contentLeft.value}px`;
+  if (contentTop.value) styleObject.top = `${contentTop.value}px`;
+  return styleObject;
 });
 
-const arrLeft = ref(0);
-const arrStyle = computed(() => {
-  const $obj: any = {};
-  if (arrLeft.value) $obj.left = arrLeft.value + 'px';
-  return $obj;
+const arrLeft = ref<number>(0);
+
+const arrStyle = computed((): StyleObject => {
+  const styleObject: StyleObject = {};
+  if (arrLeft.value) styleObject.left = `${arrLeft.value}px`;
+  return styleObject;
 });
 
-// watch(isShow, (newValue) => {
-//   if (newValue) {
-//     document.addEventListener('click', handleClickOutside);
-//   } else {
-//     document.removeEventListener('click', handleClickOutside);
-//   }
-// });
-const onOpen = () => {
+const onOpen = (): void => {
   isShow.value = true;
   setTimeout(() => {
     isOpen.value = true;
@@ -89,24 +101,32 @@ const onOpen = () => {
     }, 1);
   });
 };
-const onClose = () => {
+
+const onClose = (): void => {
   isOpen.value = false;
+  isBottom.value = false;
 };
-const bodyTransitionEnd = () => {
+
+const bodyTransitionEnd = (): void => {
   if (!isOpen.value) isShow.value = false;
 };
+
 const slots = useSlots();
 
 let isEvt = false;
-onMounted(() => {
+
+onMounted((): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
-  // if ($content) contentWidth.value = document.body.clientWidth;
+
   if ($wrap) {
-    if (!!slots.btn) {
+    if (slots.btn) {
       const $head = $wrap.querySelector('.tooltip-head');
-      if ($head && $head.firstElementChild) $head.firstElementChild.classList.add('tooltip-btn');
+      if ($head?.firstElementChild) {
+        $head.firstElementChild.classList.add('tooltip-btn');
+      }
     }
+
     const tooltipBtn = $wrap.querySelector('.tooltip-btn');
     if (tooltipBtn) {
       tooltipBtn.addEventListener('click', () => {
@@ -119,6 +139,7 @@ onMounted(() => {
         }
       });
     }
+
     if ($content) {
       isEvt = true;
       document.addEventListener('click', handleClickOutside);
@@ -128,7 +149,7 @@ onMounted(() => {
   }
 });
 
-onUnmounted(() => {
+onUnmounted((): void => {
   if (isEvt) {
     document.removeEventListener('click', handleClickOutside);
     window.removeEventListener('resize', setStyle);
@@ -137,6 +158,7 @@ onUnmounted(() => {
   }
 });
 </script>
+
 <template>
   <div ref="wrapper" class="tooltip-wrap" :classs="tooltipClass">
     <div class="tooltip-head">
@@ -157,7 +179,6 @@ onUnmounted(() => {
       <i class="tooltip-arr" :style="arrStyle" aria-hidden="true"></i>
       <div class="tooltip-inner">
         <slot />
-        <!-- <uiButton not class="tooltip-close" aria-label="툴팁닫기" @click="onClose" /> -->
       </div>
     </div>
   </div>
