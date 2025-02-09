@@ -11,13 +11,15 @@ interface Props {
   notHead?: boolean;
   targetSelector?: string;
   isMobile?: boolean;
+  sideMargin?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   class: null,
   notHead: false,
   targetSelector: '',
-  isMobile: true
+  isMobile: true,
+  sideMargin: 16
 });
 
 const slots = useSlots();
@@ -32,12 +34,10 @@ const tooltipClass = computed((): (string | string[] | null | undefined)[] => {
   return [props.class];
 });
 
-const $getOffset = useNuxtApp().$getOffset;
 const isBottom = ref<boolean>(false);
 const isMax = ref<boolean>(false);
 
 const setStyle = (targetBtn?: HTMLElement): void => {
-  if (!isShow.value || !isOpen.value) return;
   const $wrap = wrapper.value;
   const $content = content.value;
 
@@ -58,20 +58,24 @@ const setStyle = (targetBtn?: HTMLElement): void => {
 
     const tooltipWidth = $content.offsetWidth;
     const tooltipHeight = $content.offsetHeight;
-    const maxWidth = 760;
+    const maxWidth = window.innerHeight - props.sideMargin * 2;
     const windowHeight = window.innerHeight;
 
     isMax.value = tooltipWidth >= maxWidth;
 
-    const $btnCenter = $getOffset(tooltipBtn).left + tooltipBtn.offsetWidth / 2;
-    let $left = $btnCenter - tooltipWidth / 2 - window.scrollX;
-    const $leftMax = document.body.clientWidth - tooltipWidth - 16;
+    const btnRect = tooltipBtn.getBoundingClientRect();
+    const scrollX = window.scrollX || window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-    $left = Math.min(Math.max($left, 16), $leftMax);
+    const $btnCenter = btnRect.left + scrollX + btnRect.width / 2;
+    let $left = $btnCenter - tooltipWidth / 2;
+    const $leftMax = document.body.clientWidth - tooltipWidth - props.sideMargin;
 
-    let $top = $getOffset(tooltipBtn).top + tooltipBtn.offsetHeight - window.scrollY;
+    $left = Math.min(Math.max($left, props.sideMargin), $leftMax);
+
+    let $top = btnRect.bottom + scrollY;
     if ($top + tooltipHeight > windowHeight - tooltipHeight) {
-      $top = $top - tooltipHeight - tooltipBtn.offsetHeight;
+      $top = btnRect.top + scrollY - tooltipHeight;
       isBottom.value = true;
     } else {
       isBottom.value = false;
