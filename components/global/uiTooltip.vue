@@ -63,7 +63,7 @@ const setStyle = (targetBtn?: HTMLElement): void => {
   const btnCenter = btnRect.left + btnRect.width / 2;
 
   // .page 요소를 찾아서 있으면 해당 요소 기준으로 left 값 계산
-  const pageElement = $wrap.closest('.page');
+  const pageElement = $wrap.closest('.page') || $wrap.closest('.popup');
   const pageRect = pageElement ? pageElement.getBoundingClientRect() : { left: 0, width: window.innerWidth };
   let left = btnCenter - tooltipWidth / 2;
   const pageWidth = pageRect.left + pageRect.width;
