@@ -62,9 +62,13 @@ const setStyle = (targetBtn?: HTMLElement): void => {
   const btnRect = targetBtn.getBoundingClientRect();
   const btnCenter = btnRect.left + btnRect.width / 2;
 
-  isMax.value = tooltipWidth >= maxWidth;
-
-  let left = Math.min(Math.max(btnCenter - tooltipWidth / 2, props.sideMargin), document.body.clientWidth - tooltipWidth - props.sideMargin);
+  // .page 요소를 찾아서 있으면 해당 요소 기준으로 left 값 계산
+  const pageElement = $wrap.closest('.page');
+  const pageRect = pageElement ? pageElement.getBoundingClientRect() : { left: 0, width: window.innerWidth };
+  let left = btnCenter - tooltipWidth / 2;
+  const pageWidth = pageRect.left + pageRect.width;
+  // 최소/최대 범위 제한
+  left = Math.min(Math.max(left, pageRect.left + props.sideMargin), pageWidth - tooltipWidth - props.sideMargin);
 
   let top = btnRect.bottom;
   if (top + tooltipHeight > windowHeight - tooltipHeight) {
