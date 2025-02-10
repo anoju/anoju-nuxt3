@@ -11,7 +11,7 @@ interface Props {
   notHead?: boolean;
   isMobile?: boolean;
   sideMargin?: number;
-  triggers?: HTMLElement[];
+  target?: HTMLElement | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   notHead: false,
   isMobile: true,
   sideMargin: 16,
-  triggers: () => []
+  target: null
 });
 
 const wrapper = ref<HTMLDivElement | null>(null);
@@ -138,7 +138,7 @@ const handleClick = (event: MouseEvent): void => {
 // 외부클릭시 닫힘
 const handleClickOutside = (event: MouseEvent): void => {
   const target = event.target as Node;
-  if (wrapper.value && !wrapper.value.contains(target) && !props.triggers?.some((el) => el.contains(target))) {
+  if (wrapper.value && !wrapper.value.contains(target) && !props.target?.contains(target)) {
     onClose();
   }
 };
@@ -169,55 +169,51 @@ const unbindEvents = (element: HTMLElement): void => {
 const slots = useSlots();
 
 watch(
-  () => props.triggers,
-  (newTriggers) => {
-    if (newTriggers?.length && props.notHead) {
-      // 이전 이벤트 리스너 제거
-      if (isEvt) props.triggers?.forEach((trigger) => unbindEvents(trigger));
-      // 새로운 이벤트 리스너 추가
-      newTriggers.forEach((trigger) => trigger && bindEvents(trigger));
-      isEvt = true;
+  () => props.target,
+  (newTarget) => {
+    if (!props.notHead) return; // notHead가 false면 동작하지 않음
+
+    if (newTarget) {
+      currentTarget.value = newTarget;
+      onOpen();
+    } else {
+      onClose();
     }
   },
-  { deep: true, immediate: true }
+  { immediate: true }
 );
 
 onMounted((): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
+  if (!$wrap || !$content) return;
 
-  if (!$wrap) return;
-
+  isEvt = true;
   if (!props.notHead && slots.btn) {
     const $head = $wrap.querySelector('.tooltip-head');
     const firstElement = $head?.firstElementChild;
-    if (firstElement) {
-      firstElement.classList.add('tooltip-btn');
-      bindEvents(firstElement as HTMLElement);
-    }
-  } else if (!props.notHead) {
-    const tooltipBtn = $wrap.querySelector('.tooltip-btn');
-    tooltipBtn && bindEvents(tooltipBtn as HTMLElement);
+    if (firstElement) firstElement.classList.add('tooltip-btn');
   }
 
-  if ($content) {
-    isEvt = true;
-    props.isMobile && document.addEventListener('click', handleClickOutside);
-    const handleResize = () => setStyle(currentTarget.value || undefined);
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleResize);
-  }
+  const tooltipBtn = $wrap.querySelector('.tooltip-btn');
+  if (tooltipBtn) bindEvents(tooltipBtn as HTMLElement);
+  if (props.isMobile) document.addEventListener('click', handleClickOutside);
+  const handleResize = () => setStyle(currentTarget.value || undefined);
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('scroll', handleResize);
 });
 
 onUnmounted((): void => {
-  if (isEvt) {
-    props.isMobile && document.removeEventListener('click', handleClickOutside);
-    const handleResize = () => setStyle(currentTarget.value || undefined);
-    window.removeEventListener('resize', handleResize);
-    window.removeEventListener('scroll', handleResize);
-    props.triggers?.forEach((trigger) => unbindEvents(trigger));
-    isEvt = false;
-  }
+  const $wrap = wrapper.value;
+  if (!isEvt || !$wrap) return;
+
+  const tooltipBtn = $wrap.querySelector('.tooltip-btn');
+  if (tooltipBtn) unbindEvents(tooltipBtn as HTMLElement);
+  if (props.isMobile) document.removeEventListener('click', handleClickOutside);
+  const handleResize = () => setStyle(currentTarget.value || undefined);
+  window.removeEventListener('resize', handleResize);
+  window.removeEventListener('scroll', handleResize);
+  isEvt = false;
 });
 </script>
 

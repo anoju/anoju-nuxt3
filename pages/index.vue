@@ -24,24 +24,19 @@ const addBtns = (): void => {
 };
 
 //툴팁관련
-const triggerRefs = ref<Map<number, HTMLElement>>(new Map());
-const triggersArray = computed(() => Array.from(triggerRefs.value.values()).filter(Boolean));
-const setTriggerRef = (el: HTMLElement | null, id: number): void => {
-  if (!el) {
-    triggerRefs.value.delete(id);
+const tooltipTarget = ref<HTMLElement | null>(null);
+
+const setTooltipTarget = (event: MouseEvent | FocusEvent) => {
+  if (event.type === 'click' && tooltipTarget.value === event.currentTarget) {
+    tooltipTarget.value = null;
     return;
   }
-  triggerRefs.value.set(id, el);
+  tooltipTarget.value = event.currentTarget as HTMLElement;
 };
-watch(
-  () => btns.value?.length,
-  (newLength, oldLength) => {
-    if (newLength !== oldLength) {
-      triggerRefs.value.clear();
-    }
-  },
-  { immediate: true }
-);
+
+const removeTooltipTarget = () => {
+  tooltipTarget.value = null;
+};
 </script>
 <template>
   <uiPage page-title="Index page" btn-back>
@@ -68,11 +63,16 @@ watch(
       <p><ui-tooltip>툴팁입니다.333</ui-tooltip></p>
       <p><ui-tooltip>툴팁입니다.4444</ui-tooltip></p>
 
-      <!-- data 속성을 사용하는 경우 -->
-      <button v-for="(btn, i) in btns" :key="i" :ref="el => setTriggerRef(el as HTMLElement | null, i)" type="button">
+      <!-- data 속성을 사용하는 경우
+      @mouseenter="setTooltipTarget"
+      @mouseleave="removeTooltipTarget"
+      @focus="setTooltipTarget"
+      @blur="removeTooltipTarget"
+      -->
+      <button v-for="(btn, i) in btns" :key="i" type="button" @click="(e) => setTooltipTarget(e)">
         {{ btn }}
       </button>
-      <ui-tooltip v-if="triggersArray.length" not-head :triggers="triggersArray">공통 툴팁 내용</ui-tooltip>
+      <ui-tooltip v-if="btns.length" not-head :target="tooltipTarget">공통 툴팁 내용</ui-tooltip>
       <br />
       <button @click="addBtns">버튼 추가</button>
     </uiInner>
