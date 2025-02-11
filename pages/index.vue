@@ -24,17 +24,21 @@ const addBtns = (): void => {
 };
 
 //툴팁관련
+const tooltipRef = ref<{ close: () => void; open: (targetElement: HTMLElement) => void } | null>(null);
 const tooltipTarget = ref<HTMLElement | null>(null);
-
 const setTooltipTarget = (event: MouseEvent | FocusEvent) => {
-  if (event.type === 'click' && tooltipTarget.value === event.currentTarget) {
+  const targetElement = event.currentTarget as HTMLElement;
+  if (event.type === 'click' && tooltipTarget.value === targetElement) {
+    tooltipRef.value?.close();
     tooltipTarget.value = null;
     return;
   }
+  tooltipRef.value?.open(targetElement);
   tooltipTarget.value = event.currentTarget as HTMLElement;
 };
 
 const removeTooltipTarget = () => {
+  tooltipRef.value?.close();
   tooltipTarget.value = null;
 };
 </script>
@@ -69,10 +73,10 @@ const removeTooltipTarget = () => {
       @focus="setTooltipTarget"
       @blur="removeTooltipTarget"
       -->
-      <button v-for="(btn, i) in btns" :key="i" type="button" @click="(e) => setTooltipTarget(e)">
+      <button v-for="(btn, i) in btns" :key="i" type="button" @click="setTooltipTarget">
         {{ btn }}
       </button>
-      <ui-tooltip v-if="btns.length" not-head :target="tooltipTarget">공통 툴팁 내용</ui-tooltip>
+      <ui-tooltip v-if="btns.length" ref="tooltipRef" not-head>공통 툴팁 내용</ui-tooltip>
       <br />
       <button @click="addBtns">버튼 추가</button>
     </uiInner>
