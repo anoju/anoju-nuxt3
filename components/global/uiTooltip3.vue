@@ -223,7 +223,7 @@ onUnmounted((): void => {
     @mouseover="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
-    <div v-if="!$slots.btn" class="tooltip-head" @click="handleClick">
+    <div v-if="!notHead" class="tooltip-head" @click="handleClick">
       <uiButton
         v-if="!$slots.btn"
         no-effect
