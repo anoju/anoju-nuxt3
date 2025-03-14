@@ -8,6 +8,7 @@ export default defineNuxtConfig({
       title: 'Nuxt3 연습'
     }
   },
+  ssr: true, // SSR 활성화
   vite: {
     plugins: [eslintPlugin()],
     css: {

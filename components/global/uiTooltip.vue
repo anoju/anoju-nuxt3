@@ -7,14 +7,12 @@ interface StyleObject extends CSSProperties {
 }
 
 interface Props {
-  class: string | string[] | null;
   notHead?: boolean;
   isMobile?: boolean;
   sideMargin?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  class: null,
   notHead: false,
   isMobile: true,
   sideMargin: 16
@@ -31,8 +29,6 @@ const contentLeft = ref<number>(0);
 const contentTop = ref<number>(0);
 const arrLeft = ref<number>(0);
 let isEvt = false;
-
-const tooltipClass = computed(() => [props.class]);
 
 const contentStyle = computed(
   (): StyleObject => ({
@@ -229,7 +225,7 @@ onUnmounted((): void => {
 </script>
 
 <template>
-  <div ref="wrapper" class="tooltip-wrap" :class="tooltipClass">
+  <div ref="wrapper" class="tooltip-wrap">
     <div v-if="!notHead" class="tooltip-head">
       <uiButton v-if="!$slots.btn" no-effect not class="tooltip-btn" aria-label="자세한 내용 확인" v-bind="$attrs">
         <icon name="tooltip" />
