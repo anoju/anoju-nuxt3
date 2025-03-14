@@ -28,7 +28,7 @@ const isListScroll = ref(false);
 const isListScrollChk = () => {
   setTimeout(() => {
     if (listRef.value) {
-      isListScroll.value = listRef.value.scrollHeight > listRef.value.offsetHeight;
+      isListScroll.value = listRef.value.scrollHeight > listRef.value.clientHeight;
     } else {
       isListScroll.value = false;
     }
@@ -97,21 +97,24 @@ const removeTooltipTarget = () => {
 </template>
 <style lang="scss">
 .scroll-wrap {
-  height: 257px;
+  height: 277px;
   background: #eee;
   .sample-list {
-    max-height: 100%;
+    height: 100%;
+    padding: 10px 0;
     overflow: auto;
     &.scroll {
-      background-color: #b5c6ff;
+      li {
+        background-color: #b5c6ff;
+      }
     }
   }
 }
 .sample-list {
   border-top: 2px solid #aaa;
   border-bottom: 1px solid #ddd;
-  background-color: #fff;
   li {
+    background-color: #fff;
     + li {
       border-top: 1px solid #ddd;
     }
