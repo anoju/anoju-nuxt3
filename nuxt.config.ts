@@ -2,6 +2,7 @@ import eslintPlugin from 'vite-plugin-eslint';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: '2025-06-25',
   app: {
     // pageTransition: { name: 'page' },
     head: {

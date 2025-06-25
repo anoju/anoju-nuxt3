@@ -20,7 +20,7 @@
       "error",
       {
         "singleQuote": true,
-        "endOfLine": "lf",
+        "endOfLine": "auto",
         "printWidth": 180,
         // "htmlWhitespaceSensitivity": "css",
         // "semi": false,
