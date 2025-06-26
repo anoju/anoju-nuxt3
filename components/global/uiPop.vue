@@ -63,8 +63,8 @@ const maxHeight = () => {
   const $parent = $el.parentElement as HTMLElement;
   if ($parent && $parent.classList.contains('popup')) {
     wrapH = $parent.offsetHeight;
-    wrapPdT = parseInt(nuxtApp.$getStyle($parent, 'padding-top'), 10);
-    wrapPdB = parseInt(nuxtApp.$getStyle($parent, 'padding-bottom'), 10);
+    wrapPdT = parseInt(nuxtApp.$getStyle($parent, 'padding-top') || '0', 10);
+    wrapPdB = parseInt(nuxtApp.$getStyle($parent, 'padding-bottom') || '0', 10);
   }
   const rtnVal = wrapH - wrapPdT - wrapPdB;
   const $body = $el.querySelector('.pop-body') as HTMLElement;
@@ -72,7 +72,6 @@ const maxHeight = () => {
   $body.style.maxHeight = `${rtnVal}px`;
 };
 
-const emitClose = defineEmits(['close']);
 const popClose = () => {
   if (props.close) {
     props.close();
