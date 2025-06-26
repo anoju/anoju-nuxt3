@@ -7,7 +7,7 @@ export default defineNuxtConfig({
       title: 'Nuxt3 연습'
     }
   },
-  // ssr: true, // SSR 활성화
+  ssr: true, // SSR 활성화
   // vite: {
   //   css: {
   //     preprocessorOptions: {
@@ -28,7 +28,6 @@ export default defineNuxtConfig({
     routeRules: {
       '/.well-known/**': {
         headers: { 'cache-control': 's-maxage=0' }
-        // 또는 단순히 무시
       }
     }
   }
