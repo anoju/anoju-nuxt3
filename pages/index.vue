@@ -65,7 +65,7 @@ const removeTooltipTarget = () => {
   <uiPage page-title="Index page" btn-back>
     <uiInner>
       <h1 class="tit-h1"><ui-tooltip>툴팁입니다.</ui-tooltip>NUXT3 컴포넌트 가이드 제작</h1>
-      <p class="t-right">by. 안효주 <ui-tooltip>툴팁입니다.22</ui-tooltip></p>
+      <div class="t-right">by. 안효주 <ui-tooltip>툴팁입니다.22</ui-tooltip></div>
       <br />
       <br />
       <div class="flex space-between align-center">

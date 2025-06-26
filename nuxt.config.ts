@@ -21,7 +21,9 @@ export default defineNuxtConfig({
   // css: ['~/public/css/fonts.css', '~/public/css/lib/animated.4.1.1.css', '~/public/css/lib/swiper-bundle.9.2.4.min.css', '~/assets/scss/front.scss'],
   css: ['~/assets/scss/front.scss'],
 
-  plugins: ['~/plugins/global-function.ts', '~/plugins/modal.ts', '@/plugins/highlightjs.ts'],
+  //plugins: ['~/plugins/global-function.ts', '~/plugins/modal.ts', '@/plugins/highlightjs.ts'],
+  plugins: ['~/plugins/global-function.ts', '~/plugins/modal.ts', { src: '@/plugins/highlightjs.ts', mode: 'client' }, '~/plugins/client-setup.client.ts'],
+
   nitro: {
     routeRules: {
       '/.well-known/**': {
