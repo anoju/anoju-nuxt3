@@ -18,5 +18,13 @@ export default defineNuxtConfig({
     }
   },
   css: ['~/assets/scss/front.scss'],
-  plugins: ['~/plugins/global-function.ts', '~/plugins/modal.ts', '@/plugins/highlightjs.ts']
+  plugins: ['~/plugins/global-function.ts', '~/plugins/modal.ts', '@/plugins/highlightjs.ts'],
+  nitro: {
+    routeRules: {
+      '/.well-known/**': {
+        headers: { 'cache-control': 's-maxage=0' }
+        // 또는 단순히 무시
+      }
+    }
+  }
 });

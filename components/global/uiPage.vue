@@ -90,7 +90,7 @@ const btnTopChk = (): void => {
   }
 };
 
-const $scrollTo = useNuxtApp().$scrollTo;
+const { $scrollTo } = useNuxtApp();
 const btnTopClick = (): void => {
   $scrollTo('window', { top: 0 }, 300);
 };
@@ -117,7 +117,7 @@ const unlockPage = (): void => {
 };
 const lockStyle = computed(() => {
   const rtnVal: any = {};
-  if (lockTop.value) rtnVal.top = lockTop.value + 'px';
+  if (lockTop.value !== null) rtnVal.top = lockTop.value + 'px';
   return rtnVal;
 });
 

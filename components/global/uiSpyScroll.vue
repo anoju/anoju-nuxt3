@@ -19,7 +19,7 @@ const getArryIndex = (ary: Section[], val: string) => {
 const activeSectionId = ref<string | null>(null);
 const el = ref<HTMLElement | null>(null);
 const navi = ref<HTMLElement | null>(null);
-const $scrollTo = useNuxtApp().$scrollTo;
+const { $scrollTo } = useNuxtApp();
 const $getOffset = useNuxtApp().$getOffset;
 const $getTopFixedHeight = useNuxtApp().$getTopFixedHeight;
 
