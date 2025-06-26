@@ -1,5 +1,5 @@
 import type { ModalOptions, LoadingInput } from '~/types/modal';
-import { ModalSystemKey } from '~/composables/useModalSystem';
+import { ModalSystemKey, useModalSystem } from '~/composables/useModalSystem';
 
 export default defineNuxtPlugin((nuxtApp) => {
   // 모달 시스템 인스턴스 생성

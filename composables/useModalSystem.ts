@@ -1,5 +1,9 @@
 import type { ModalOptions, LoadingInput } from '~/types/modal';
 import type { InjectionKey } from 'vue';
+import { useModal } from './useModal';
+import { useLoading } from './useLoading';
+import { useLike } from './useLike';
+import { usePageLock } from './usePageLock';
 
 export const useModalSystem = () => {
   const modal = useModal();
@@ -7,17 +11,35 @@ export const useModalSystem = () => {
   const like = useLike();
   const pageLock = usePageLock();
 
-  // 모달 관련 메서드
+  // 모달과 페이지 잠금을 연동하는 로직
   const showModal = (options: ModalOptions) => {
-    return modal.addModal(options);
+    const promise = modal.addModal(options);
+    
+    // 첫 번째 모달이면 페이지 잠금
+    if (modal.modals.value.length === 1 && document.querySelector('.lock') === null) {
+      pageLock.lockPage();
+    }
+    
+    return promise;
   };
 
   const openModal = (index: number, type?: string, addClass?: string[] | string) => {
     modal.openModal(index, type, addClass);
+    
+    // 첫 번째 모달이면 페이지 잠금
+    if (index === 0 && document.querySelector('.lock') === null) {
+      pageLock.lockPage();
+    }
   };
 
   const closeModal = (index: number | string, payload?: any) => {
-    modal.closeModal(index, payload);
+    const idx = Number(index);
+    modal.closeModal(idx, payload);
+    
+    // 첫 번째 모달(마지막 모달)이면 페이지 잠금 해제
+    if (idx === 0) {
+      pageLock.unlockPage();
+    }
   };
 
   // 로딩 관련 메서드
@@ -41,7 +63,7 @@ export const useModalSystem = () => {
     isLock: pageLock.isLock,
     lockTop: pageLock.lockTop,
     lockStyle: pageLock.lockStyle,
-
+    
     // 메서드
     showModal,
     openModal,
