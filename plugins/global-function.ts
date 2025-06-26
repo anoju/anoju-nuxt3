@@ -1,4 +1,10 @@
-import anime, { AnimeParams } from 'animejs';
+import anime from 'animejs';
+
+// AnimeParams 타입을 직접 정의
+interface AnimeParams {
+  targets: any;
+  [key: string]: any;
+}
 
 interface ScrollOptions {
   left?: number;

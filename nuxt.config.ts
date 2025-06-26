@@ -1,5 +1,3 @@
-import eslintPlugin from 'vite-plugin-eslint';
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-06-25',
@@ -11,7 +9,6 @@ export default defineNuxtConfig({
   },
   ssr: true, // SSR 활성화
   vite: {
-    plugins: [eslintPlugin()],
     css: {
       preprocessorOptions: {
         scss: {

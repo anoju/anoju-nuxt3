@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue';
+// CSSProperties 타입을 직접 정의 (Vue 3에서는 CSSProperties가 export되지 않음)
+type CSSProperties = {
+  [key: string]: string | number | undefined;
+};
 
 interface StyleObject extends CSSProperties {
   left?: string;

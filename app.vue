@@ -112,7 +112,9 @@ onUnmounted(() => {
 </script>
 <template>
   <div id="wrap">
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
     <ModalContainer />
   </div>
 </template>

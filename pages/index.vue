@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { set } from 'animejs';
+// import { set } from 'animejs'; // 사용하지 않는 import 제거
 
 useHead({
   title: 'NUXT3 컴포넌트 가이드'
@@ -8,6 +8,7 @@ useHead({
 const count: Ref<number> = ref(0);
 
 const incrementCount = (): void => {
+  console.log('incrementCount 함수 호출됨!');
   count.value++;
 };
 const listAry = ref([
@@ -16,10 +17,12 @@ const listAry = ref([
   { title: '공지사합니다.3', link: '#' }
 ]);
 const addList = (): void => {
+  console.log('addList 함수 호출됨!');
   listAry.value.push({ title: `공지사합니다.${listAry.value.length + 1}`, link: '#' });
   isListScrollChk();
 };
 const deleteList = (): void => {
+  console.log('deleteList 함수 호출됨!');
   listAry.value.pop();
   isListScrollChk();
 };
