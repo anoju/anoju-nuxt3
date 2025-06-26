@@ -34,6 +34,9 @@ watch(
 </script>
 <template>
   <uiPage :page-title="headerTitle" btn-back>
+    <template #headRight>
+      <uiButton to="/">홈으로</uiButton>
+    </template>
     <uiTabs v-if="isTabShow" fixed>
       <template v-for="(tab, i) of tabInfo" :key="i">
         <uiTab :to="tab.url">{{ tab.text }}</uiTab>

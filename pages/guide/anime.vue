@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+const pageTitle = 'Guide - Anime.js 샘플';
 useHead({
-  title: 'Anime.js 애니메이션 샘플'
+  title: pageTitle
 });
+const emit = defineEmits(['page-title']);
+emit('page-title', pageTitle);
 
 // Anime.js 샘플들
 const { $anime } = useNuxtApp();
