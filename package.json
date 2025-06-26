@@ -1,11 +1,17 @@
 {
+  "name": "anoju-nuxt3",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0",
+    "yarn": ">=1.22.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "vercel-build": "nuxt build",
     "lint": "eslint \"**/*.{ts,tsx,vue,js}\" --fix",
     "lint-eslint": "eslint --ignore-path .gitignore **/*{ts,tsx,vue,js,json} --fix",
     "lint-prettier": "prettier --write \"**/*.(ts|tsx|vue|js|json)\""
