@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import eventBus from '~/utils/eventBus';
+import { ModalSystemKey } from '~/composables/useModalSystem';
 const props = defineProps({
   pageTitle: { type: [String, Number], default: null },
   pageClass: { type: [String, Object], default: null },
@@ -9,6 +9,12 @@ const props = defineProps({
   btnBack: { type: [Boolean, String, Function], default: false },
   btnClose: { type: [Boolean, String, Function], default: false }
 });
+
+// 모달 시스템 주입
+const modalSystem = inject(ModalSystemKey);
+if (!modalSystem) {
+  throw new Error('Modal system not provided');
+}
 
 // methods
 const backClick = (): void => {
@@ -40,19 +46,6 @@ const isBtnTopOn = ref<boolean>(false);
 const fixedSpace = (): void => {
   const _el = el.value;
   if (!_el) return;
-  /*
-  const heightAry: Array<number> = [];
-  const $bottomFixed = _el.querySelectorAll('.bottom-fixed');
-  if (!$bottomFixed.length) return;
-  $bottomFixed.forEach((item: Element) => {
-    const child = item.firstElementChild as HTMLElement;
-    if (getComputedStyle(child).position === 'fixed') {
-      heightAry.push(child.offsetHeight);
-    }
-  });
-  const $maxHeight = heightAry.length > 0 ? Math.max.apply(null, heightAry) : 0;
-  spaceHeight.value = $maxHeight;
-  */
 
   const $bottomFixed = _el.querySelector('.bottom-fixed') as HTMLElement;
   if (!$bottomFixed) return;
@@ -94,45 +87,24 @@ const { $scrollTo } = useNuxtApp();
 const btnTopClick = (): void => {
   $scrollTo('window', { top: 0 }, 300);
 };
+
 const wrapScrollEvt = (): void => {
   fixedSpace();
   btnTopChk();
 };
-const isLock = ref(false);
-const lockTop: Ref<number | null> = ref(null);
-const lockPage = (): void => {
-  lockTop.value = window.pageYOffset * -1;
-  isLock.value = true;
-  // const $html = document.querySelector('html') as HTMLElement;
-  // $html.classList.add('lock');
-};
-const unlockPage = (): void => {
-  // const $html = document.querySelector('html') as HTMLElement;
-  // $html.classList.remove('lock');
-  isLock.value = false;
-  setTimeout(() => {
-    if (lockTop.value) window.scrollTo(0, lockTop.value * -1);
-    lockTop.value = null;
-  }, 1);
-};
-const lockStyle = computed(() => {
-  const rtnVal: any = {};
-  if (lockTop.value !== null) rtnVal.top = lockTop.value + 'px';
-  return rtnVal;
-});
+
+// 모달 시스템에서 페이지 잠금 상태와 스타일 가져오기
+const { isLock, lockStyle } = modalSystem;
 
 // life cycle
 onMounted(() => {
-  eventBus.on('lockPage', lockPage);
-  eventBus.on('unlockPage', unlockPage);
   nextTick(() => {
     window.addEventListener('scroll', wrapScrollEvt);
     fixedSpace();
   });
 });
+
 onUnmounted(() => {
-  eventBus.off('lockPage', lockPage);
-  eventBus.off('unlockPage', unlockPage);
   window.removeEventListener('scroll', wrapScrollEvt);
 });
 </script>

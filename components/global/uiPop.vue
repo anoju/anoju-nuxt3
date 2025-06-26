@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import eventBus from '~/utils/eventBus';
+import { ModalSystemKey } from '~/composables/useModalSystem';
 
 // props
 const props = defineProps({
@@ -14,6 +14,14 @@ const props = defineProps({
   close: { type: Function, default: null },
   type: { type: String, default: null }
 });
+
+// 모달 시스템 주입
+const modalSystem = inject(ModalSystemKey);
+if (!modalSystem) {
+  throw new Error('Modal system not provided');
+}
+
+const { openModal, closeModal } = modalSystem;
 
 const nuxtApp = useNuxtApp();
 const el = ref<HTMLElement | null>(null);
@@ -40,9 +48,11 @@ const isLayerChk = () => {
   const $parent = $el.parentElement as HTMLElement;
   isLayer.value = $parent.classList.contains('popup');
 };
+
 const addClassChk = () => {
   if (props.tooltip) addClass.value.push('tooltip');
 };
+
 const maxHeight = () => {
   let wrap = window;
   let wrapH = wrap.innerHeight;
@@ -53,37 +63,33 @@ const maxHeight = () => {
   const $parent = $el.parentElement as HTMLElement;
   if ($parent && $parent.classList.contains('popup')) {
     wrapH = $parent.offsetHeight;
-    // wrapPdT = parseInt(window.getComputedStyle(wrap, null).getPropertyValue('padding-top'), 10)
-    // wrapPdB = parseInt(window.getComputedStyle(wrap, null).getPropertyValue('padding-bottom'), 10)
     wrapPdT = parseInt(nuxtApp.$getStyle($parent, 'padding-top'), 10);
     wrapPdB = parseInt(nuxtApp.$getStyle($parent, 'padding-bottom'), 10);
   }
-  // const headH = (this.$el.querySelector('.pop_head') != null) ? this.$el.querySelector('.pop_head').offsetHeight : 0;
-  // const footH = (this.$el.querySelector('.pop_foot') != null) ? this.$el.querySelector('.pop_foot').offsetHeight : 0;
-  // const rtnVal = wrapH - wrapPdT - wrapPdB - headH - footH;
   const rtnVal = wrapH - wrapPdT - wrapPdB;
   const $body = $el.querySelector('.pop-body') as HTMLElement;
   if (!$body) return;
   $body.style.maxHeight = `${rtnVal}px`;
 };
+
 const emitClose = defineEmits(['close']);
 const popClose = () => {
   if (props.close) {
     props.close();
-  } else if (isLayer.value) {
-    // emitClose('close', idx.value);
-    eventBus.emit('popClose', idx.value);
+  } else if (isLayer.value && idx.value !== null) {
+    closeModal(idx.value);
   } else {
     window.history.back();
   }
 };
 
 onMounted(() => {
-  // const eventBus = nuxtApp.$eventBus;
   if (el.value) idx.value = Number(el.value.dataset.idx);
   isLayerChk();
   addClassChk();
-  if (idx.value !== null) eventBus.emit('popOpen', [idx.value, modalType, addClass.value]);
+  if (idx.value !== null) {
+    openModal(idx.value, modalType.value, addClass.value);
+  }
   nextTick(() => {
     setTimeout(() => {
       if (modalType.value !== 'full') maxHeight();

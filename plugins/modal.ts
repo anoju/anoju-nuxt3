@@ -1,21 +1,23 @@
-import eventBus from '~/utils/eventBus';
+import type { ModalOptions, LoadingInput } from '~/types/modal';
+import { ModalSystemKey } from '~/composables/useModalSystem';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.provide('eventBus', eventBus);
+  // 모달 시스템 인스턴스 생성
+  const modalSystem = useModalSystem();
 
-  nuxtApp.provide('modal', (options: any) => {
-    return new Promise((resolve) => {
-      const $opt = options;
-      $opt.resolve = resolve;
-      eventBus.emit('addModal', $opt);
-    });
+  // provide로 전역 상태 제공
+  nuxtApp.vueApp.provide(ModalSystemKey, modalSystem);
+
+  // 기존 API 호환성을 위한 메서드들
+  nuxtApp.provide('modal', (options: ModalOptions) => {
+    return modalSystem.showModal(options);
   });
 
   nuxtApp.provide('like', (likeType: string = 'heart') => {
-    eventBus.emit('likeModal', likeType);
+    modalSystem.showLike(likeType);
   });
 
-  nuxtApp.provide('loading', (options: any = true) => {
-    eventBus.emit('loading', options);
+  nuxtApp.provide('loading', (options: LoadingInput = true) => {
+    modalSystem.showLoading(options);
   });
 });
