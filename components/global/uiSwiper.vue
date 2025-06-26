@@ -1,21 +1,6 @@
 <script lang="ts" setup>
-import Swiper, {
-  Swiper as SwiperInstance,
-  Navigation,
-  Pagination,
-  Autoplay,
-  Parallax,
-  A11y,
-  EffectCoverflow,
-  EffectCube,
-  EffectFade,
-  EffectFlip,
-  EffectCreative,
-  EffectCards
-} from 'swiper';
-// A11y,   Autoplay,  Controller,  EffectCoverflow,  EffectCube,  EffectFade,  EffectFlip,  EffectCreative,  EffectCards,  HashNavigation,  History,  Keyboard,  Lazy,  Mousewheel,  Navigation,  Pagination,  Parallax,  Scrollbar,  humbs,  Virtual,  Zoom,  FreeMode,  Grid,  Manipulation,
-
-// import 'swiper/css/bundle';
+import { Navigation, Pagination, Autoplay, EffectFade, EffectCube, EffectCoverflow, EffectFlip, EffectCreative, EffectCards, A11y, Parallax } from 'swiper/modules';
+import type { Swiper as SwiperInstance } from 'swiper/types';
 
 const props = defineProps({
   modelValue: { type: Number, default: null },
@@ -29,7 +14,6 @@ const props = defineProps({
   slidesOffsetBefore: { type: Number, default: null },
   slidesOffsetAfter: { type: Number, default: null },
   speed: { type: Number, default: null },
-  // initialSlide: { type: Number, default: null },
   direction: { type: String, default: null },
 
   effect: { type: String, default: null },
@@ -40,61 +24,18 @@ const props = defineProps({
   pagination: { type: Boolean, default: null },
   paginationType: { type: String, default: 'bullets' },
   paginationClass: { type: String, default: null },
-  // scrollbar: { type: Boolean, default: null },
 
+  // 이벤트 핸들러들
   activeIndexChange: { type: Function, default: null },
   afterInit: { type: Function, default: null },
   beforeDestroy: { type: Function, default: null },
   beforeInit: { type: Function, default: null },
-  beforeLoopFix: { type: Function, default: null },
-  beforeResize: { type: Function, default: null },
-  beforeSlideChangeStart: { type: Function, default: null },
-  beforeTransitionStart: { type: Function, default: null },
-  breakpoint: { type: Function, default: null },
-  changeDirection: { type: Function, default: null },
-  click: { type: Function, default: null },
-  destroy: { type: Function, default: null },
-  doubleClick: { type: Function, default: null },
-  doubleTap: { type: Function, default: null },
-  fromEdge: { type: Function, default: null },
-  init: { type: Function, default: null },
-  lock: { type: Function, default: null },
-  loopFix: { type: Function, default: null },
-  momentumBounce: { type: Function, default: null },
-  observerUpdate: { type: Function, default: null },
-  orientationchange: { type: Function, default: null },
-  progress: { type: Function, default: null },
-  reachBeginning: { type: Function, default: null },
-  reachEnd: { type: Function, default: null },
-  realIndexChange: { type: Function, default: null },
-  resize: { type: Function, default: null },
-  setTransition: { type: Function, default: null },
-  setTranslate: { type: Function, default: null },
   slideChange: { type: Function, default: null },
   slideChangeTransitionEnd: { type: Function, default: null },
   slideChangeTransitionStart: { type: Function, default: null },
-  slideNextTransitionEnd: { type: Function, default: null },
-  slideNextTransitionStart: { type: Function, default: null },
-  slidePrevTransitionEnd: { type: Function, default: null },
-  slidePrevTransitionStart: { type: Function, default: null },
-  slideResetTransitionEnd: { type: Function, default: null },
-  slideResetTransitionStart: { type: Function, default: null },
-  sliderFirstMove: { type: Function, default: null },
-  sliderMove: { type: Function, default: null },
-  slidesGridLengthChange: { type: Function, default: null },
-  slidesLengthChange: { type: Function, default: null },
-  snapGridLengthChange: { type: Function, default: null },
-  snapIndexChange: { type: Function, default: null },
-  tap: { type: Function, default: null },
-  toEdge: { type: Function, default: null },
-  touchEnd: { type: Function, default: null },
-  touchMove: { type: Function, default: null },
-  touchMoveOpposite: { type: Function, default: null },
-  touchStart: { type: Function, default: null },
-  transitionEnd: { type: Function, default: null },
-  transitionStart: { type: Function, default: null },
-  unlock: { type: Function, default: null },
-  update: { type: Function, default: null }
+  reachBeginning: { type: Function, default: null },
+  reachEnd: { type: Function, default: null },
+  realIndexChange: { type: Function, default: null }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -102,6 +43,7 @@ const el = ref<HTMLElement | null>(null);
 const swiperInstance = ref<SwiperInstance | null>(null);
 const isAutoplay = ref<Boolean>(true);
 const swiperIdx = ref(props.modelValue ?? 0);
+
 const autoplayText = computed(() => {
   let txt = '슬라이드 자동롤링 ';
   txt += isAutoplay.value ? '중지' : '시작';
@@ -112,11 +54,12 @@ const isArryInclude = (ary: string[], val: string) => {
   return ary.includes(val);
 };
 
-Swiper.use([Parallax, A11y, EffectCoverflow, EffectCube, EffectFade, EffectFlip, EffectCreative, EffectCards]);
 const swiperOption = computed(() => {
+  const modules = [A11y, Parallax];
+
   const returnVal: any = {
+    modules,
     slidesPerView: props.slidesPerView,
-    parallax: true,
     a11y: {
       prevSlideMessage: '이전 슬라이드',
       nextSlideMessage: '다음 슬라이드',
@@ -124,228 +67,133 @@ const swiperOption = computed(() => {
       paginationBulletMessage: '{{index}}번 슬라이드로 이동'
     },
     on: {
-      activeIndexChange: function (swiper: Swiper) {
+      activeIndexChange: function (swiper: SwiperInstance) {
         if (props.activeIndexChange) props.activeIndexChange(swiper);
       },
-      afterInit: function (swiper: Swiper) {
+      afterInit: function (swiper: SwiperInstance) {
         if (props.afterInit) props.afterInit(swiper);
       },
-      beforeDestroy: function (swiper: Swiper) {
+      beforeDestroy: function (swiper: SwiperInstance) {
         if (props.beforeDestroy) props.beforeDestroy(swiper);
       },
-      beforeInit: function (swiper: Swiper) {
+      beforeInit: function (swiper: SwiperInstance) {
         if (props.beforeInit) props.beforeInit(swiper);
       },
-      beforeLoopFix: function (swiper: Swiper) {
-        if (props.beforeLoopFix) props.beforeLoopFix(swiper);
-      },
-      beforeResize: function (swiper: Swiper) {
-        if (props.beforeResize) props.beforeResize(swiper);
-      },
-      beforeSlideChangeStart: function (swiper: Swiper) {
-        if (props.beforeSlideChangeStart) props.beforeSlideChangeStart(swiper);
-      },
-      beforeTransitionStart: function (swiper: Swiper, speed: any, internal: any) {
-        if (props.beforeSlideChangeStart) props.beforeSlideChangeStart(swiper, speed, internal);
-      },
-      breakpoint: function (swiper: Swiper, breakpointParams: any) {
-        if (props.breakpoint) props.breakpoint(swiper, breakpointParams);
-      },
-      changeDirection: function (swiper: Swiper) {
-        if (props.changeDirection) props.changeDirection(swiper);
-      },
-      click: function (swiper: Swiper, event: Event) {
-        if (props.click) props.click(swiper, event);
-      },
-      destroy: function (swiper: Swiper) {
-        if (props.destroy) props.destroy(swiper);
-      },
-      doubleClick: function (swiper: Swiper, event: Event) {
-        if (props.doubleClick) props.doubleClick(swiper, event);
-      },
-      doubleTap: function (swiper: Swiper, event: Event) {
-        if (props.doubleTap) props.doubleTap(swiper, event);
-      },
-      fromEdge: function (swiper: Swiper) {
-        if (props.fromEdge) props.fromEdge(swiper);
-      },
-      init: function (swiper: Swiper) {
-        if (props.init) props.init(swiper);
-      },
-      lock: function (swiper: Swiper) {
-        if (props.lock) props.lock(swiper);
-      },
-      loopFix: function (swiper: Swiper) {
-        if (props.loopFix) props.loopFix(swiper);
-      },
-      momentumBounce: function (swiper: Swiper) {
-        if (props.momentumBounce) props.momentumBounce(swiper);
-      },
-      observerUpdate: function (swiper: Swiper) {
-        if (props.observerUpdate) props.observerUpdate(swiper);
-      },
-      orientationchange: function (swiper: Swiper) {
-        if (props.orientationchange) props.orientationchange(swiper);
-      },
-      progress: function (swiper: Swiper, progress: any) {
-        if (props.progress) props.progress(swiper, progress);
-      },
-      reachBeginning: function (swiper: Swiper) {
-        if (props.reachBeginning) props.reachBeginning(swiper);
-      },
-      reachEnd: function (swiper: Swiper) {
-        if (props.reachEnd) props.reachEnd(swiper);
-      },
-      realIndexChange: function (swiper: Swiper) {
-        if (props.realIndexChange) props.realIndexChange(swiper);
-      },
-      resize: function (swiper: Swiper) {
-        if (props.resize) props.resize(swiper);
-      },
-      setTransition: function (swiper: Swiper, transition: any) {
-        if (props.setTransition) props.setTransition(swiper, transition);
-      },
-      setTranslate: function (swiper: Swiper, translate: any) {
-        if (props.setTranslate) props.setTranslate(swiper, translate);
-      },
-      slideChange: function (swiper: Swiper) {
+      slideChange: function (swiper: SwiperInstance) {
         if (swiperIdx.value !== swiper.realIndex) swiperIdx.value = swiper.realIndex;
         if (props.slideChange) props.slideChange(swiper);
       },
-      slideChangeTransitionEnd: function (swiper: Swiper) {
+      slideChangeTransitionEnd: function (swiper: SwiperInstance) {
         if (props.slideChangeTransitionEnd) props.slideChangeTransitionEnd(swiper);
       },
-      slideChangeTransitionStart: function (swiper: Swiper) {
+      slideChangeTransitionStart: function (swiper: SwiperInstance) {
         if (props.slideChangeTransitionStart) props.slideChangeTransitionStart(swiper);
       },
-      slideNextTransitionEnd: function (swiper: Swiper) {
-        if (props.slideNextTransitionEnd) props.slideNextTransitionEnd(swiper);
+      reachBeginning: function (swiper: SwiperInstance) {
+        if (props.reachBeginning) props.reachBeginning(swiper);
       },
-      slideNextTransitionStart: function (swiper: Swiper) {
-        if (props.slideNextTransitionStart) props.slideNextTransitionStart(swiper);
+      reachEnd: function (swiper: SwiperInstance) {
+        if (props.reachEnd) props.reachEnd(swiper);
       },
-      slidePrevTransitionEnd: function (swiper: Swiper) {
-        if (props.slidePrevTransitionEnd) props.slidePrevTransitionEnd(swiper);
-      },
-      slidePrevTransitionStart: function (swiper: Swiper) {
-        if (props.slidePrevTransitionStart) props.slidePrevTransitionStart(swiper);
-      },
-      slideResetTransitionEnd: function (swiper: Swiper) {
-        if (props.slideResetTransitionEnd) props.slideResetTransitionEnd(swiper);
-      },
-      slideResetTransitionStart: function (swiper: Swiper) {
-        if (props.slideResetTransitionStart) props.slideResetTransitionStart(swiper);
-      },
-      sliderFirstMove: function (swiper: Swiper, event: Event) {
-        if (props.sliderFirstMove) props.sliderFirstMove(swiper, event);
-      },
-      sliderMove: function (swiper: Swiper, event: Event) {
-        if (props.sliderMove) props.sliderMove(swiper, event);
-      },
-      slidesGridLengthChange: function (swiper: Swiper) {
-        if (props.slidesGridLengthChange) props.slidesGridLengthChange(swiper);
-      },
-      slidesLengthChange: function (swiper: Swiper) {
-        if (props.slidesLengthChange) props.slidesLengthChange(swiper);
-      },
-      snapGridLengthChange: function (swiper: Swiper) {
-        if (props.snapGridLengthChange) props.snapGridLengthChange(swiper);
-      },
-      snapIndexChange: function (swiper: Swiper) {
-        if (props.snapIndexChange) props.snapIndexChange(swiper);
-      },
-      tap: function (swiper: Swiper, event: Event) {
-        if (props.tap) props.tap(swiper, event);
-      },
-      toEdge: function (swiper: Swiper) {
-        if (props.toEdge) props.toEdge(swiper);
-      },
-      touchEnd: function (swiper: Swiper, event: Event) {
-        if (props.touchEnd) props.touchEnd(swiper, event);
-      },
-      touchMove: function (swiper: Swiper, event: Event) {
-        if (props.touchMove) props.touchMove(swiper, event);
-      },
-      touchMoveOpposite: function (swiper: Swiper, event: Event) {
-        if (props.touchMoveOpposite) props.touchMoveOpposite(swiper, event);
-      },
-      touchStart: function (swiper: Swiper, event: Event) {
-        if (props.touchStart) props.touchStart(swiper, event);
-      },
-      transitionEnd: function (swiper: Swiper) {
-        if (props.transitionEnd) props.transitionEnd(swiper);
-      },
-      transitionStart: function (swiper: Swiper) {
-        if (props.transitionStart) props.transitionStart(swiper);
-      },
-      unlock: function (swiper: Swiper) {
-        if (props.unlock) props.unlock(swiper);
-      },
-      update: function (swiper: Swiper) {
-        if (props.update) props.update(swiper);
+      realIndexChange: function (swiper: SwiperInstance) {
+        if (props.realIndexChange) props.realIndexChange(swiper);
       }
     }
   };
+
+  // 기본 옵션들
   if (props.loop) returnVal.loop = true;
   if (props.autoHeight) returnVal.autoHeight = props.autoHeight;
   if (props.centeredSlides) returnVal.centeredSlides = props.centeredSlides;
-
   if (!props.allowTouchMove) returnVal.allowTouchMove = props.allowTouchMove;
   if (props.spaceBetween) returnVal.spaceBetween = props.spaceBetween;
   if (props.slidesOffsetBefore) returnVal.slidesOffsetBefore = props.slidesOffsetBefore;
   if (props.slidesOffsetAfter) returnVal.slidesOffsetAfter = props.slidesOffsetAfter;
   if (props.speed) returnVal.speed = props.speed;
-  if (props.modelValue) returnVal.initialSlide = props.modelValue;
+  if (props.modelValue !== null) returnVal.initialSlide = props.modelValue;
 
+  // Direction 설정
   const directionAry = ['horizontal', 'vertical'];
-  if (props.direction && isArryInclude(directionAry, props.direction)) returnVal.direction = props.direction;
+  if (props.direction && isArryInclude(directionAry, props.direction)) {
+    returnVal.direction = props.direction;
+  }
 
+  // Effect 설정
   const effectAry = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'creative', 'cards'];
-  if (props.effect && isArryInclude(effectAry, props.effect)) returnVal.effect = props.effect;
+  if (props.effect && isArryInclude(effectAry, props.effect)) {
+    returnVal.effect = props.effect;
 
+    // Effect 모듈 추가
+    switch (props.effect) {
+      case 'fade':
+        modules.push(EffectFade);
+        break;
+      case 'cube':
+        modules.push(EffectCube);
+        break;
+      case 'coverflow':
+        modules.push(EffectCoverflow);
+        break;
+      case 'flip':
+        modules.push(EffectFlip);
+        break;
+      case 'creative':
+        modules.push(EffectCreative);
+        break;
+      case 'cards':
+        modules.push(EffectCards);
+        break;
+    }
+  }
+
+  // Breakpoints 설정
   if (props.breakpoints) returnVal.breakpoints = props.breakpoints;
 
+  // Autoplay 설정
   if (props.autoplay) {
-    Swiper.use([Autoplay]);
+    modules.push(Autoplay);
     returnVal.autoplay = {
-      delay: props.autopDelay
-      // disableOnInteraction: false
+      delay: props.autopDelay,
+      disableOnInteraction: false
     };
   }
 
-  if (props.navigation && el.value) {
-    const prevEl = el.value.querySelector('.swiper-button-prev') as HTMLElement;
-    const nextEl = el.value.querySelector('.swiper-button-next') as HTMLElement;
-    if (prevEl && nextEl) {
-      Swiper.use([Navigation]);
-      returnVal.navigation = {
-        prevEl: prevEl,
-        nextEl: nextEl
+  // Navigation 설정
+  if (props.navigation) {
+    modules.push(Navigation);
+    returnVal.navigation = {
+      prevEl: '.swiper-button-prev',
+      nextEl: '.swiper-button-next'
+    };
+  }
+
+  // Pagination 설정
+  if (props.pagination) {
+    modules.push(Pagination);
+    const paginationEl = el.value?.querySelector('.swiper-pagination') || '.swiper-pagination';
+    returnVal.pagination = {
+      el: paginationEl,
+      type: props.paginationType
+    };
+
+    if (props.paginationType === 'bullets') {
+      returnVal.pagination.clickable = true;
+      returnVal.pagination.renderBullet = (index: number, className: string) => {
+        return `<button type="button" class="${className}">${index + 1}번째 슬라이드</button>`;
       };
     }
   }
-  if (props.pagination && el.value) {
-    const paginationEl = el.value.querySelector('.swiper-pagination') as HTMLElement;
-    if (paginationEl) {
-      Swiper.use([Pagination]);
-      returnVal.pagination = {
-        el: paginationEl,
-        type: props.paginationType
-      };
-      if (props.paginationType === 'bullets') {
-        returnVal.pagination.clickable = true;
-        returnVal.pagination.renderBullet = (index: number, className: string) => {
-          return `<button type="button" class="${className}">${index + 1}번째 슬라이드</button>`;
-        };
-      }
-    }
-  }
+
+  // 모듈 배열을 업데이트
+  returnVal.modules = modules;
+
   return returnVal;
 });
 
 const autoPlayButton = () => {
   isAutoplay.value = !isAutoplay.value;
-  if (!swiperInstance.value) return;
+  if (!swiperInstance.value || !props.autoplay) return;
+
   if (isAutoplay.value) {
     swiperInstance.value.autoplay.start();
   } else {
@@ -358,22 +206,45 @@ watch(swiperIdx, (newValue) => {
     emit('update:modelValue', newValue);
   }
 });
+
 watch(
   () => props.modelValue,
   (newValue, oldValue) => {
-    if (!swiperInstance.value || !newValue) return;
+    if (!swiperInstance.value || newValue === null) return;
     const $realIndex = swiperInstance.value.realIndex;
-    if (newValue !== $realIndex) swiperInstance.value.slideTo(newValue, 300);
+    if (newValue !== $realIndex) {
+      swiperInstance.value.slideTo(newValue, 300);
+    }
   }
 );
 
 onMounted(() => {
-  if (el.value) {
-    const swiperEl = el.value.querySelector('.swiper') as HTMLElement;
-    if (swiperEl) swiperInstance.value = new Swiper(swiperEl, swiperOption.value);
+  if (!process.client) return; // 클라이언트에서만 실행
+
+  nextTick(async () => {
+    if (el.value) {
+      const swiperEl = el.value.querySelector('.swiper') as HTMLElement;
+      if (swiperEl) {
+        try {
+          // 동적으로 Swiper import (Swiper 클래스만)
+          const { default: Swiper } = await import('swiper');
+          swiperInstance.value = new Swiper(swiperEl, swiperOption.value);
+        } catch (error) {
+          console.error('Swiper 로드 실패:', error);
+        }
+      }
+    }
+  });
+});
+
+onUnmounted(() => {
+  if (swiperInstance.value) {
+    swiperInstance.value.destroy();
+    swiperInstance.value = null;
   }
 });
 </script>
+
 <template>
   <div ref="el" class="ui-swiper">
     <div class="swiper">
@@ -385,12 +256,11 @@ onMounted(() => {
     </div>
     <div v-if="pagination && autoplay" class="swiper-pagination-wrap">
       <div class="swiper-pagination" :class="paginationClass"></div>
-      <button class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
+      <button v-if="autoplay" class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
     </div>
     <div v-else-if="pagination" class="swiper-pagination" :class="paginationClass"></div>
     <div v-else-if="autoplay" class="swiper-auto">
       <button class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
     </div>
-    <!-- <div v-if="scrollbar" class="swiper-scrollbar"></div> -->
   </div>
 </template>

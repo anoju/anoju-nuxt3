@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .scl-title-hide {
   opacity: 0;
   transform: translateY(100%);
@@ -11,7 +17,7 @@
   &:first-child {
     padding-top: 4rem;
     html.ios & {
-      @include ios-top(padding-top, 4rem);
+      @include mx.ios-top(padding-top, 4rem);
     }
   }
   > section,
@@ -36,7 +42,7 @@
   padding-left: var(--base-padding);
   padding-right: var(--base-padding);
   .section & {
-    @include outer;
+    @include mx.outer;
   }
 }
 .full-contents {
@@ -54,6 +60,6 @@
 .section {
   padding: 0 var(--base-padding);
   .outer {
-    @include outer;
+    @include mx.outer;
   }
 }

@@ -1,78 +1,116 @@
 <script lang="ts" setup>
-// props
-const props = defineProps({
-  type: { type: String, default: 'button' },
-  title: { type: String, default: null },
-  target: { type: String, default: null },
-  disabled: { type: Boolean, default: false },
-  loading: { type: Boolean, default: false },
-  noEffect: { type: Boolean, default: false },
-  dblclick: { type: Function, default: null },
+// Types
+interface Props {
+  type?: string;
+  title?: string | undefined;
+  target?: string | undefined;
+  disabled?: boolean;
+  loading?: boolean;
+  noEffect?: boolean;
+  dblclick?: (() => void) | null;
 
   // 링크이동
-  to: { type: String, default: null },
-  anchor: { type: Boolean, default: false },
+  to?: string | null;
+  anchor?: boolean;
 
-  not: { type: Boolean, default: false },
-  link: { type: Boolean, default: false },
-  round: { type: Boolean, default: false },
-  round2: { type: Boolean, default: false },
-  icon: { type: Boolean, default: false },
+  not?: boolean;
+  link?: boolean;
+  round?: boolean;
+  round2?: boolean;
+  icon?: boolean;
 
   // 색상
-  color: { type: String, default: null },
-  primary: { type: Boolean, default: false },
-  gray: { type: Boolean, default: false },
-  gray2: { type: Boolean, default: false },
-  gray3: { type: Boolean, default: false },
-  line: { type: Boolean, default: false },
-  line2: { type: Boolean, default: false },
+  color?: string | null;
+  primary?: boolean;
+  gray?: boolean;
+  gray2?: boolean;
+  gray3?: boolean;
+  line?: boolean;
+  line2?: boolean;
 
   // 크기
-  size: { type: String, default: null },
-  h60: { type: Boolean, default: false },
-  h52: { type: Boolean, default: false },
-  h38: { type: Boolean, default: false },
-  h32: { type: Boolean, default: false },
-  h24: { type: Boolean, default: false }
-});
-// data
-const isFocus: Ref<boolean> = ref(false);
-const isClick: Ref<boolean> = ref(false);
-
-//computed
-const href = computed<string>((): string => {
-  let val = '#';
-  if (!!props.to && typeof props.to === 'string') val = props.to;
-  return val;
-});
+  size?: string | null;
+  h60?: boolean;
+  h52?: boolean;
+  h38?: boolean;
+  h32?: boolean;
+  h24?: boolean;
+}
 
 type Color = 'primary' | 'gray' | 'gray2' | 'gray3';
+type Size = 'h60' | 'h52' | 'h38' | 'h32' | 'h24';
+
+// Props with defaults using withDefaults
+const props = withDefaults(defineProps<Props>(), {
+  type: 'button',
+  title: undefined,
+  target: undefined,
+  disabled: false,
+  loading: false,
+  noEffect: false,
+  dblclick: null,
+  to: null,
+  anchor: false,
+  not: false,
+  link: false,
+  round: false,
+  round2: false,
+  icon: false,
+  color: null,
+  primary: false,
+  gray: false,
+  gray2: false,
+  gray3: false,
+  line: false,
+  line2: false,
+  size: null,
+  h60: false,
+  h52: false,
+  h38: false,
+  h32: false,
+  h24: false
+});
+
+// Emits with proper typing
+const emit = defineEmits(['click', 'dblclick', 'focus', 'blur']);
+
+// Reactive state
+const isFocus = ref<boolean>(false);
+const isClick = ref<boolean>(false);
+const button = ref<HTMLElement | null>(null);
+const btnInW = ref<number>(0);
+const btnInH = ref<number>(0);
+const btnInX = ref<number>(0);
+const btnInY = ref<number>(0);
+
+// Computed properties
+const href = computed<string>(() => {
+  if (props.to && typeof props.to === 'string') {
+    return props.to;
+  }
+  return '#';
+});
+
 const colorAry: Color[] = ['primary', 'gray', 'gray2', 'gray3'];
-const matchingColor = colorAry.find((color) => props[color]);
-const $color = computed<Color | null>((): Color | null => {
+const matchingColor = computed(() => colorAry.find((color) => props[color]));
+const $color = computed<Color | null>(() => {
   if (props.color && colorAry.includes(props.color as Color)) {
     return props.color as Color;
-  } else if (matchingColor) {
-    return matchingColor;
   }
-  return null;
+  return matchingColor.value || null;
 });
 
-type Size = 'h60' | 'h52' | 'h38' | 'h32' | 'h24';
 const sizeAry: Size[] = ['h60', 'h52', 'h38', 'h32', 'h24'];
-const matchingSize = sizeAry.find((size) => props[size]);
-const $size = computed<Size | null>((): Size | null => {
+const matchingSize = computed(() => sizeAry.find((size) => props[size]));
+const $size = computed<Size | null>(() => {
   if (props.size && sizeAry.includes(props.size as Size)) {
     return props.size as Size;
-  } else if (matchingSize) {
-    return matchingSize;
   }
-  return null;
+  return matchingSize.value || null;
 });
 
-const btnClass = computed<Array<string | Object>>((): Array<string | Object> => {
-  const rtnAry = [
+const btnClass = computed<Array<string | Record<string, boolean>>>(() => {
+  const rtnAry: Array<string | Record<string, boolean>> = [
     'button',
     {
       focus: isFocus.value,
@@ -87,12 +125,14 @@ const btnClass = computed<Array<string | Object>>((): Array<string | Object> => 
       'btn-clicking-active': isClick.value
     }
   ];
+
   if ($color.value) rtnAry.push($color.value);
   if ($size.value) rtnAry.push($size.value);
+
   return rtnAry;
 });
 
-const notClass = computed<Array<string | Object>>((): Array<string | Object> => {
+const notClass = computed<Array<string | Record<string, boolean>>>(() => {
   return [
     'button',
     {
@@ -103,48 +143,64 @@ const notClass = computed<Array<string | Object>>((): Array<string | Object> => 
   ];
 });
 
-const linkClass = computed<Array<string | Object>>((): Array<string | Object> => {
-  const rtnAry = [
+const linkClass = computed<Array<string | Record<string, boolean>>>(() => {
+  const rtnAry: Array<string | Record<string, boolean>> = [
     'btn-txt',
     {
       focus: isFocus.value,
       disabled: props.disabled
     }
   ];
+
   if ($color.value) rtnAry.push($color.value);
+
   return rtnAry;
 });
 
-const buttonClass = computed<any>((): any => {
-  let $class = btnClass.value;
-  if (props.not) $class = notClass.value;
-  if (props.link) $class = linkClass.value;
-  return $class;
+const buttonClass = computed(() => {
+  if (props.not) return notClass.value;
+  if (props.link) return linkClass.value;
+  return btnClass.value;
 });
 
+// Double click logic
 let isDblclick = false;
 let dblclickTime: ReturnType<typeof setTimeout> | null = null;
-const focusIn = () => {
+
+// Event handlers
+const focusIn = (e: FocusEvent): void => {
   isFocus.value = true;
+  emit('focus', e);
 };
-const focusOut = () => {
+
+const focusOut = (e: FocusEvent): void => {
   isFocus.value = false;
+  emit('blur', e);
 };
-const clickEvt = (e: any): void => {
-  if ((props.anchor && href.value === '#') || (!!props.to && props.to.startsWith('#'))) e.preventDefault();
-  if (!props.disabled || !props.loading) {
-    if (props.target === '_blank' && (!!props.to || !!href)) {
+
+const clickEvt = (e: Event): void => {
+  if ((props.anchor && href.value === '#') || (props.to && props.to.startsWith('#'))) {
+    e.preventDefault();
+  }
+
+  if (!props.disabled && !props.loading) {
+    // 부모 컴포넌트로 클릭 이벤트 전달
+    emit('click', e);
+
+    if (props.target === '_blank' && (props.to || href.value)) {
       e.preventDefault();
-      const url = props.to !== null ? props.to : href.value;
+      const url = props.to || href.value;
       linkTo(url);
     }
+
     if (props.dblclick) {
       if (isDblclick) {
-        if (!!dblclickTime) {
+        if (dblclickTime) {
           clearTimeout(dblclickTime);
           dblclickTime = null;
         }
         isDblclick = false;
+        emit('dblclick', e);
         props.dblclick();
       } else {
         isDblclick = true;
@@ -155,45 +211,38 @@ const clickEvt = (e: any): void => {
         }
       }
     }
-    if (!props.noEffect && !isClick.value) clickEffect(e);
+
+    if (!props.noEffect && !isClick.value) {
+      clickEffect(e as MouseEvent);
+    }
   }
 };
+
 const linkTo = (url: string): void => {
   window.open(url);
 };
 
-const button = ref<HTMLElement | null>(null);
-const btnInW: Ref<number> = ref(0);
-const btnInH: Ref<number> = ref(0);
-const btnInX: Ref<number> = ref(0);
-const btnInY: Ref<number> = ref(0);
+const clickEffect = (e: MouseEvent): void => {
+  if (isClick.value || !button.value) return;
 
-const clickEffect = (e: any): void => {
-  if (isClick.value) return;
   isClick.value = true;
-  if (!button.value) return;
   const $btnMax = Math.max(button.value.offsetWidth, button.value.offsetHeight);
   btnInW.value = $btnMax;
   btnInH.value = $btnMax;
   btnInX.value = e.clientX - button.value.getBoundingClientRect().left - $btnMax / 2;
   btnInY.value = e.clientY - button.value.getBoundingClientRect().top - $btnMax / 2;
 };
+
 const clickEndEvt = (): void => {
   isClick.value = false;
 };
-
-// lifecycle
-// onMounted(() => {
-//   if (button.value) {
-//     console.log(buttonClass.value);
-//   }
-// });
 </script>
+
 <template>
   <!-- link일때 -->
-  <NuxtLink v-if="!!to && target !== '_blank' && !to.startsWith('#')" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut"
-    ><slot
-  /></NuxtLink>
+  <NuxtLink v-if="!!to && target !== '_blank' && !to.startsWith('#')" ref="button" :to="to" :class="buttonClass" :title="title" @focus="focusIn" @blur="focusOut">
+    <slot />
+  </NuxtLink>
 
   <!-- anchor일때 -->
   <a

@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .pagination {
   display: flex;
   align-items: center;

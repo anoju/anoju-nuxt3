@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .number-random {
   --animation-random-duration: 0.5s;
   .number {
@@ -95,16 +101,24 @@
       .number:nth-of-type(#{$i}) {
         &:before {
           @if ($i%2 == 0) {
-            animation: numberRandomBeforeReverse var(--animation-random-duration) linear infinite both, numberRandomBeforeCount calc(var(--animation-random-duration) * 10) linear infinite both;
+            animation:
+              numberRandomBeforeReverse var(--animation-random-duration) linear infinite both,
+              numberRandomBeforeCount calc(var(--animation-random-duration) * 10) linear infinite both;
           } @else {
-            animation: numberRandomBefore var(--animation-random-duration) linear infinite both, numberRandomBeforeCount calc(var(--animation-random-duration) * 10) linear infinite both;
+            animation:
+              numberRandomBefore var(--animation-random-duration) linear infinite both,
+              numberRandomBeforeCount calc(var(--animation-random-duration) * 10) linear infinite both;
           }
         }
         &:after {
           @if ($i%2 == 0) {
-            animation: numberRandomAfterReverse var(--animation-random-duration) linear infinite both, numberRandomAfterCount calc(var(--animation-random-duration) * 10) linear calc(var(--animation-random-duration) / 2) infinite both;
+            animation:
+              numberRandomAfterReverse var(--animation-random-duration) linear infinite both,
+              numberRandomAfterCount calc(var(--animation-random-duration) * 10) linear calc(var(--animation-random-duration) / 2) infinite both;
           } @else {
-            animation: numberRandomAfter var(--animation-random-duration) linear infinite both, numberRandomAfterCount calc(var(--animation-random-duration) * 10) linear calc(var(--animation-random-duration) / 2) infinite both;
+            animation:
+              numberRandomAfter var(--animation-random-duration) linear infinite both,
+              numberRandomAfterCount calc(var(--animation-random-duration) * 10) linear calc(var(--animation-random-duration) / 2) infinite both;
           }
         }
       }
@@ -1340,7 +1354,7 @@ $splits:
       position: absolute;
       left: 0;
       top: 0;
-      @include bg-etc;
+      @include mx.bg-etc;
     }
     &:before {
       background-image: url(../images/guide/charater-mouse.png);
@@ -1494,7 +1508,9 @@ $splits:
     &.active {
       animation: tapGravity 1s ease-in backwards;
       i {
-        animation: tapBang 1s forwards, tapBangSize 1s forwards;
+        animation:
+          tapBang 1s forwards,
+          tapBangSize 1s forwards;
       }
     }
   }
@@ -1509,7 +1525,9 @@ $splits:
     &.active {
       animation: tapGravity2 1s ease-out backwards;
       i {
-        animation: tapBang 1s forwards, tapBangSize 1s forwards;
+        animation:
+          tapBang 1s forwards,
+          tapBangSize 1s forwards;
       }
     }
   }
@@ -1558,7 +1576,9 @@ $splits:
     &.active {
       animation: tapGravity3 1.2s ease-in backwards;
       i {
-        animation: tapBang 1s forwards, tapBangSize 1s forwards;
+        animation:
+          tapBang 1s forwards,
+          tapBangSize 1s forwards;
       }
     }
 
@@ -1583,7 +1603,7 @@ $splits:
   align-items: center;
   justify-content: center;
   background: #f1f1f1;
-  height: -vh(50, 10rem);
+  height: fn.vh(50, 10rem);
   user-select: none;
   overflow: hidden;
   > * {
@@ -1593,11 +1613,11 @@ $splits:
     margin-top: 3rem;
   }
   html.ios & {
-    @include ios-top(padding-top, 0);
-    @include ios-bottom(padding-bottom, 0);
+    @include mx.ios-top(padding-top, 0);
+    @include mx.ios-bottom(padding-bottom, 0);
   }
   &.ty2 {
-    height: -vh(30);
+    height: fn.vh(30);
   }
 }
 @keyframes tapBang {

@@ -1,4 +1,10 @@
 // table
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .table {
   position: relative;
   table {
@@ -88,7 +94,7 @@
   }
 }
 .section .tbl-scroll {
-  @include outer;
+  @include mx.outer;
 }
 .tbl-scroll {
   position: relative;
@@ -96,7 +102,7 @@
     position: relative;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    @include scroll-hide;
+    @include mx.scroll-hide;
   }
   .table {
     padding: 0 2rem;
@@ -149,7 +155,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  @include dimm;
+  @include mx.dimm;
   text-align: center;
   z-index: 2;
   div {

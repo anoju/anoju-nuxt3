@@ -1,8 +1,9 @@
-@use 'sass:math';
+@use 'variables' as *;
 @use 'sass:color';
+@use 'sass:math';
 
 // px to rem
-@function rem($value){
+@function rem($value) {
   $remValue: math.div($value, 16) * 1rem;
   @return $remValue;
 }
@@ -17,7 +18,7 @@
   @return color.mix(#000, $color, $percentage * 1%);
 }
 
-@function -vh($val: 1, $add: null, $isMinus: false) {
+@function vh($val: 1, $add: null, $isMinus: false) {
   @if ($add) {
     @if ($isMinus) {
       @return calc((var(--vh) * #{$val}) - #{$add});
@@ -40,7 +41,7 @@
 
   @return $number;
 }
-@function -iosConstant($value: 0, $top: true, $miuns: false) {
+@function iosConstant($value: 0, $top: true, $miuns: false) {
   @if ($value==0) {
     @if ($top) {
       @return constant(safe-area-inset-top);
@@ -63,7 +64,7 @@
     }
   }
 }
-@function -iosEnv($value: 0, $top: true, $miuns: false) {
+@function iosEnv($value: 0, $top: true, $miuns: false) {
   @if ($value==0) {
     @if ($top) {
       @return env(safe-area-inset-top);
@@ -86,6 +87,6 @@
     }
   }
 }
-@function -WH-ratio($width: 1, $height: 1, $unit: '%') {
+@function WHratio($width: 1, $height: 1, $unit: '%') {
   @return (math.div($height, $width) * 100) + #{$unit};
 }

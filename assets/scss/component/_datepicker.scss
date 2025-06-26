@@ -1,17 +1,20 @@
-/*****************************************************************
-jq-Datepicker
-*****************************************************************/
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .ui-datepicker-trigger,
 .ui-swiper-datepicker-btn {
-  @include text-blind;
+  @include mx.text-blind;
   position: absolute;
   top: 0;
   right: 1.1rem;
   width: 2.4rem;
   height: 4.6rem;
   overflow: hidden;
-  @include bg-etc(2.4rem auto, center center);
-  @include ico-calendar;
+  @include mx.bg-etc(2.4rem auto, center center);
+  @include mx.ico-calendar;
 }
 .ui-widget {
   font-size: 1.1em;
@@ -27,7 +30,7 @@ jq-Datepicker
 }
 .ui-icon {
   display: block;
-  @include text-blind;
+  @include mx.text-blind;
   overflow: hidden;
   background-repeat: no-repeat;
 }
@@ -37,7 +40,7 @@ jq-Datepicker
   left: 0;
   right: 0;
   bottom: 0;
-  @include dimm;
+  @include mx.dimm;
   z-index: 299;
 }
 .ui-datepicker {
@@ -148,8 +151,8 @@ jq-Datepicker
       display: block;
       width: 100%;
       height: 100%;
-      @include text-blind;
-      @include bg-etc;
+      @include mx.text-blind;
+      @include mx.bg-etc;
     }
   }
   .ui-datepicker-prev-y {
@@ -319,8 +322,8 @@ jq-Datepicker
   width: 2.4rem;
   height: 2.4rem;
   padding: 0;
-  @include text-blind;
-  @include bg-etc;
+  @include mx.text-blind;
+  @include mx.bg-etc;
   // background-image: url(../images/icon/btn-close-24.png);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M5.98954 4.67878C5.69665 4.38588 5.22178 4.38588 4.92888 4.67878C4.63599 4.97167 4.63599 5.44654 4.92888 5.73944L10.9395 11.75L4.92884 17.7606C4.63594 18.0535 4.63594 18.5284 4.92884 18.8213C5.22173 19.1142 5.6966 19.1142 5.9895 18.8213L12.0001 12.8107L18.0104 18.8209C18.3033 19.1138 18.7781 19.1138 19.071 18.8209C19.3639 18.528 19.3639 18.0531 19.071 17.7603L13.0608 11.75L19.071 5.73981C19.3639 5.44692 19.3639 4.97204 19.071 4.67915C18.7781 4.38626 18.3032 4.38626 18.0103 4.67915L12.0001 10.6893L5.98954 4.67878Z' fill='%23222222'/%3E%3C/svg%3E");
 }

@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .spinner {
   display: inline-flex;
   width: 9.6rem;
@@ -11,7 +17,7 @@
     padding: 0;
     flex-shrink: 0;
     border-radius: 0;
-    @include bg-etc(1.6rem auto);
+    @include mx.bg-etc(1.6rem auto);
     &.minus {
       background-image: url(../images/icon/ico-spinner-minus@3x.png);
     }

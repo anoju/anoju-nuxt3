@@ -1,7 +1,14 @@
 // folding
+
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 // .section {
 //   .folding-list {
-//     @include outer;
+//     @include mx.outer;
 //   }
 // }
 .folding-list {
@@ -34,15 +41,15 @@
       right: var(--base-padding);
       width: 2.4rem;
       height: 2.4rem;
-      @include bg-etc;
+      @include mx.bg-etc;
       // background-image: url(../images/icon/ico-folding.png);
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 10L12 15L17 10' stroke='%23B0B0B0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-      @include rotateZ(0);
+      @include mx.rotateZ(0);
       transition: 0.3s;
     }
     &.reverse-arr {
       &:after {
-        @include rotateZ(180);
+        @include mx.rotateZ(180);
       }
     }
     &.disabled {
@@ -57,7 +64,7 @@
       color: var(--strong-txt-color2);
     }
     .section & {
-      @include outer(true);
+      @include mx.outer(true);
     }
   }
   div.folding-btn {
@@ -76,18 +83,18 @@
   }
   li.open .folding-btn:after,
   .folding-btn.open:after {
-    @include rotateZ(180);
+    @include mx.rotateZ(180);
   }
   li.open .folding-btn.reverse-arr:after,
   .folding-btn.reverse-arr.open:after {
-    @include rotateZ(0);
+    @include mx.rotateZ(0);
   }
   .folding-panel {
     display: none;
     position: relative;
   }
   &.notice-dl {
-    @include outer;
+    @include mx.outer;
     border-top: 0.8rem solid #f3f3f3;
     border-bottom-color: var(--line-color);
     .folding-head {
@@ -104,7 +111,7 @@
       &:after {
         top: 2.8rem;
       }
-      @include class-begins('i-ico-') {
+      @include mx.class-begins('i-ico-') {
         &:first-child {
           margin-right: 0.8rem;
         }
@@ -116,14 +123,14 @@
   }
 }
 .ui-folding-btn {
-  @include class-begins('i-ico-arr') {
+  @include mx.class-begins('i-ico-arr') {
     display: block;
-    @include rotateZ(0);
+    @include mx.rotateZ(0);
     transition: 0.3s;
   }
   &.open {
-    @include class-begins('i-ico-arr') {
-      @include rotateZ(180);
+    @include mx.class-begins('i-ico-arr') {
+      @include mx.rotateZ(180);
     }
   }
 }

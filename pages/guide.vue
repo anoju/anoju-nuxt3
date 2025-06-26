@@ -14,6 +14,7 @@ const tabInfo: Tab[] = [
   { text: 'form', url: '/guide/form' },
   { text: 'popup', url: '/guide/popup' },
   { text: 'swiper', url: '/guide/swiper' },
+  { text: 'anime', url: '/guide/anime' },
   { text: 'etc', url: '/guide/etc' }
 ];
 const defaultTitle = 'Guide page';

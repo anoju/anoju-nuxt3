@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 [data-circle-box].type1 {
   position: relative;
   width: 80px;
@@ -114,7 +120,7 @@
           top: -0.7rem;
           left: 50%;
           margin-left: -0.8rem;
-          @include ico-after-apend(1.6rem, 1.5rem);
+          @include mx.ico-after-apend(1.6rem, 1.5rem);
           background-image: url(../images/icon/ico-rank-crown.png);
         }
       }
@@ -212,7 +218,7 @@
       box-sizing: content-box;
     }
     .section & {
-      @include outer;
+      @include mx.outer;
     }
   }
 }

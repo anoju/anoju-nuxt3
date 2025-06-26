@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 :root {
   --pop-move-time: 0.4s;
   --pop-dimm-time: 0.1s;
@@ -6,8 +12,8 @@
 .pop-wrap {
   position: relative;
   &.page {
-    @include web-center;
-    // height: -vh(100);
+    @include mx.web-center;
+    // height: fn.vh(100);
     /*
     .pop-head {
       position: sticky;
@@ -53,7 +59,7 @@
     }
   }
   h1 {
-    // @include ellipsis(2);
+    // @include mx.ellipsis(2);
     font-size: 1.8rem;
     line-height: 2.4rem;
     margin: 0;
@@ -77,14 +83,14 @@
   pointer-events: auto;
 }
 .pop-close {
-  @include text-blind;
+  @include mx.text-blind;
   position: relative;
   display: block;
   width: 3.6rem;
   height: 3.6rem;
   padding: 0;
   overflow: hidden;
-  @include bg-etc(2.4rem auto);
+  @include mx.bg-etc(2.4rem auto);
   // background-image: url(../images/icon/btn-close-24.png);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M5.98954 4.67878C5.69665 4.38588 5.22178 4.38588 4.92888 4.67878C4.63599 4.97167 4.63599 5.44654 4.92888 5.73944L10.9395 11.75L4.92884 17.7606C4.63594 18.0535 4.63594 18.5284 4.92884 18.8213C5.22173 19.1142 5.6966 19.1142 5.9895 18.8213L12.0001 12.8107L18.0104 18.8209C18.3033 19.1138 18.7781 19.1138 19.071 18.8209C19.3639 18.528 19.3639 18.0531 19.071 17.7603L13.0608 11.75L19.071 5.73981C19.3639 5.44692 19.3639 4.97204 19.071 4.67915C18.7781 4.38626 18.3032 4.38626 18.0103 4.67915L12.0001 10.6893L5.98954 4.67878Z' fill='%23222222'/%3E%3C/svg%3E");
 }
@@ -151,7 +157,7 @@
   }
 }
 // .pop-top-fixed {
-//   @include dimm-white;
+//   @include mx.dimm-white;
 // }
 .popup {
   display: none;
@@ -211,7 +217,11 @@
     max-height: 100%;
     background-color: #fff;
     transform: translate3d(0, 10%, 0);
-    transition: transform var(--pop-move-time), margin var(--pop-move-time), opacity var(--pop-move-time), visibility var(--pop-move-time);
+    transition:
+      transform var(--pop-move-time),
+      margin var(--pop-move-time),
+      opacity var(--pop-move-time),
+      visibility var(--pop-move-time);
     visibility: hidden;
     opacity: 0;
   }
@@ -232,9 +242,9 @@
       position: fixed;
       transform: translateY(0);
       transition: all 0.3s;
-      @include web-center;
-      @include media-min-width(1024) {
-        @include web-center-fixed;
+      @include mx.web-center;
+      @include mx.media-min-width(1024) {
+        @include mx.web-center-fixed;
       }
     }
   }
@@ -256,7 +266,7 @@
     pointer-events: none;
     background: rgba(255, 255, 255, 0);
     html.ios & {
-      @include ios-top(padding-top);
+      @include mx.ios-top(padding-top);
     }
     .pop-bg-close {
       display: none;
@@ -370,14 +380,14 @@
       &.next-foot-fixed {
         padding-bottom: 10.8rem;
         html.ios & {
-          @include ios-bottom(padding-bottom, 10.8rem);
+          @include mx.ios-bottom(padding-bottom, 10.8rem);
         }
       }
     }
     .pop-foot {
       > div {
         html.ios & {
-          @include ios-bottom(padding-bottom, var(--base-padding));
+          @include mx.ios-bottom(padding-bottom, var(--base-padding));
         }
       }
     }
@@ -417,7 +427,7 @@
       }
     }
     &.ui-pop-select {
-      padding-top: -vh(40);
+      padding-top: fn.vh(40);
     }
 
     &.is-swipe {
@@ -556,7 +566,7 @@
     //   }
     // }
   }
-  @include class-begins('side-', '&') {
+  @include mx.class-begins('side-', '&') {
     > .pop-wrap {
       width: 67%;
       max-width: 40rem;
@@ -590,7 +600,7 @@
     display: flex;
   }
   &.open {
-    @include dimm;
+    @include mx.dimm;
     transition-delay: 0s;
     > .pop-wrap {
       transform: translate3d(0, 0, 0);
@@ -610,11 +620,11 @@
     right: 1.5rem;
   }
 
-  @include media-min-width(1024) {
+  @include mx.media-min-width(1024) {
     &.full,
     &.bottom {
       > .pop-wrap {
-        @include web-center;
+        @include mx.web-center;
       }
     }
   }
@@ -632,7 +642,9 @@
   border-radius: 50%;
   opacity: 0;
   z-index: 250;
-  transition: transform 0.3s ease 0s, opacity 0.3s ease 0s;
+  transition:
+    transform 0.3s ease 0s,
+    opacity 0.3s ease 0s;
   pointer-events: none;
   // background: #fff;
   // background: radial-gradient(ellipse at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);

@@ -1,4 +1,10 @@
 // img
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .no-img-bg {
   background: #f2f4f6 no-repeat center center / contain !important;
   // background-image: url(../images/no-img.png) !important;
@@ -19,7 +25,7 @@
 .img-box {
   position: relative;
   display: block;
-  @include bg-etc;
+  @include mx.bg-etc;
   &:before {
     content: '';
     display: block;
@@ -28,7 +34,7 @@
   }
   img {
     // pointer-events: none;
-    @include img-fit(true);
+    @include mx.img-fit(true);
   }
   .img-box-del {
     display: block;
@@ -66,11 +72,11 @@
       pointer-events: none;
     }
     img {
-      @include img-fit(true);
+      @include mx.img-fit(true);
     }
   }
   &.outer {
-    @include outer;
+    @include mx.outer;
   }
 }
 .smooth-corners {
@@ -78,8 +84,8 @@
 }
 .img-box-wrap {
   display: flex;
-  @include scroll-x;
-  @include scroll-hide;
+  @include mx.scroll-x;
+  @include mx.scroll-hide;
   .img-box + .img-box {
     margin-left: var(--item-margin-x);
   }
@@ -95,8 +101,8 @@
   }
   .section &,
   &.outer {
-    @include outer;
-    @include scroll-padding;
+    @include mx.outer;
+    @include mx.scroll-padding;
   }
   &.ty2 {
     padding-top: 0.4rem;

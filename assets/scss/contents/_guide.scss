@@ -1,7 +1,12 @@
-@use 'sass:math';
-
 /*가이드*/
-@include class-begins('gd__h') {
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+@use 'sass:list';
+
+@include mx.class-begins('gd__h') {
   color: #999;
   margin-bottom: 1em;
   font-weight: bold;
@@ -11,7 +16,7 @@
   &.first {
     margin-top: 0 !important;
   }
-  @include class-begins('gd__h', '+') {
+  @include mx.class-begins('gd__h', '+') {
     margin-top: 1em !important;
   }
   &:before {
@@ -91,7 +96,7 @@
     @extend .gd__box;
     border: 0.5rem solid red;
     //at-root 샘플
-    @include unify-parent('section') {
+    @include mx.unify-parent('section') {
       background-color: blue;
     }
     .gd__wrap2 & {
@@ -100,7 +105,7 @@
   }
 }
 .gd__img {
-  @include outer;
+  @include mx.outer;
   background: red;
   > div {
     position: relative;
@@ -179,7 +184,7 @@
     border-radius: 0 0.8rem 0.8rem 0;
     align-items: center;
     justify-content: center;
-    @include dimm-white;
+    @include mx.dimm-white;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
     i {
       transform: rotate3d(0, 1, 0, 0deg);
@@ -190,7 +195,7 @@
     margin-right: 1rem;
     padding: 1rem;
     border-radius: 0.8rem 0.8rem 0 0.8rem;
-    @include dimm-white;
+    @include mx.dimm-white;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
   }
   dd {
@@ -290,7 +295,7 @@
       position: absolute;
       left: 0;
       width: 100%;
-      @include bg-etc;
+      @include mx.bg-etc;
     }
     &:before {
       top: 0;
@@ -475,8 +480,8 @@
     font-size: 3rem;
 
     $bgColors: #f66fa0, #fbc846, #00caca, #5846ff, #fd7e64;
-    @for $i from 1 through length($bgColors) {
-      $color: nth($bgColors, $i);
+    @for $i from 1 through list.length($bgColors) {
+      $color: list.nth($bgColors, $i);
       &.sec-#{$i} {
         background-color: $color;
       }
@@ -490,7 +495,7 @@
       position: fixed;
       top: 8.8rem;
       right: var(--base-padding);
-      @include media-min-width(1024) {
+      @include mx.media-min-width(1024) {
         left: 50%;
         right: auto;
         margin-left: calc(51.2rem - var(--base-padding));
@@ -506,6 +511,26 @@
         color: var(--primary-color);
         font-size: 2rem;
       }
+    }
+  }
+}
+
+.swiper-box {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  $bgColors: #f66fa0, #fbc846, #00caca, #5846ff, #fd7e64;
+  @for $i from 1 through list.length($bgColors) {
+    $color: list.nth($bgColors, $i);
+    &.box-#{$i - 1} {
+      background-color: $color;
+    }
+  }
+  @for $i from 0 through 10 {
+    &.height-#{$i} {
+      height: ($i + 1) * 50px;
     }
   }
 }
