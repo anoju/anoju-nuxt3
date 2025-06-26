@@ -1,3 +1,9 @@
+@use 'variables' as *;
+@use 'functions' as fn;
+@use 'mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 :root {
   --vh: 1vh;
   --primary-color: #{$primary-color};
@@ -34,7 +40,12 @@ html {
   text-size-adjust: none;
 }
 body {
-  font: normal 1.6rem/1.44 'Roboto', 'Noto Sans KR', 'Apple SD Gothic Neo', 'AppleSDGothicNeo', sans-serif;
+  font:
+    normal 1.6rem/1.44 'Roboto',
+    'Noto Sans KR',
+    'Apple SD Gothic Neo',
+    'AppleSDGothicNeo',
+    sans-serif;
   color: var(--base-txt-color);
   letter-spacing: -0.02em;
   word-break: keep-all;
@@ -331,7 +342,7 @@ html.pc {
     > *:not(.unit):not(i) {
       width: 100%;
     }
-    @include class-begins('w-', '>') {
+    @include mx.class-begins('w-', '>') {
       flex-grow: 0;
       flex-shrink: 0;
     }
@@ -455,7 +466,7 @@ html.pc {
       height: $i * 1% !important;
     }
     .h-#{$i}vh {
-      height: -vh(#{$i}) !important;
+      height: fn.vh(#{$i}) !important;
     }
   }
 }
@@ -466,10 +477,10 @@ html.pc {
   height: 66.6666% !important;
 }
 .h-33vh {
-  height: -vh(33.3333) !important;
+  height: fn.vh(33.3333) !important;
 }
 .h-66vh {
-  height: -vh(66.6666) !important;
+  height: fn.vh(66.6666) !important;
 }
 
 // margin
@@ -615,7 +626,7 @@ html.pc {
 }
 @for $i from 1 through 5 {
   .ellipsis-#{$i} {
-    @include ellipsis($i);
+    @include mx.ellipsis($i);
   }
 }
 
@@ -699,14 +710,14 @@ $bdTypes: (solid, dashed, dotted);
   }
 }
 .scroll-x {
-  @include scroll-x;
+  @include mx.scroll-x;
   .section & {
-    @include outer;
-    @include scroll-padding;
+    @include mx.outer;
+    @include mx.scroll-padding;
   }
 }
 .scroll-y {
-  @include scroll-y;
+  @include mx.scroll-y;
 }
 .block {
   display: block !important;
@@ -725,7 +736,7 @@ $bdTypes: (solid, dashed, dotted);
   overflow: hidden;
   width: 0;
   height: 0;
-  @include text-blind;
+  @include mx.text-blind;
 }
 .break-all {
   word-break: break-all;
@@ -851,7 +862,7 @@ $bdTypes: (solid, dashed, dotted);
     background: #ebebeb;
   }
   .section &:not(.inset) {
-    @include outer;
+    @include mx.outer;
   }
 }
 
@@ -884,8 +895,8 @@ html.safari {
 //app
 html.is-app {
   // -webkit-touch-callout: none;
-  @include is-native;
+  @include mx.is-native;
   // a {
-  //   @include is-native;
+  //   @include mx.is-native;
   // }
 }

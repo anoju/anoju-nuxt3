@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .reverse-scroll-wrap {
   transform: rotate(180deg);
   direction: rtl;
@@ -116,7 +122,7 @@
   }
 }
 .section .gray-form-wrap {
-  @include outer;
+  @include mx.outer;
 }
 .gray-form-wrap {
   padding: 2rem;
@@ -125,7 +131,7 @@
 
 .youtube-box {
   position: relative;
-  padding-bottom: -WH-ratio(16, 9);
+  padding-bottom: fn.WHratio(16, 9);
   overflow: hidden;
   iframe,
   object,

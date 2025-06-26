@@ -214,6 +214,7 @@ const swiperStyleCode2 = `<uiSwiper class="items">
   </uiInner>
 </template>
 <style lang="scss">
+@use 'sass:list';
 .swiper-box {
   height: 200px;
   display: flex;
@@ -221,8 +222,8 @@ const swiperStyleCode2 = `<uiSwiper class="items">
   justify-content: center;
   color: #fff;
   $bgColors: #f66fa0, #fbc846, #00caca, #5846ff, #fd7e64;
-  @for $i from 1 through length($bgColors) {
-    $color: nth($bgColors, $i);
+  @for $i from 1 through list.length($bgColors) {
+    $color: list.nth($bgColors, $i);
     &.box-#{$i - 1} {
       background-color: $color;
     }

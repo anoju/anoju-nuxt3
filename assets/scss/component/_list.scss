@@ -1,9 +1,15 @@
 // 내용없음
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .list-empty {
   padding: 12rem 0;
   text-align: center;
   font-size: 1.6rem;
-  @include class-begins('i-ico-') {
+  @include mx.class-begins('i-ico-') {
     vertical-align: top;
     margin-bottom: 1.6rem;
   }
@@ -49,7 +55,7 @@
     display: block;
     font-size: 1.6rem;
     color: var(--strong-txt-color);
-    @include ellipsis(1);
+    @include mx.ellipsis(1);
   }
 }
 
@@ -94,7 +100,7 @@
     .list-item-2 {
       .item-tit {
         color: var(--strong-txt-color);
-        @include ellipsis(2);
+        @include mx.ellipsis(2);
       }
     }
   }
@@ -105,7 +111,7 @@
     }
   }
 }
-@include class-begins('list-item-') {
+@include mx.class-begins('list-item-') {
   position: relative;
   display: flex;
   min-height: 6rem;
@@ -128,7 +134,7 @@
     }
   }
   .section & {
-    @include outer(true);
+    @include mx.outer(true);
   }
   .list-arr-item & {
     &:where(a) {
@@ -138,7 +144,7 @@
         top: 50%;
         right: 0;
         margin-top: -1.2rem;
-        @include arr-right-24;
+        @include mx.arr-right-24;
       }
       .section & {
         padding-right: 5.6rem;
@@ -285,7 +291,7 @@
 }
 
 // list-view
-@include class-begins('list-view-') {
+@include mx.class-begins('list-view-') {
   word-break: break-all;
   img {
     max-width: 100%;
@@ -354,7 +360,7 @@
   padding: 1.6rem 2rem;
   font-size: 1.4rem;
   .tit {
-    @include ellipsis;
+    @include mx.ellipsis;
   }
   .date {
     margin-top: 0.4rem;

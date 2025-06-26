@@ -1,4 +1,10 @@
 // form
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 i.require {
   display: inline-flex;
   align-items: center;
@@ -175,7 +181,7 @@ i.require {
     .input {
       input:not(:focus) {
         color: var(--alert-txt-color);
-        // @include bg-etc(1.6rem auto, right 1.2rem center);
+        // @include mx.bg-etc(1.6rem auto, right 1.2rem center);
         // background-image: url(../images/icon/ico-error@3x.png);
       }
     }
@@ -252,17 +258,17 @@ i.require {
     }
   }
 }
-@include media-min-width(500) {
+@include mx.media-min-width(500) {
   .img-form-box .img-viewer {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
-@include media-min-width(600) {
+@include mx.media-min-width(600) {
   .img-form-box .img-viewer {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }
-@include media-min-width(700) {
+@include mx.media-min-width(700) {
   .img-form-box .img-viewer {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   }

@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 //버튼
 .button {
   position: relative;
@@ -20,7 +26,11 @@
     font-size: 1.6rem;
     font-weight: 500;
     opacity: 1;
-    transition: 0.3s, visibility 0s, margin 0s, width 0s;
+    transition:
+      0.3s,
+      visibility 0s,
+      margin 0s,
+      width 0s;
     appearance: none;
     // white-space:nowrap;
   }
@@ -33,7 +43,7 @@
     height: auto;
     padding: 0;
     border-radius: 0;
-    @include class-begins('i-ico-') {
+    @include mx.class-begins('i-ico-') {
       margin: 0 !important;
     }
     &.share {
@@ -180,11 +190,11 @@
   &.round2 {
     border-radius: 0.4rem;
   }
-  @include class-begins('i-ico-check-') {
+  @include mx.class-begins('i-ico-check-') {
     margin-right: 0.8rem;
   }
 
-  // @include class-begins('i-ico-') {
+  // @include mx.class-begins('i-ico-') {
   // 	margin-left: 0.8rem;
   // 	&:first-child{
   // 		margin-left: 0;
@@ -197,7 +207,7 @@
 
   &.search {
     padding: 0 0.4rem;
-    @include class-begins('i-ico-') {
+    @include mx.class-begins('i-ico-') {
       margin: 0;
     }
   }
@@ -461,7 +471,7 @@ button.btn-click-outer {
       }
     }
     &.out {
-      @include outer;
+      @include mx.outer;
       .button:first-child {
         border-left-width: 0;
       }
@@ -493,13 +503,13 @@ button.btn-click-outer {
   padding: 0;
   text-align: center;
   height: auto;
-  @include class-begins('i-ico-') {
+  @include mx.class-begins('i-ico-') {
     margin-right: 0;
     transition: 0.3s;
   }
   &.open {
-    @include class-begins('i-ico-') {
-      @include rotateZ(180);
+    @include mx.class-begins('i-ico-') {
+      @include mx.rotateZ(180);
     }
   }
 }

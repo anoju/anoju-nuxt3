@@ -255,8 +255,8 @@ const clickEndEvt = (): void => {
     :target="target"
     :aria-disabled="disabled || loading"
     v-bind="$attrs"
-    @focus="(e) => focusIn(e)"
-    @blur="(e) => focusOut(e)"
+    @focus="focusIn"
+    @blur="focusOut"
     @click="clickEvt"
   >
     <slot />
@@ -275,18 +275,7 @@ const clickEndEvt = (): void => {
   </a>
 
   <!-- button일때 -->
-  <button
-    v-else
-    ref="button"
-    type="button"
-    :class="buttonClass"
-    :disabled="disabled || loading"
-    :title="title"
-    v-bind="$attrs"
-    @focus="(e) => focusIn(e)"
-    @blur="(e) => focusOut(e)"
-    @click="clickEvt"
-  >
+  <button v-else ref="button" type="button" :class="buttonClass" :disabled="disabled || loading" :title="title" v-bind="$attrs" @focus="focusIn" @blur="focusOut" @click="clickEvt">
     <slot />
     <div v-if="loading" class="loading-svg" role="img">
       <svg width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">

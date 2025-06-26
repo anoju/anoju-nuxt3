@@ -1,4 +1,10 @@
 // range
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 :root {
   --jq-slider-height: 0.3rem;
   --jq-slider-handle-size: 2rem;

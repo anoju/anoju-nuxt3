@@ -1,4 +1,8 @@
 /* @mixin */
+@use 'variables' as *;
+@use 'functions' as fn;
+@use 'sass:color';
+@use 'sass:math';
 @use 'sass:selector';
 
 // selector
@@ -169,21 +173,21 @@
 @mixin ios-top($key, $value: 0, $miuns: false) {
   // #{$key}: $value;
   @if ($miuns) {
-    #{$key}: -iosConstant($value, true, true);
-    #{$key}: -iosEnv($value, true, true);
+    #{$key}: fn.iosConstant($value, true, true);
+    #{$key}: fn.iosEnv($value, true, true);
   } @else {
-    #{$key}: -iosConstant($value, true, false);
-    #{$key}: -iosEnv($value, true, false);
+    #{$key}: fn.iosConstant($value, true, false);
+    #{$key}: fn.iosEnv($value, true, false);
   }
 }
 @mixin ios-bottom($key, $value: 0, $miuns: false) {
   // #{$key}: $value;
   @if ($miuns) {
-    #{$key}: -iosConstant($value, false, true);
-    #{$key}: -iosEnv($value, false, true);
+    #{$key}: fn.iosConstant($value, false, true);
+    #{$key}: fn.iosEnv($value, false, true);
   } @else {
-    #{$key}: -iosConstant($value, false, false);
-    #{$key}: -iosEnv($value, false, false);
+    #{$key}: fn.iosConstant($value, false, false);
+    #{$key}: fn.iosEnv($value, false, false);
   }
 }
 @mixin rotateZ($value) {

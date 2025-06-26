@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .textarea {
   position: relative;
   border: 0.1rem solid #fafafa;
@@ -55,7 +61,7 @@
       textarea {
         padding-right: 6rem;
         max-height: 14.2rem;
-        @include scroll-y;
+        @include mx.scroll-y;
       }
       .button {
         position: absolute;

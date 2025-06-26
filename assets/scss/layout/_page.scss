@@ -1,10 +1,16 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 #wrap {
   position: relative;
-  min-height: -vh(100);
+  min-height: fn.vh(100);
   // overflow: hidden;
   min-width: 28rem;
   background-color: #fff;
-  @include web-center;
+  @include mx.web-center;
 }
 .page-enter-active,
 .page-leave-active {
@@ -56,11 +62,11 @@
 .page {
   position: relative;
   display: flex;
-  min-height: -vh(100);
+  min-height: fn.vh(100);
   flex-direction: column;
   background-color: #fff;
 }
-@include media-min-width(1024) {
+@include mx.media-min-width(1024) {
   body {
     background-color: #fafafa;
   }
@@ -72,7 +78,7 @@
 // lock
 // html.lock,
 // .lock body {
-//   height: -vh(100);
+//   height: fn.vh(100);
 //   overflow: hidden;
 //   -webkit-overflow-scrolling: none;
 // }
@@ -82,8 +88,8 @@
   bottom: 0;
   width: 100%;
   -webkit-overflow-scrolling: none;
-  @include media-min-width(1024) {
-    @include web-center-fixed;
+  @include mx.media-min-width(1024) {
+    @include mx.web-center-fixed;
     width: 102.4rem;
   }
 }

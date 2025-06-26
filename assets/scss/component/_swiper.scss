@@ -1,3 +1,9 @@
+@use '../base/variables' as *;
+@use '../base/functions' as fn;
+@use '../base/mixins' as mx;
+@use 'sass:color';
+@use 'sass:math';
+
 .swiper-slide {
   overflow: hidden;
   backface-visibility: hidden;
@@ -7,7 +13,7 @@
   position: relative;
   &.full {
     .section & {
-      @include outer;
+      @include mx.outer;
     }
     .img-box img {
       border-radius: 0;
@@ -25,7 +31,7 @@
 
   &.items {
     .section & {
-      @include outer;
+      @include mx.outer;
     }
     .swiper {
       padding: 0 1.9rem;
@@ -58,7 +64,7 @@
     transition: 0.3s;
   }
   &:not(.swiper-pagination-fraction) {
-    @include text-blind;
+    @include mx.text-blind;
   }
   .swiper-pagination-bullet-active {
     width: 2rem;
@@ -95,7 +101,7 @@
   display: block;
   overflow: hidden;
   background-color: transparent;
-  @include text-blind;
+  @include mx.text-blind;
   z-index: 2;
   &:after {
     content: '';
@@ -104,7 +110,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    @include bg-etc;
+    @include mx.bg-etc;
   }
   &.swiper-button-prev {
     left: 0;
@@ -193,7 +199,7 @@
   border: 0.1rem solid #ddd;
   border-radius: 0.4rem;
   overflow: hidden;
-  @include dimm-white;
+  @include mx.dimm-white;
   z-index: 1;
   button {
     position: relative;
@@ -295,7 +301,9 @@
   }
   .slider-item {
     background: #fff;
-    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.06), 0 0.1rem 0.2rem rgba(0, 0, 0, 0.12);
+    box-shadow:
+      0 0.1rem 0.3rem rgba(0, 0, 0, 0.06),
+      0 0.1rem 0.2rem rgba(0, 0, 0, 0.12);
     display: none;
     height: 16rem;
     left: 0;
@@ -339,7 +347,7 @@
       height: 1rem;
       transition: 0.2s;
       overflow: hidden;
-      @include text-blind;
+      @include mx.text-blind;
     }
     .active a {
       width: 3rem;
