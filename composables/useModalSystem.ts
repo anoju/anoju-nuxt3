@@ -71,7 +71,8 @@ export const useModalSystem = () => {
     showLoading,
     showLike,
     lockPage: pageLock.lockPage,
-    unlockPage: pageLock.unlockPage
+    unlockPage: pageLock.unlockPage,
+    setModalContainerEl: modal.setModalContainerEl
   };
 };
 

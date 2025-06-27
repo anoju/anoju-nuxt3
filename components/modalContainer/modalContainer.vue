@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ModalSystemKey } from '~/composables/useModalSystem';
+
 // 모달 시스템 주입
 const modalSystem = inject(ModalSystemKey);
 if (!modalSystem) {
@@ -8,75 +9,34 @@ if (!modalSystem) {
 
 const {
   modals,
-  isClosing,
   likes,
   isLoading,
   loadingShow,
   loadingTxt,
   closeModal,
-  openModal
+  setModalContainerEl
 } = modalSystem;
 
 const el = ref<HTMLElement | null>(null);
 
-const onOpen = (index: number, type?: string, addClass?: string[] | string): void => {
-  if (isClosing.value) return;
-  const idx = index;
-  if (!el.value) return;
-  const $popup = el.value.children[idx] as HTMLElement;
-  const $wrap = $popup.querySelector('.pop-wrap') as HTMLElement;
-
-  openModal(idx, type, addClass);
-
-  setTimeout(() => {
-    $popup.setAttribute('aria-hidden', 'false');
-    if (idx > 0) {
-      ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'true');
-    }
-  }, 1);
-
-  setTimeout(() => {
-    const popHeadH1 = $wrap.querySelector('.pop-head h1') as HTMLElement;
-    const popHeadClose = $wrap.querySelector('.pop-head .pop-close') as HTMLElement;
-
-    if (popHeadH1 !== null) {
-      popHeadH1.focus();
-    } else if (popHeadClose !== null) {
-      popHeadClose.focus();
-    }
-    $popup.classList.add('opened');
-  }, 501);
-};
-
-const onClose = (index: number | string, { payload }: { payload?: any } = {}): void => {
-  const idx = Number(index);
-  if (!el.value) return;
-  const $popup = el.value.children[idx] as HTMLElement;
-  
-  if (idx > 0) {
-    ($popup.previousSibling as HTMLElement).setAttribute('aria-hidden', 'false');
+// el ref가 설정되면 composables에 전달
+onMounted(() => {
+  if (el.value) {
+    setModalContainerEl(el.value);
   }
-  
-  closeModal(idx, payload);
-};
+});
 
-// 모달이 추가될 때 자동으로 열기 (기존 동작 유지)
-watch(modals, (newModals, oldModals) => {
-  if (newModals.length > oldModals.length) {
-    // 새로운 모달이 추가되면 자동으로 열기
-    const newIndex = newModals.length - 1;
-    nextTick(() => {
-      onOpen(newIndex);
-    });
-  }
-}, { deep: true });
+// el이 변경될 때마다 업데이트
+watchEffect(() => {
+  setModalContainerEl(el.value);
+});
 </script>
 <template>
   <div v-if="modals.length || likes.length || isLoading" ref="el" class="modal-container">
     <!-- popup -->
     <div v-for="(modal, i) in modals" :key="i" class="popup" :class="[modal.type, modal.addClass, { show: modal.show, open: modal.open }]">
-      <div class="pop-bg-close" role="button" aria-label="팝업창 닫기" @click="onClose(i)"></div>
-      <component :is="modal.component" v-bind="modal.componentProps" :data-idx="i" @close="onClose(i, $event)" />
+      <div class="pop-bg-close" role="button" aria-label="팝업창 닫기" @click="closeModal(i)"></div>
+      <component :is="modal.component" v-bind="modal.componentProps" :data-idx="i" @close="closeModal(i, $event?.payload)" />
     </div>
 
     <!-- like -->
