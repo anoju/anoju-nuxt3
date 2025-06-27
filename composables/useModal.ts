@@ -52,6 +52,14 @@ export const useModal = () => {
     const modal = modals.value[index];
     if (!modal) return;
 
+    // returnFocus가 null이면 현재 포커스된 요소를 저장
+    if (!modal.returnFocus) {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement && activeElement !== document.body) {
+        modal.returnFocus = activeElement;
+      }
+    }
+
     // 타입과 추가 클래스 설정 (기존 로직 복원)
     if (type) modal.type = type;
     if (addClass) modal.addClass = addClass;
