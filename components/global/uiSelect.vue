@@ -27,7 +27,7 @@ const props = defineProps({
 
 // const selectText = ref('');
 const selectedValue = ref(props.modelValue);
-const emit = defineEmits(['input']);
+const emit = defineEmits(['input', 'update:modelValue']);
 
 const selectText = computed<any>((): string => {
   const valObj = props.options.filter((obj: Option) => String(obj.value) === String(props.modelValue));
@@ -38,6 +38,7 @@ const onSelectChange = (event: Event) => {
   const targetVal = (event.target as HTMLSelectElement).value;
   selectedValue.value = targetVal;
   emit('input', selectedValue.value);
+  emit('update:modelValue', selectedValue.value);
 };
 
 type Size = 'small' | 'large';
@@ -69,6 +70,7 @@ const selectClass = computed(() => {
 // };
 onMounted(() => {
   emit('input', selectedValue.value);
+  emit('update:modelValue', selectedValue.value);
 });
 </script>
 <template>

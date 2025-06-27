@@ -23,6 +23,14 @@ const setStyle = computed(() => {
 
 const emit = defineEmits(['update:modelValue']);
 const $duration = 300;
+
+// show 값이 변경될 때 부모에게 알림
+watch(show, (newValue) => {
+  if (props.modelValue !== null) {
+    emit('update:modelValue', newValue);
+  }
+});
+
 watch(
   () => props.modelValue,
   (newValue, oldValue) => {
