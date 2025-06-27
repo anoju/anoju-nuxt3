@@ -18,6 +18,7 @@ const inpVal2: Ref<string> = ref('');
 const inpVal3: Ref<string> = ref('');
 const textareaVal1: Ref<string> = ref('');
 const textareaVal2: Ref<string> = ref('');
+const textareaVal3: Ref<string> = ref('');
 
 const checkCode1 = `<uiCheckbox v-model="chkVal" />
 <uiCheckbox v-model="chkVal">텍스트 있음</uiCheckbox>
@@ -67,7 +68,8 @@ const textareaCode2 = `<uiTextarea v-model="textareaVal1" box></uiTextarea>
 <uiTextarea v-model="textareaVal1" box readonly></uiTextarea>
 <uiTextarea v-model="textareaVal1" box disabled></uiTextarea>
 <uiTextarea v-model="textareaVal2" box rows="2"></uiTextarea>`;
-const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextarea>`;
+const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextarea>
+<uiTextarea v-model="textareaVal3" :auto-height="{ minRows: 2, maxRows: 5 }"></uiTextarea>`;
 </script>
 <template>
   <uiInner>
@@ -260,6 +262,7 @@ const textareaCode3 = `<uiTextarea v-model="textareaVal1" auto-height></uiTextar
 
       <h2 class="gd__h2">autoHeight</h2>
       <uiTextarea v-model="textareaVal1" auto-height></uiTextarea>
+      <uiTextarea v-model="textareaVal3" :auto-height="{ minRows: 2, maxRows: 5 }"></uiTextarea>
       <uiCodeHighlight lang="html" :code="textareaCode3"></uiCodeHighlight>
     </div>
   </uiInner>
