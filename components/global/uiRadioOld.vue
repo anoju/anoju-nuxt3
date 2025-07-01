@@ -1,60 +1,16 @@
 <script lang="ts">
 export default {
-  inheritAttrs: false
+  inheritAttrs: false,
+  methods: {
+    focus() {
+      // this.$refs.radio.focus();
+    }
+  }
 };
 </script>
 <script lang="ts" setup>
-// Types
-interface Props {
-  id?: string | null;
-  disabled?: boolean;
-  right?: boolean;
-
-  size?: string | null;
-  small?: boolean;
-  large?: boolean;
-
-  checkbox?: boolean;
-  block?: boolean;
-  box?: boolean;
-  button?: boolean;
-
-  value: string | number;
-  modelValue?: string | number | boolean | null;
-
-  class?: string | Array<string> | null;
-  lblClass?: string | Array<string> | null;
-  lblStyle?: string | null;
-  dblclick?: (() => void) | null;
-}
-
-type Size = 'small' | 'large';
-
-// Props with defaults using withDefaults
-const props = withDefaults(defineProps<Props>(), {
-  id: null,
-  disabled: false,
-  right: false,
-  size: null,
-  small: false,
-  large: false,
-  checkbox: false,
-  block: false,
-  box: false,
-  button: false,
-  modelValue: null,
-  class: null,
-  lblClass: null,
-  lblStyle: null,
-  dblclick: null
-});
-
-// Emits with proper typing
-const emit = defineEmits<{
-  'update:modelValue': [value: string | number];
-}>();
-
-// Global counter for unique IDs
+// import { v4 as uuidv4 } from 'uuid';
+// const uuid = uuidv4();
 const nuxtApp = useNuxtApp();
 const componentName = 'input';
 if (!nuxtApp.$globalCounters[componentName]) {
@@ -64,31 +20,58 @@ if (!nuxtApp.$globalCounters[componentName]) {
 }
 const instanceId = nuxtApp.$globalCounters[componentName];
 
-// Reactive state
-const isFocus = ref<boolean>(false);
+// props
+const props = defineProps({
+  id: { type: String, default: null },
+  disabled: { type: Boolean, default: false },
+  right: { type: Boolean, default: false },
 
-// Computed properties
-const radioId = computed<string>(() => {
+  size: { type: String, default: null },
+  small: { type: Boolean, default: false },
+  large: { type: Boolean, default: false },
+
+  checkbox: { type: Boolean, default: false },
+  block: { type: Boolean, default: false },
+  box: { type: Boolean, default: false },
+  button: { type: Boolean, default: false },
+
+  value: { type: [String, Number], default: null, require: true },
+  modelValue: { type: [String, Number, Boolean, Array, Object], default: null },
+
+  class: { type: [String, Array], default: null },
+  lblClass: { type: [String, Array], default: null },
+  lblStyle: { type: String, default: null },
+  dblclick: { type: Function, default: null }
+});
+
+// data
+const emit = defineEmits(['update:modelValue']);
+const isFocus: Ref<boolean> = ref(false);
+
+const radioId = computed<string>((): string => {
+  // let rtnVal = `rdo_${uuid}`;
   let rtnVal = `rdo_${instanceId}`;
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });
-
-const isChecked = computed<boolean>(() => {
+const isChecked = computed<boolean>((): boolean => {
   return props.modelValue === props.value;
 });
 
+type Size = 'small' | 'large';
 const sizeAry: Size[] = ['small', 'large'];
-const matchingSize = computed(() => sizeAry.find((size) => props[size]));
-const $size = computed<Size | null>(() => {
+const matchingSize = sizeAry.find((size) => props[size]);
+const $size = computed<Size | null>((): Size | null => {
   if (props.size && sizeAry.includes(props.size as Size)) {
     return props.size as Size;
+  } else if (matchingSize) {
+    return matchingSize;
   }
-  return matchingSize.value || null;
+  return null;
 });
 
-const radioClass = computed<Array<string | Record<string, boolean> | null>>(() => {
-  const rtnAry: Array<string | Record<string, boolean> | null> = [
+const radioClass = computed(() => {
+  const rtnAry = [
     {
       radio: !props.checkbox,
       checkbox: props.checkbox,
@@ -105,24 +88,19 @@ const radioClass = computed<Array<string | Record<string, boolean> | null>>(() =
   return rtnAry;
 });
 
-// Double click logic
 let isDblclick = false;
 let dblclickTime: ReturnType<typeof setTimeout> | null = null;
-
-// Event handlers
-const focusIn = (): void => {
+const focusIn = () => {
   isFocus.value = true;
 };
-
-const focusOut = (): void => {
+const focusOut = () => {
   isFocus.value = false;
 };
-
-const clickEvt = (e: Event): void => {
+const clickEvt = (e: any): void => {
   if (!props.disabled) {
     if (props.dblclick) {
       if (isDblclick) {
-        if (dblclickTime) {
+        if (!!dblclickTime) {
           clearTimeout(dblclickTime);
           dblclickTime = null;
         }
@@ -140,23 +118,16 @@ const clickEvt = (e: Event): void => {
   }
 };
 
-const onInputChange = (e: Event): void => {
+const onInputChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
-  // 라디오 버튼은 문자열로 전달되므로 원래 타입으로 변환
-  let value: string | number = target.value;
-
-  // props.value의 타입에 맞춰 변환
-  if (typeof props.value === 'number') {
-    const numValue = Number(target.value);
-    if (!isNaN(numValue)) {
-      value = numValue;
-    }
-  }
-
-  emit('update:modelValue', value);
+  emit('update:modelValue', target.value);
 };
-</script>
 
+// lifecycle
+// onMounted(() => {
+//   console.log(ref(null));
+// });
+</script>
 <template>
   <div :class="radioClass">
     <label v-if="right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="radioId">
