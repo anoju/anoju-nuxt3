@@ -4,65 +4,8 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-// Types
-interface Props {
-  id?: string | null;
-  disabled?: boolean;
-  right?: boolean;
-
-  size?: string | null;
-  small?: boolean;
-  large?: boolean;
-
-  radio?: boolean;
-  block?: boolean;
-  box?: boolean;
-  button?: boolean;
-  switch?: boolean;
-  switch2?: boolean;
-
-  value: string | number;
-  modelValue?: string | number | boolean | Array<string | number> | Record<string, unknown> | null;
-  trueValue?: string | number | boolean;
-  falseValue?: string | number | boolean;
-
-  class?: string | Array<string> | null;
-  lblClass?: string | Array<string> | null;
-  lblStyle?: string | null;
-  dblclick?: (() => void) | null;
-}
-
-type Size = 'small' | 'large';
-
-// Props with defaults using withDefaults
-const props = withDefaults(defineProps<Props>(), {
-  id: null,
-  disabled: false,
-  right: false,
-  size: null,
-  small: false,
-  large: false,
-  radio: false,
-  block: false,
-  box: false,
-  button: false,
-  switch: false,
-  switch2: false,
-  modelValue: null,
-  trueValue: true,
-  falseValue: false,
-  class: null,
-  lblClass: null,
-  lblStyle: null,
-  dblclick: null
-});
-
-// Emits with proper typing
-const emit = defineEmits<{
-  'update:modelValue': [value: string | number | boolean | Array<string | number> | Record<string, unknown>];
-}>();
-
-// Global counter for unique IDs
+// import { v4 as uuidv4 } from 'uuid';
+// const uuid = uuidv4();
 const nuxtApp = useNuxtApp();
 const componentName = 'checkbox';
 if (!nuxtApp.$globalCounters[componentName]) {
@@ -72,34 +15,65 @@ if (!nuxtApp.$globalCounters[componentName]) {
 }
 const instanceId = nuxtApp.$globalCounters[componentName];
 
-// Reactive state
-const isFocus = ref<boolean>(false);
+// props
+const props = defineProps({
+  id: { type: String, default: null },
+  disabled: { type: Boolean, default: false },
+  right: { type: Boolean, default: false },
 
-// Computed properties
-const chkboxId = computed<string>(() => {
+  size: { type: String, default: null },
+  small: { type: Boolean, default: false },
+  large: { type: Boolean, default: false },
+
+  radio: { type: Boolean, default: false },
+  block: { type: Boolean, default: false },
+  box: { type: Boolean, default: false },
+  button: { type: Boolean, default: false },
+  switch: { type: Boolean, default: false },
+  switch2: { type: Boolean, default: false },
+
+  value: { type: [String, Number], default: null, require: true },
+  modelValue: { type: [String, Number, Boolean, Array, Object], default: null },
+  trueValue: { type: [String, Number, Boolean], default: true },
+  falseValue: { type: [String, Number, Boolean], default: false },
+
+  class: { type: [String, Array], default: null },
+  lblClass: { type: [String, Array], default: null },
+  lblStyle: { type: String, default: null },
+  dblclick: { type: Function, default: null }
+});
+
+// data
+const emit = defineEmits(['update:modelValue']);
+const isFocus: Ref<boolean> = ref(false);
+const chkboxId = computed<string>((): string => {
+  // let rtnVal = `chk_${uuid}`;
   let rtnVal = `chk_${instanceId}`;
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });
 
-const isChecked = computed<boolean>(() => {
+const isChecked = computed<boolean>((): boolean => {
   if (props.modelValue instanceof Array) {
     return props.modelValue.includes(props.value);
   }
   return props.modelValue === props.trueValue;
 });
 
+type Size = 'small' | 'large';
 const sizeAry: Size[] = ['small', 'large'];
-const matchingSize = computed(() => sizeAry.find((size) => props[size]));
-const $size = computed<Size | null>(() => {
+const matchingSize = sizeAry.find((size) => props[size]);
+const $size = computed<Size | null>((): Size | null => {
   if (props.size && sizeAry.includes(props.size as Size)) {
     return props.size as Size;
+  } else if (matchingSize) {
+    return matchingSize;
   }
-  return matchingSize.value || null;
+  return null;
 });
 
-const checkboxClass = computed<Array<string | Record<string, boolean> | null>>(() => {
-  const rtnAry: Array<string | Record<string, boolean> | null> = [
+const checkboxClass = computed(() => {
+  let rtnAry = [
     {
       checkbox: !props.radio,
       radio: props.radio,
@@ -118,24 +92,19 @@ const checkboxClass = computed<Array<string | Record<string, boolean> | null>>((
   return rtnAry;
 });
 
-// Double click logic
 let isDblclick = false;
 let dblclickTime: ReturnType<typeof setTimeout> | null = null;
-
-// Event handlers
-const focusIn = (): void => {
+const focusIn = () => {
   isFocus.value = true;
 };
-
-const focusOut = (): void => {
+const focusOut = () => {
   isFocus.value = false;
 };
-
-const clickEvt = (e: Event): void => {
+const clickEvt = (e: any): void => {
   if (!props.disabled) {
     if (props.dblclick) {
       if (isDblclick) {
-        if (dblclickTime) {
+        if (!!dblclickTime) {
           clearTimeout(dblclickTime);
           dblclickTime = null;
         }
@@ -152,11 +121,9 @@ const clickEvt = (e: Event): void => {
     }
   }
 };
-
-const onInputChange = (e: Event): void => {
+const onInputChange = (e: Event) => {
   if (!e.target) return;
   const checked = (e.target as HTMLInputElement).checked;
-  
   if (props.modelValue instanceof Array) {
     const newValue = [...props.modelValue];
     if (checked) {
@@ -166,7 +133,7 @@ const onInputChange = (e: Event): void => {
     }
     emit('update:modelValue', newValue);
   } else {
-    let returnVal: string | number | boolean;
+    let returnVal: boolean | string | number = '';
     if (checked) {
       returnVal = props.trueValue;
     } else {
@@ -176,7 +143,6 @@ const onInputChange = (e: Event): void => {
   }
 };
 </script>
-
 <template>
   <div :class="checkboxClass">
     <label v-if="right && !!$slots.default" class="lbl" :class="lblClass" :style="lblStyle" :for="chkboxId">
