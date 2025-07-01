@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-// Types
-type CSSStyleValue = string | number | undefined;
+// CSSProperties 타입을 직접 정의 (Vue 3에서는 CSSProperties가 export되지 않음)
+type CSSProperties = {
+  [key: string]: string | number | undefined;
+};
 
-interface CSSProperties {
-  [key: string]: CSSStyleValue;
+interface StyleObject extends CSSProperties {
   left?: string;
   top?: string;
 }
@@ -14,18 +15,14 @@ interface Props {
   sideMargin?: number;
 }
 
-// Props with defaults using withDefaults
 const props = withDefaults(defineProps<Props>(), {
   notHead: false,
   isMobile: true,
   sideMargin: 16
 });
 
-// Template refs
 const wrapper = ref<HTMLDivElement | null>(null);
 const content = ref<HTMLDivElement | null>(null);
-
-// Reactive state
 const currentTarget = ref<HTMLElement | null>(null);
 const isShow = ref<boolean>(false);
 const isOpen = ref<boolean>(false);
@@ -34,21 +31,21 @@ const isMax = ref<boolean>(false);
 const contentLeft = ref<number>(0);
 const contentTop = ref<number>(0);
 const arrLeft = ref<number>(0);
-
-// Event binding state
 let isEvt = false;
 
-// Computed properties
-const contentStyle = computed<CSSProperties>(() => ({
-  ...(contentLeft.value && { left: `${contentLeft.value}px` }),
-  ...(contentTop.value && { top: `${contentTop.value}px` })
-}));
+const contentStyle = computed(
+  (): StyleObject => ({
+    ...(contentLeft.value && { left: `${contentLeft.value}px` }),
+    ...(contentTop.value && { top: `${contentTop.value}px` })
+  })
+);
 
-const arrStyle = computed<CSSProperties>(() => ({
-  ...(arrLeft.value && { left: `${arrLeft.value}px` })
-}));
+const arrStyle = computed(
+  (): StyleObject => ({
+    ...(arrLeft.value && { left: `${arrLeft.value}px` })
+  })
+);
 
-// Core functionality
 const setStyle = (targetBtn?: HTMLElement): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
@@ -57,6 +54,7 @@ const setStyle = (targetBtn?: HTMLElement): void => {
 
   const tooltipWidth = $content.offsetWidth;
   const tooltipHeight = $content.offsetHeight;
+  const maxWidth = window.innerHeight - props.sideMargin * 2;
   const windowHeight = window.innerHeight;
   const btnRect = targetBtn.getBoundingClientRect();
   const btnCenter = btnRect.left + btnRect.width / 2;
@@ -66,7 +64,6 @@ const setStyle = (targetBtn?: HTMLElement): void => {
   const pageRect = pageElement ? pageElement.getBoundingClientRect() : { left: 0, width: window.innerWidth };
   let left = btnCenter - tooltipWidth / 2;
   const pageWidth = pageRect.left + pageRect.width;
-  
   // 최소/최대 범위 제한
   left = Math.min(Math.max(left, pageRect.left + props.sideMargin), pageWidth - tooltipWidth - props.sideMargin);
 
@@ -103,7 +100,7 @@ const bodyTransitionEnd = (): void => {
   }
 };
 
-// Event handlers
+// PC용 이벤트 핸들러
 const handleMouseEnter = (event: MouseEvent): void => {
   if (!props.isMobile) {
     currentTarget.value = event.currentTarget as HTMLElement;
@@ -126,6 +123,7 @@ const handleBlur = (): void => {
   if (!props.isMobile) onClose();
 };
 
+// 모바일용 이벤트 핸들러
 const handleClick = (event: MouseEvent): void => {
   if (!props.isMobile) return;
 
@@ -138,6 +136,7 @@ const handleClick = (event: MouseEvent): void => {
   }
 };
 
+// 외부클릭시 닫힘
 const handleClickOutside = (event: MouseEvent): void => {
   const target = event.target as Node;
   if (wrapper.value && !wrapper.value.contains(target) && !currentTarget.value?.contains(target)) {
@@ -145,11 +144,7 @@ const handleClickOutside = (event: MouseEvent): void => {
   }
 };
 
-const handleResize = (): void => {
-  setStyle(currentTarget.value || undefined);
-};
-
-// Event binding utilities
+// 이벤트 바인딩
 const bindEvents = (element: HTMLElement): void => {
   if (props.isMobile) {
     element.addEventListener('click', handleClick);
@@ -172,7 +167,9 @@ const unbindEvents = (element: HTMLElement): void => {
   }
 };
 
-// Public API methods
+const slots = useSlots();
+
+// 외부에서 사용할 메서드들
 const open = (targetElement: HTMLElement): void => {
   if (!props.notHead) return;
   currentTarget.value = targetElement;
@@ -185,42 +182,31 @@ const close = (): void => {
   currentTarget.value = null;
 };
 
-// Expose public methods
+// 외부로 노출할 메서드들을 정의
 defineExpose({
   open,
   close
 });
 
-// Slots
-const slots = useSlots();
-
-// Lifecycle hooks
 onMounted((): void => {
   const $wrap = wrapper.value;
   const $content = content.value;
   if (!$wrap || !$content) return;
 
   isEvt = true;
-  
   if (!props.notHead) {
     if (slots.btn) {
       const $head = $wrap.querySelector('.tooltip-head');
       const firstElement = $head?.firstElementChild;
-      if (firstElement) {
-        firstElement.classList.add('tooltip-btn');
-      }
+      if (firstElement) firstElement.classList.add('tooltip-btn');
     }
-    
     const tooltipBtn = $wrap.querySelector('.tooltip-btn');
-    if (tooltipBtn) {
-      bindEvents(tooltipBtn as HTMLElement);
-    }
+    if (tooltipBtn) bindEvents(tooltipBtn as HTMLElement);
+    if (props.isMobile) document.addEventListener('click', handleClickOutside);
   }
 
-  if (props.isMobile) {
-    document.addEventListener('click', handleClickOutside);
-  }
-  
+  if (props.isMobile) document.addEventListener('click', handleClickOutside);
+  const handleResize = () => setStyle(currentTarget.value || undefined);
   window.addEventListener('resize', handleResize);
   window.addEventListener('scroll', handleResize);
 });
@@ -231,15 +217,10 @@ onUnmounted((): void => {
 
   if (!props.notHead) {
     const tooltipBtn = $wrap.querySelector('.tooltip-btn');
-    if (tooltipBtn) {
-      unbindEvents(tooltipBtn as HTMLElement);
-    }
+    if (tooltipBtn) unbindEvents(tooltipBtn as HTMLElement);
   }
-  
-  if (props.isMobile) {
-    document.removeEventListener('click', handleClickOutside);
-  }
-  
+  if (props.isMobile) document.removeEventListener('click', handleClickOutside);
+  const handleResize = () => setStyle(currentTarget.value || undefined);
   window.removeEventListener('resize', handleResize);
   window.removeEventListener('scroll', handleResize);
   isEvt = false;
@@ -254,7 +235,6 @@ onUnmounted((): void => {
       </uiButton>
       <slot name="btn" />
     </div>
-    
     <div
       v-if="!!$slots.default"
       ref="content"
