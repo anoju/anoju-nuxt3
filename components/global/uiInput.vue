@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits with proper typing
 const emit = defineEmits<{
-  'update:modelValue': [value: string | number | boolean | Array<unknown> | Record<string, unknown>];
+  'update:modelValue': [value: string | number | boolean | Array<unknown> | Record<string, unknown> | File];
 }>();
 
 // Global counter for unique IDs
@@ -84,14 +84,14 @@ const inputId = computed<string>(() => {
   return rtnVal;
 });
 
-const inputClass = computed<Array<string | Record<string, boolean> | null>>(() => {
-  const rtnAry: Array<string | Record<string, boolean> | null> = [
+const inputClass = computed<Array<string | Array<string> | Record<string, boolean> | null>>(() => {
+  const rtnAry: Array<string | Array<string> | Record<string, boolean> | null> = [
     {
       focus: isFocus.value && !props.readonly,
       readonly: props.readonly,
       disabled: props.disabled,
       box: props.box,
-      line: props.line,
+      line: !!props.line,
       date: props.date,
       time: props.time,
       file: props.file,
@@ -152,6 +152,19 @@ const fileChange = (e: Event): void => {
   }
 };
 
+// Computed for textarea value
+const inputValue = computed<string>(() => {
+  if (props.modelValue === null || props.modelValue === undefined) {
+    return '';
+  }
+  
+  if (typeof props.modelValue === 'string' || typeof props.modelValue === 'number') {
+    return props.modelValue.toString();
+  }
+  
+  return '';
+});
+
 // Computed for showing delete button
 const showDeleteButton = computed<boolean>(() => {
   return !!(
@@ -193,10 +206,10 @@ const showDeleteButton = computed<boolean>(() => {
       v-else
       :id="inputId"
       ref="inputEl"
-      :value="modelValue"
+      :value="inputValue"
       :disabled="disabled"
       :readonly="readonly"
-      :placeholder="placeholder"
+      :placeholder="placeholder || undefined"
       v-bind="$attrs"
       @input="updateValue"
       @focus="focusIn"
@@ -206,9 +219,9 @@ const showDeleteButton = computed<boolean>(() => {
     <input 
       v-if="date" 
       type="date" 
-      :min="min" 
-      :max="max" 
-      :value="modelValue" 
+      :min="min || undefined" 
+      :max="max || undefined" 
+      :value="inputValue" 
       @change="dateChange" 
       @focus="focusIn" 
       @blur="focusOut" 

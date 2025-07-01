@@ -85,14 +85,14 @@ const textareaId = computed<string>(() => {
   return rtnVal;
 });
 
-const textareaClass = computed<Array<string | Record<string, boolean> | null>>(() => {
-  const rtnAry: Array<string | Record<string, boolean> | null> = [
+const textareaClass = computed<Array<string | Array<string> | Record<string, boolean> | null>>(() => {
+  const rtnAry: Array<string | Array<string> | Record<string, boolean> | null> = [
     {
       focus: isFocus.value && !props.readonly,
       readonly: props.readonly,
       disabled: props.disabled,
       box: props.box,
-      line: props.line
+      line: !!props.line
     },
     props.class
   ];
@@ -193,7 +193,7 @@ onMounted(() => {
       :value="textareaValue"
       :disabled="disabled"
       :readonly="readonly"
-      :placeholder="placeholder"
+      :placeholder="placeholder || undefined"
       :style="textareaStyle"
       v-bind="$attrs"
       @input="updateValue"

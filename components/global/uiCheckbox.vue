@@ -98,8 +98,8 @@ const $size = computed<Size | null>(() => {
   return matchingSize.value || null;
 });
 
-const checkboxClass = computed<Array<string | Record<string, boolean> | null>>(() => {
-  const rtnAry: Array<string | Record<string, boolean> | null> = [
+const checkboxClass = computed<Array<string | Array<string> | Record<string, boolean> | null>>(() => {
+  const rtnAry: Array<string | Array<string> | Record<string, boolean> | null> = [
     {
       checkbox: !props.radio,
       radio: props.radio,
