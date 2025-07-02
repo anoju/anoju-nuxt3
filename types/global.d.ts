@@ -1,4 +1,6 @@
-// global-function.ts에서 제공하는 함수들의 타입 정의
+// global-function.ts와 modal.ts에서 제공하는 함수들의 타입 정의
+import type { ModalOptions, LoadingInput } from './modal';
+
 declare module '#app' {
   interface NuxtApp {
     $scrollTo: (el?: string | HTMLElement, option?: { left?: number; top?: number }, speed?: number, fn?: () => void) => void;
@@ -12,6 +14,9 @@ declare module '#app' {
     $getTopFixedHeight: (element: HTMLElement, className?: string) => number;
     $anime: any;
     $globalCounters: any;
+    $modal: (options: ModalOptions) => Promise<any>;
+    $like: (likeType?: string) => void;
+    $loading: (options?: LoadingInput) => void;
   }
 }
 
