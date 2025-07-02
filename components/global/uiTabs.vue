@@ -1,17 +1,43 @@
 <script lang="ts" setup>
-const nuxtApp = useNuxtApp();
-const props = defineProps({
-  modelValue: { type: Number, default: null },
-  fixed: { type: Boolean, default: false },
-  id: { type: String, default: null },
-  panels: { type: String, default: null },
-  type: { type: String, default: null },
-  line: { type: Boolean, default: false },
-  round: { type: Boolean, default: false },
-  navi: { type: Boolean, default: false },
-  box: { type: Boolean, default: false },
-  txt: { type: Boolean, default: false }
+// Types
+type Type = 'line' | 'round' | 'navi' | 'box' | 'txt';
+
+interface Props {
+  modelValue?: number | null;
+  fixed?: boolean;
+  id?: string | null;
+  panels?: string | null;
+  type?: string | null;
+  line?: boolean;
+  round?: boolean;
+  navi?: boolean;
+  box?: boolean;
+  txt?: boolean;
+}
+
+// Props with defaults using withDefaults
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: null,
+  fixed: false,
+  id: null,
+  panels: null,
+  type: null,
+  line: false,
+  round: false,
+  navi: false,
+  box: false,
+  txt: false
 });
+
+// Emits with proper typing
+const emit = defineEmits<{
+  'update:modelValue': [value: number];
+}>();
+
+// Composables
+const nuxtApp = useNuxtApp();
+
+// Global counter for unique IDs
 let instanceId = 0;
 if (props.modelValue) {
   const componentName = 'tabs';
@@ -23,48 +49,58 @@ if (props.modelValue) {
   instanceId = nuxtApp.$globalCounters[componentName];
 }
 
-const tabsId = computed<string>((): string => {
+// Template refs and reactive state
+const el = ref<HTMLElement | null>(null);
+const tablist = ref<HTMLElement | null>(null);
+const lineEl = ref<HTMLElement | null>(null);
+const activeTab = ref<number>(props.modelValue ?? 0);
+const childIdx = ref<number>(0);
+const lineWidth = ref<number>(0);
+const lineLeft = ref<number>(0);
+const lineMoving = ref<boolean>(false);
+const isFixed = ref<boolean>(false);
+
+// Line animation state
+let moveIndex = -1;
+
+// Computed properties
+const tabsId = computed<string>(() => {
   let rtnVal = `tab_btn_${instanceId}`;
   if (props.id) rtnVal = props.id;
   return rtnVal;
 });
-const panelsId = computed<string>((): string => {
+
+const panelsId = computed<string>(() => {
   let rtnVal = `tab_panel_${instanceId}`;
   if (props.panels) rtnVal = props.panels;
   return rtnVal;
 });
-provide('tabsId', tabsId);
-provide('panelsId', panelsId);
 
-type Type = 'line' | 'round' | 'navi' | 'box' | 'txt';
 const typeAry: Type[] = ['line', 'round', 'navi', 'box', 'txt'];
-const matchingType = typeAry.find((type) => props[type]);
-const $type = computed<Type>((): Type => {
+const matchingType = computed(() => typeAry.find((type) => props[type]));
+const $type = computed<Type>(() => {
   if (props.type && typeAry.includes(props.type as Type)) {
     return props.type as Type;
-  } else if (matchingType) {
-    return matchingType;
   }
-  return 'line';
+  return matchingType.value || 'line';
 });
 
-const emit = defineEmits(['update:modelValue']);
-const el = ref<HTMLElement | null>(null);
-const tablist = ref<HTMLElement | null>(null);
-const lineEl = ref<HTMLElement | null>(null);
-
-const activeTab = ref(props.modelValue ?? 0);
-const lineWidth = ref(0);
-const lineLeft = ref(0);
-const lineMoving = ref(false);
-let moveIndex = -1;
-const setActiveTab = (index: number) => {
+// Methods
+const setActiveTab = (index: number): void => {
   activeTab.value = index;
   if (moveIndex === index) return;
   moveIndex = index;
   lineMoveEvt();
 };
-const lineMoveEvt = () => {
+
+// Provide data to child components
+provide('tabsId', tabsId);
+provide('panelsId', panelsId);
+provide('activeTab', activeTab);
+provide('setActiveTab', setActiveTab);
+provide('childIdx', childIdx);
+
+const lineMoveEvt = (): void => {
   const $tablist = tablist.value;
   const $line = lineEl.value;
   if (!$tablist || !$line) return;
@@ -75,22 +111,12 @@ const lineMoveEvt = () => {
   lineWidth.value = $tab.offsetWidth;
   lineLeft.value = $tab.offsetLeft;
 };
-const lineEndEvt = () => {
+
+const lineEndEvt = (): void => {
   lineMoving.value = false;
 };
 
-// defineExpose({ activeTab, setActiveTab });
-provide('activeTab', activeTab);
-provide('setActiveTab', setActiveTab);
-
-const childIdx = ref<number>(0);
-provide('childIdx', childIdx);
-
-watch(activeTab, (newValue) => {
-  emit('update:modelValue', newValue);
-});
-const isFixed = ref(false);
-const tabFixed = () => {
+const tabFixed = (): void => {
   const $el = el.value;
   if (!$el) return;
   const $getOffset = nuxtApp.$getOffset($el);
@@ -102,6 +128,13 @@ const tabFixed = () => {
     isFixed.value = false;
   }
 };
+
+// Watchers
+watch(activeTab, (newValue: number) => {
+  emit('update:modelValue', newValue);
+});
+
+// Lifecycle hooks
 onMounted(() => {
   nextTick(() => {
     if (props.fixed) {
@@ -111,16 +144,33 @@ onMounted(() => {
     window.addEventListener('resize', lineMoveEvt);
   });
 });
+
 onUnmounted(() => {
   if (props.fixed) window.removeEventListener('scroll', tabFixed);
   window.removeEventListener('resize', lineMoveEvt);
   childIdx.value = 0;
 });
 </script>
+
 <template>
-  <div ref="el" :class="[`tab-${$type}-menu`, { 'tab-fixed': fixed }, { 'top-fixed': isFixed }, { 'tab-line-moving': lineMoving }]">
+  <div 
+    ref="el" 
+    :class="[
+      `tab-${$type}-menu`, 
+      { 'tab-fixed': fixed }, 
+      { 'top-fixed': isFixed }, 
+      { 'tab-line-moving': lineMoving }
+    ]"
+  >
     <div class="tab-inner">
-      <i v-if="$type !== 'txt'" ref="lineEl" class="tab-line" aria-hidden="true" :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }" @transitionend="lineEndEvt"></i>
+      <i 
+        v-if="$type !== 'txt'" 
+        ref="lineEl" 
+        class="tab-line" 
+        aria-hidden="true" 
+        :style="{ width: `${lineWidth}px`, left: `${lineLeft}px` }" 
+        @transitionend="lineEndEvt"
+      />
       <ul ref="tablist" class="tab-list" role="tablist">
         <slot />
       </ul>
