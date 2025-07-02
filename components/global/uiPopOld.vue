@@ -1,37 +1,21 @@
 <script lang="ts" setup>
 import { ModalSystemKey } from '~/composables/useModalSystem';
 
-// Types
-type PopTypes = 'full' | 'bottom' | 'modal';
-
-interface Props {
-  title?: string | null;
-  titleClass?: string | null;
-  noHead?: boolean;
-  noClose?: boolean;
-  full?: boolean;
-  modal?: boolean;
-  bottom?: boolean;
-  tooltip?: boolean;
-  close?: (() => void) | null;
-  type?: string | null;
-}
-
-// Props with defaults using withDefaults
-const props = withDefaults(defineProps<Props>(), {
-  title: null,
-  titleClass: null,
-  noHead: false,
-  noClose: false,
-  full: false,
-  modal: false,
-  bottom: false,
-  tooltip: false,
-  close: null,
-  type: null
+// props
+const props = defineProps({
+  title: { type: String, default: null },
+  titleClass: { type: String, default: null },
+  noHead: { type: Boolean, default: false },
+  noClose: { type: Boolean, default: false },
+  full: { type: Boolean, default: false },
+  modal: { type: Boolean, default: false },
+  bottom: { type: Boolean, default: false },
+  tooltip: { type: Boolean, default: false },
+  close: { type: Function, default: null },
+  type: { type: String, default: null }
 });
 
-// Modal system injection
+// 모달 시스템 주입
 const modalSystem = inject(ModalSystemKey);
 if (!modalSystem) {
   throw new Error('Modal system not provided');
@@ -39,39 +23,37 @@ if (!modalSystem) {
 
 const { openModal, closeModal } = modalSystem;
 
-// Composables and refs
 const nuxtApp = useNuxtApp();
 const el = ref<HTMLElement | null>(null);
-const isLayer = ref<boolean>(false);
+const isLayer: Ref<boolean> = ref(false);
 const defaultType: string = 'modal';
-const idx = ref<number | null>(null);
+const idx: Ref<number | null> = ref(null);
 const addClass = ref<string[]>([]);
 
-// Computed properties
-const typeAry: PopTypes[] = ['full', 'bottom', 'modal'];
-const matchingType = computed(() => typeAry.find((type) => props[type]));
-const modalType = computed<string>(() => {
-  if (props.type && typeAry.includes(props.type as PopTypes)) {
-    return props.type as PopTypes;
-  } else if (matchingType.value) {
-    return matchingType.value;
+type popTypes = 'full' | 'bottom' | 'modal';
+const typeAry: popTypes[] = ['full', 'bottom', 'modal'];
+const matchingType = typeAry.find((type) => props[type]);
+const modalType = computed<string>((): string => {
+  if (props.type && typeAry.includes(props.type as popTypes)) {
+    return props.type as popTypes;
+  } else if (matchingType) {
+    return matchingType;
   }
   return defaultType;
 });
 
-// Methods
-const isLayerChk = (): void => {
+const isLayerChk = () => {
   const $el = el.value;
-  if (!$el) return;
+  if (!$el) return false;
   const $parent = $el.parentElement as HTMLElement;
   isLayer.value = $parent.classList.contains('popup');
 };
 
-const addClassChk = (): void => {
+const addClassChk = () => {
   if (props.tooltip) addClass.value.push('tooltip');
 };
 
-const maxHeight = (): void => {
+const maxHeight = () => {
   let wrap = window;
   let wrapH = wrap.innerHeight;
   let wrapPdT = 0;
@@ -90,7 +72,7 @@ const maxHeight = (): void => {
   $body.style.maxHeight = `${rtnVal}px`;
 };
 
-const popClose = (): void => {
+const popClose = () => {
   if (props.close) {
     props.close();
   } else if (isLayer.value && idx.value !== null) {
@@ -100,7 +82,6 @@ const popClose = (): void => {
   }
 };
 
-// Lifecycle
 onMounted(() => {
   if (el.value) idx.value = Number(el.value.dataset.idx);
   isLayerChk();
@@ -115,7 +96,6 @@ onMounted(() => {
   });
 });
 </script>
-
 <template>
   <article ref="el" class="pop-wrap" :class="{ page: !isLayer }">
     <div v-if="!noHead" class="pop-head" :class="[{ no_title: (title == null || title == '') && !$slots.title }, titleClass]">
