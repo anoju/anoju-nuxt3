@@ -1,113 +1,65 @@
 <script lang="ts" setup>
 import { Navigation, Pagination, Autoplay, EffectFade, EffectCube, EffectCoverflow, EffectFlip, EffectCreative, EffectCards, A11y, Parallax } from 'swiper/modules';
-import type { Swiper as SwiperInstance, SwiperOptions } from 'swiper/types';
+import type { Swiper as SwiperInstance } from 'swiper/types';
 
-// Types
-type SwiperEventHandler = (swiper: SwiperInstance) => void;
-type Direction = 'horizontal' | 'vertical';
-type Effect = 'slide' | 'fade' | 'cube' | 'coverflow' | 'flip' | 'creative' | 'cards';
-type PaginationType = 'bullets' | 'fraction' | 'progressbar' | 'custom';
+const props = defineProps({
+  modelValue: { type: Number, default: null },
 
-interface Props {
-  modelValue?: number | null;
+  slidesPerView: { type: [Number, String], default: 'auto' },
+  loop: { type: Boolean, default: false },
+  autoHeight: { type: Boolean, default: false },
+  centeredSlides: { type: Boolean, default: false },
+  allowTouchMove: { type: Boolean, default: true },
+  spaceBetween: { type: Number, default: null },
+  slidesOffsetBefore: { type: Number, default: null },
+  slidesOffsetAfter: { type: Number, default: null },
+  speed: { type: Number, default: null },
+  direction: { type: String, default: null },
 
-  // Basic options
-  slidesPerView?: number | string;
-  loop?: boolean;
-  autoHeight?: boolean;
-  centeredSlides?: boolean;
-  allowTouchMove?: boolean;
-  spaceBetween?: number | null;
-  slidesOffsetBefore?: number | null;
-  slidesOffsetAfter?: number | null;
-  speed?: number | null;
-  direction?: string | null;
+  effect: { type: String, default: null },
+  breakpoints: { type: Object, default: null },
+  autoplay: { type: Boolean, default: false },
+  autopDelay: { type: Number, default: 3000 },
+  navigation: { type: Boolean, default: null },
+  pagination: { type: Boolean, default: null },
+  paginationType: { type: String, default: 'bullets' },
+  paginationClass: { type: String, default: null },
 
-  // Advanced options
-  effect?: string | null;
-  breakpoints?: Record<string, unknown> | null;
-  autoplay?: boolean;
-  autopDelay?: number;
-  navigation?: boolean | null;
-  pagination?: boolean | null;
-  paginationType?: string;
-  paginationClass?: string | null;
-
-  // Event handlers
-  activeIndexChange?: SwiperEventHandler | null;
-  afterInit?: SwiperEventHandler | null;
-  beforeDestroy?: SwiperEventHandler | null;
-  beforeInit?: SwiperEventHandler | null;
-  slideChange?: SwiperEventHandler | null;
-  slideChangeTransitionEnd?: SwiperEventHandler | null;
-  slideChangeTransitionStart?: SwiperEventHandler | null;
-  reachBeginning?: SwiperEventHandler | null;
-  reachEnd?: SwiperEventHandler | null;
-  realIndexChange?: SwiperEventHandler | null;
-}
-
-// Props with defaults using withDefaults
-const props = withDefaults(defineProps<Props>(), {
-  modelValue: null,
-  slidesPerView: 'auto',
-  loop: false,
-  autoHeight: false,
-  centeredSlides: false,
-  allowTouchMove: true,
-  spaceBetween: null,
-  slidesOffsetBefore: null,
-  slidesOffsetAfter: null,
-  speed: null,
-  direction: null,
-  effect: null,
-  breakpoints: null,
-  autoplay: false,
-  autopDelay: 3000,
-  navigation: null,
-  pagination: null,
-  paginationType: 'bullets',
-  paginationClass: null,
-  activeIndexChange: null,
-  afterInit: null,
-  beforeDestroy: null,
-  beforeInit: null,
-  slideChange: null,
-  slideChangeTransitionEnd: null,
-  slideChangeTransitionStart: null,
-  reachBeginning: null,
-  reachEnd: null,
-  realIndexChange: null
+  // 이벤트 핸들러들
+  activeIndexChange: { type: Function, default: null },
+  afterInit: { type: Function, default: null },
+  beforeDestroy: { type: Function, default: null },
+  beforeInit: { type: Function, default: null },
+  slideChange: { type: Function, default: null },
+  slideChangeTransitionEnd: { type: Function, default: null },
+  slideChangeTransitionStart: { type: Function, default: null },
+  reachBeginning: { type: Function, default: null },
+  reachEnd: { type: Function, default: null },
+  realIndexChange: { type: Function, default: null }
 });
 
-// Emits with proper typing
-const emit = defineEmits<{
-  'update:modelValue': [value: number];
-}>();
-
-// Template refs and reactive state
+const emit = defineEmits(['update:modelValue']);
 const el = ref<HTMLElement | null>(null);
 const swiperInstance = ref<SwiperInstance | null>(null);
-const isAutoplay = ref<boolean>(true);
-const swiperIdx = ref<number>(props.modelValue ?? 0);
+const isAutoplay = ref<Boolean>(true);
+const swiperIdx = ref(props.modelValue ?? 0);
 
-// Computed properties
-const autoplayText = computed<string>(() => {
+const autoplayText = computed(() => {
   let txt = '슬라이드 자동롤링 ';
   txt += isAutoplay.value ? '중지' : '시작';
   return txt;
 });
 
-// Utility functions
-const isArryInclude = (ary: string[], val: string): boolean => {
+const isArryInclude = (ary: string[], val: string) => {
   return ary.includes(val);
 };
 
-const swiperOption = computed<SwiperOptions>(() => {
+const swiperOption = computed(() => {
   const modules = [A11y, Parallax];
 
-  const returnVal: SwiperOptions = {
+  const returnVal: any = {
     modules,
-    slidesPerView: props.slidesPerView === 'auto' ? 'auto' : Number(props.slidesPerView) || 'auto',
+    slidesPerView: props.slidesPerView,
     a11y: {
       prevSlideMessage: '이전 슬라이드',
       nextSlideMessage: '다음 슬라이드',
@@ -149,7 +101,7 @@ const swiperOption = computed<SwiperOptions>(() => {
     }
   };
 
-  // Basic options
+  // 기본 옵션들
   if (props.loop) returnVal.loop = true;
   if (props.autoHeight) returnVal.autoHeight = props.autoHeight;
   if (props.centeredSlides) returnVal.centeredSlides = props.centeredSlides;
@@ -160,18 +112,18 @@ const swiperOption = computed<SwiperOptions>(() => {
   if (props.speed) returnVal.speed = props.speed;
   if (props.modelValue !== null) returnVal.initialSlide = props.modelValue;
 
-  // Direction setting
-  const directionAry: Direction[] = ['horizontal', 'vertical'];
+  // Direction 설정
+  const directionAry = ['horizontal', 'vertical'];
   if (props.direction && isArryInclude(directionAry, props.direction)) {
-    returnVal.direction = props.direction as Direction;
+    returnVal.direction = props.direction;
   }
 
-  // Effect setting
-  const effectAry: Effect[] = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'creative', 'cards'];
+  // Effect 설정
+  const effectAry = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'creative', 'cards'];
   if (props.effect && isArryInclude(effectAry, props.effect)) {
-    returnVal.effect = props.effect as Effect;
+    returnVal.effect = props.effect;
 
-    // Add effect modules
+    // Effect 모듈 추가
     switch (props.effect) {
       case 'fade':
         modules.push(EffectFade);
@@ -194,12 +146,10 @@ const swiperOption = computed<SwiperOptions>(() => {
     }
   }
 
-  // Breakpoints setting
-  if (props.breakpoints) {
-    returnVal.breakpoints = props.breakpoints as { [width: number]: SwiperOptions; [ratio: string]: SwiperOptions; };
-  }
+  // Breakpoints 설정
+  if (props.breakpoints) returnVal.breakpoints = props.breakpoints;
 
-  // Autoplay setting
+  // Autoplay 설정
   if (props.autoplay) {
     modules.push(Autoplay);
     returnVal.autoplay = {
@@ -208,7 +158,7 @@ const swiperOption = computed<SwiperOptions>(() => {
     };
   }
 
-  // Navigation setting
+  // Navigation 설정
   if (props.navigation) {
     modules.push(Navigation);
     returnVal.navigation = {
@@ -217,16 +167,16 @@ const swiperOption = computed<SwiperOptions>(() => {
     };
   }
 
-  // Pagination setting
+  // Pagination 설정
   if (props.pagination) {
     modules.push(Pagination);
-    const paginationEl = (el.value?.querySelector('.swiper-pagination') as HTMLElement) || '.swiper-pagination';
+    const paginationEl = el.value?.querySelector('.swiper-pagination') || '.swiper-pagination';
     returnVal.pagination = {
       el: paginationEl,
-      type: props.paginationType as PaginationType
+      type: props.paginationType
     };
 
-    if (props.paginationType === 'bullets' && typeof returnVal.pagination === 'object') {
+    if (props.paginationType === 'bullets') {
       returnVal.pagination.clickable = true;
       returnVal.pagination.renderBullet = (index: number, className: string) => {
         return `<button type="button" class="${className}">${index + 1}번째 슬라이드</button>`;
@@ -234,14 +184,13 @@ const swiperOption = computed<SwiperOptions>(() => {
     }
   }
 
-  // Update modules array
+  // 모듈 배열을 업데이트
   returnVal.modules = modules;
 
   return returnVal;
 });
 
-// Methods
-const autoPlayButton = (): void => {
+const autoPlayButton = () => {
   isAutoplay.value = !isAutoplay.value;
   if (!swiperInstance.value || !props.autoplay) return;
 
@@ -252,8 +201,7 @@ const autoPlayButton = (): void => {
   }
 };
 
-// Watchers
-watch(swiperIdx, (newValue: number) => {
+watch(swiperIdx, (newValue) => {
   if (props.modelValue !== null && props.modelValue !== newValue) {
     emit('update:modelValue', newValue);
   }
@@ -261,7 +209,7 @@ watch(swiperIdx, (newValue: number) => {
 
 watch(
   () => props.modelValue,
-  (newValue: number | null, oldValue: number | null) => {
+  (newValue, oldValue) => {
     if (!swiperInstance.value || newValue === null) return;
     const $realIndex = swiperInstance.value.realIndex;
     if (newValue !== $realIndex) {
@@ -270,7 +218,6 @@ watch(
   }
 );
 
-// Lifecycle hooks
 onMounted(() => {
   if (!process.client) return; // 클라이언트에서만 실행
 
@@ -304,27 +251,16 @@ onUnmounted(() => {
       <div class="swiper-wrapper">
         <slot />
       </div>
-      <button v-if="navigation" type="button" class="swiper-button swiper-button-prev" />
-      <button v-if="navigation" type="button" class="swiper-button swiper-button-next" />
+      <button v-if="navigation" type="button" class="swiper-button swiper-button-prev"></button>
+      <button v-if="navigation" type="button" class="swiper-button swiper-button-next"></button>
     </div>
     <div v-if="pagination && autoplay" class="swiper-pagination-wrap">
-      <div class="swiper-pagination" :class="paginationClass" />
-      <button 
-        v-if="autoplay" 
-        class="swiper-auto-ctl" 
-        :class="{ play: !isAutoplay }" 
-        :aria-label="autoplayText" 
-        @click="autoPlayButton"
-      />
+      <div class="swiper-pagination" :class="paginationClass"></div>
+      <button v-if="autoplay" class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
     </div>
-    <div v-else-if="pagination" class="swiper-pagination" :class="paginationClass" />
+    <div v-else-if="pagination" class="swiper-pagination" :class="paginationClass"></div>
     <div v-else-if="autoplay" class="swiper-auto">
-      <button 
-        class="swiper-auto-ctl" 
-        :class="{ play: !isAutoplay }" 
-        :aria-label="autoplayText" 
-        @click="autoPlayButton"
-      />
+      <button class="swiper-auto-ctl" :class="{ play: !isAutoplay }" :aria-label="autoplayText" @click="autoPlayButton"></button>
     </div>
   </div>
 </template>
