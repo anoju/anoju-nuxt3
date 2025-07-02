@@ -1,60 +1,70 @@
 <script lang="ts">
 export default {
-  // name: 'UiSelect',
   inheritAttrs: false
 };
 </script>
-<script setup lang="ts">
+<script lang="ts" setup>
+// Types
 interface Option {
   label: string;
   value: string | number;
   disabled?: boolean;
 }
-const props = defineProps({
-  options: { type: Array as () => Option[], required: true },
-  modelValue: { type: [String, Number], default: '' },
-
-  disabled: { type: Boolean, default: false },
-  class: { type: [String, Array], default: null },
-  dir: { type: String, default: null },
-  title: { type: String, default: '선택' },
-
-  inline: { type: Boolean, default: false },
-  size: { type: String, default: null },
-  small: { type: Boolean, default: false },
-  large: { type: Boolean, default: false }
-});
-
-// const selectText = ref('');
-const selectedValue = ref(props.modelValue);
-const emit = defineEmits(['input', 'update:modelValue']);
-
-const selectText = computed<any>((): string => {
-  const valObj = props.options.filter((obj: Option) => String(obj.value) === String(props.modelValue));
-  return valObj[0].label;
-});
-
-const onSelectChange = (event: Event) => {
-  const targetVal = (event.target as HTMLSelectElement).value;
-  selectedValue.value = targetVal;
-  emit('input', selectedValue.value);
-  emit('update:modelValue', selectedValue.value);
-};
 
 type Size = 'small' | 'large';
-const sizeAry: Size[] = ['small', 'large'];
-const matchingSize = sizeAry.find((size) => props[size]);
-const $size = computed<Size | null>((): Size | null => {
-  if (props.size && sizeAry.includes(props.size as Size)) {
-    return props.size as Size;
-  } else if (matchingSize) {
-    return matchingSize;
-  }
-  return null;
+
+interface Props {
+  options: Option[];
+  modelValue?: string | number;
+  disabled?: boolean;
+  class?: string | Array<string> | null;
+  dir?: string | null;
+  title?: string;
+  inline?: boolean;
+  size?: string | null;
+  small?: boolean;
+  large?: boolean;
+}
+
+// Props with defaults using withDefaults
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: '',
+  disabled: false,
+  class: null,
+  dir: null,
+  title: '선택',
+  inline: false,
+  size: null,
+  small: false,
+  large: false
 });
 
-const selectClass = computed(() => {
-  const rtnAry = [
+// Emits with proper typing
+const emit = defineEmits<{
+  input: [value: string | number];
+  'update:modelValue': [value: string | number];
+}>();
+
+// Reactive state
+const selectedValue = ref<string | number>(props.modelValue);
+
+// Computed properties
+const selectText = computed<string>(() => {
+  const valObj = props.options.find((obj: Option) => String(obj.value) === String(props.modelValue));
+  return valObj?.label || props.title;
+});
+
+const sizeAry: Size[] = ['small', 'large'];
+const matchingSize = computed(() => sizeAry.find((size) => props[size]));
+const $size = computed<Size | null>(() => {
+  if (props.size && sizeAry.includes(props.size as Size)) {
+    return props.size as Size;
+  }
+  return matchingSize.value || null;
+});
+
+const selectClass = computed<Array<string | Array<string> | Record<string, boolean> | null>>(() => {
+  const rtnAry: Array<string | Array<string> | Record<string, boolean> | null> = [
     {
       inline: props.inline,
       disabled: props.disabled
@@ -65,28 +75,45 @@ const selectClass = computed(() => {
   return rtnAry;
 });
 
-// const focus = () => {
-//   this.$refs.select.focus();
-// };
+// Methods
+const onSelectChange = (event: Event): void => {
+  const targetVal = (event.target as HTMLSelectElement).value;
+  selectedValue.value = targetVal;
+  emit('input', selectedValue.value);
+  emit('update:modelValue', selectedValue.value);
+};
+
+// Lifecycle
 onMounted(() => {
   emit('input', selectedValue.value);
   emit('update:modelValue', selectedValue.value);
 });
 </script>
+
 <template>
   <div class="select" :class="selectClass">
-    <div v-if="inline" class="btn-select-txt" aria-hidden="true">{{ selectText }}</div>
+    <div v-if="inline" class="btn-select-txt" aria-hidden="true">
+      {{ selectText }}
+    </div>
     <select
       ref="select"
       v-model="selectedValue"
       :class="[{ off: props.modelValue === '' }]"
       :title="title"
       :disabled="disabled"
-      :dir="dir"
+      :dir="dir || undefined"
       v-bind="$attrs"
       @change="onSelectChange"
     >
-      <option v-for="(option, i) of options" :key="i" :value="option.value" :disabled="option.disabled" :selected="option.value === props.modelValue">{{ option.label }}</option>
+      <option 
+        v-for="(option, i) of options" 
+        :key="i" 
+        :value="option.value" 
+        :disabled="option.disabled" 
+        :selected="option.value === props.modelValue"
+      >
+        {{ option.label }}
+      </option>
     </select>
   </div>
 </template>

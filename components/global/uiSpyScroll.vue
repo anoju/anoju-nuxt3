@@ -1,54 +1,83 @@
 <script lang="ts" setup>
+// Types
 interface Section {
   id: string;
   name?: string;
 }
-const props = defineProps({
-  modelValue: { type: Number, default: null },
-  sections: { type: Array as () => Section[], required: true },
-  notNavi: { type: Boolean, default: false },
-  naviSticky: { type: Boolean, default: false }
+
+interface Props {
+  modelValue?: number | null;
+  sections: Section[];
+  notNavi?: boolean;
+  naviSticky?: boolean;
+}
+
+// Props with defaults using withDefaults
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: null,
+  notNavi: false,
+  naviSticky: false
 });
 
-const emit = defineEmits(['update:modelValue']);
-const activeIndex = ref(props.modelValue ?? 0);
-const getArryIndex = (ary: Section[], val: string) => {
-  return ary.findIndex((item) => item.id === val);
-};
+// Emits with proper typing
+const emit = defineEmits<{
+  'update:modelValue': [value: number];
+}>();
 
-const activeSectionId = ref<string | null>(null);
-const el = ref<HTMLElement | null>(null);
-const navi = ref<HTMLElement | null>(null);
+// Composables
 const { $scrollTo } = useNuxtApp();
 const $getOffset = useNuxtApp().$getOffset;
 const $getTopFixedHeight = useNuxtApp().$getTopFixedHeight;
 
-const scrollTo = (id: string) => {
+// Template refs and reactive state
+const el = ref<HTMLElement | null>(null);
+const navi = ref<HTMLElement | null>(null);
+const activeIndex = ref<number>(props.modelValue ?? 0);
+const activeSectionId = ref<string | null>(null);
+const naviTop = ref<number | null>(null);
+const naviFixed = ref<boolean>(false);
+
+// Utility functions
+const getArryIndex = (ary: Section[], val: string): number => {
+  return ary.findIndex((item) => item.id === val);
+};
+
+// Computed properties
+const naviStyle = computed<Record<string, string>>(() => {
+  const styleObj: Record<string, string> = {};
+  if (naviTop.value !== null) {
+    styleObj.top = `${naviTop.value}px`;
+  }
+  return styleObj;
+});
+
+// Methods
+const scrollTo = (id: string): void => {
   const element = document.getElementById(id);
   if (element) {
     const $top = $getOffset(element).top;
     const $topFixedH = $getTopFixedHeight(element);
-    // element.scrollIntoView({ behavior: 'smooth' });
     $scrollTo('window', { top: $top - $topFixedH }, 300);
   }
 };
-const naviTop = ref<number | null>(null);
-const naviFixed = ref<boolean>(false);
-const setNaviTop = () => {
+
+const setNaviTop = (): void => {
   const $sclTop = window.pageYOffset;
   const $el = el.value;
   const $navi = navi.value;
   if (!$el || !$navi) return;
+  
   const $elTop = $getOffset($el).top;
   const $elBottom = $elTop + $el.offsetHeight;
   if ($elBottom + window.innerHeight / 2 < $sclTop) return;
+  
   const $topFixedH = $getTopFixedHeight($el);
   const $maxTop = $el.offsetHeight - $navi.offsetHeight;
+  
   if ($elBottom - $topFixedH - $navi.offsetHeight < $sclTop) {
     naviTop.value = $maxTop;
     naviFixed.value = false;
   } else if ($sclTop + $topFixedH > $elTop) {
-    // naviTop.value = Math.min($maxTop, $sclTop + $topFixedH - $elTop);
     naviTop.value = null;
     naviFixed.value = true;
   } else {
@@ -56,29 +85,11 @@ const setNaviTop = () => {
     naviFixed.value = false;
   }
 };
-const naviStyle = computed(() => {
-  const $obj: any = {};
-  if (naviTop.value) $obj.top = naviTop.value + 'px';
-  return $obj;
-});
 
-watch(activeIndex, (newValue) => {
-  if (props.modelValue !== null && props.modelValue !== newValue) {
-    emit('update:modelValue', newValue);
-  }
-});
-watch(
-  () => props.modelValue,
-  (newValue, oldValue) => {
-    if (!newValue || newValue === activeIndex.value) return;
-    const $targetId = props.sections[newValue].id;
-    scrollTo($targetId);
-  }
-);
-
-const onScroll = () => {
-  let closestSection = null;
+const onScroll = (): void => {
+  let closestSection: string | null = null;
   let minDistance = Number.MAX_VALUE;
+  
   for (const section of props.sections) {
     const element = document.getElementById(section.id);
     if (element) {
@@ -90,14 +101,35 @@ const onScroll = () => {
       }
     }
   }
+  
   activeSectionId.value = closestSection;
   if (closestSection) {
     const idx = getArryIndex(props.sections, closestSection);
     activeIndex.value = idx;
   }
-  if (props.naviSticky) setNaviTop();
+  
+  if (props.naviSticky) {
+    setNaviTop();
+  }
 };
 
+// Watchers
+watch(activeIndex, (newValue: number) => {
+  if (props.modelValue !== null && props.modelValue !== newValue) {
+    emit('update:modelValue', newValue);
+  }
+});
+
+watch(
+  () => props.modelValue,
+  (newValue: number | null, oldValue: number | null) => {
+    if (!newValue || newValue === activeIndex.value) return;
+    const $targetId = props.sections[newValue].id;
+    scrollTo($targetId);
+  }
+);
+
+// Lifecycle hooks
 onMounted(() => {
   onScroll();
   window.addEventListener('scroll', onScroll);
@@ -107,12 +139,19 @@ onUnmounted(() => {
   window.removeEventListener('scroll', onScroll);
 });
 </script>
+
 <template>
   <div ref="el" class="spy-scroll">
     <nav v-if="!notNavi" ref="navi" class="spy-scroll-navi" :class="{ fixed: naviFixed }" :style="naviStyle">
       <ul>
         <li v-for="(section, i) in sections" :key="i">
-          <a :href="`#${section.id}`" :class="{ active: section.id === activeSectionId }" @click.prevent="scrollTo(section.id)">{{ section.name }}</a>
+          <a 
+            :href="`#${section.id}`" 
+            :class="{ active: section.id === activeSectionId }" 
+            @click.prevent="scrollTo(section.id)"
+          >
+            {{ section.name }}
+          </a>
         </li>
       </ul>
       <slot name="navi" />
