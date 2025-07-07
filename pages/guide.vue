@@ -13,6 +13,7 @@ const tabInfo: Tab[] = [
   { text: 'button', url: '/guide/button' },
   { text: 'form', url: '/guide/form' },
   { text: 'popup', url: '/guide/popup' },
+  { text: 'newPopup', url: '/guide/newPopup' },
   { text: 'swiper', url: '/guide/swiper' },
   { text: 'anime', url: '/guide/anime' },
   { text: 'etc', url: '/guide/etc' }
