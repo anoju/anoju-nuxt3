@@ -85,7 +85,7 @@ const chkboxId = computed<string>(() => {
 
 const isChecked = computed<boolean>(() => {
   if (props.modelValue instanceof Array) {
-    return props.modelValue.includes(props.value);
+    return props.modelValue.some((item) => String(item) === String(props.value));
   }
   return props.modelValue === props.trueValue;
 });
@@ -157,13 +157,16 @@ const clickEvt = (e: Event): void => {
 const onInputChange = (e: Event): void => {
   if (!e.target) return;
   const checked = (e.target as HTMLInputElement).checked;
-  
+
   if (props.modelValue instanceof Array) {
     const newValue = [...props.modelValue];
     if (checked) {
-      newValue.push(props.value);
+      newValue.push(props.value as string | number);
     } else {
-      newValue.splice(newValue.indexOf(props.value), 1);
+      const index = newValue.findIndex((item) => String(item) === String(props.value));
+      if (index > -1) {
+        newValue.splice(index, 1);
+      }
     }
     emit('update:modelValue', newValue);
   } else {
