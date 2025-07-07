@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+// Slots
+const slots = useSlots();
 // Types
 interface Props {
   lang?: string;
@@ -17,9 +19,41 @@ const codeElement = ref<HTMLElement | null>(null);
 const isCopy = ref<boolean>(false);
 let copiedTime: ReturnType<typeof setTimeout> | null = null;
 
+// 들여쓰기 제거 함수
+const trimIndent = (str: string): string => {
+  const lines = str.split('\n');
+  
+  // 빈 줄이 아닌 첫 번째와 마지막 줄의 공백 제거
+  while (lines.length && lines[0].trim() === '') {
+    lines.shift();
+  }
+  while (lines.length && lines[lines.length - 1].trim() === '') {
+    lines.pop();
+  }
+  
+  if (lines.length === 0) return '';
+  
+  // 최소 들여쓰기 찾기
+  const minIndent = lines
+    .filter(line => line.trim() !== '') // 빈 줄 제외
+    .map(line => line.match(/^\s*/)?.[0].length || 0)
+    .reduce((min, current) => Math.min(min, current), Infinity);
+  
+  // 공통 들여쓰기 제거
+  return lines
+    .map(line => line.slice(minIndent))
+    .join('\n');
+};
+
 // Computed properties
+const processedCode = computed<string>(() => {
+  const slotContent = slots.default?.()[0]?.children as string || '';
+  const codeContent = slotContent + props.code;
+  return trimIndent(codeContent);
+});
+
 const lineCount = computed<number>(() => {
-  return (props.code.match(/\n/g) || []).length + 1;
+  return (processedCode.value.match(/\n/g) || []).length + 1;
 });
 
 const copyText = computed<string>(() => {
@@ -83,11 +117,16 @@ onUnmounted(() => {
       <div class="line-numbers">
         <span v-for="n in lineCount" :key="n">{{ n }}</span>
       </div>
-      <pre v-highlightjs="{ language: lang }">
-        <code ref="codeElement" :class="lang">
-          <slot />{{ code }}
-        </code>
-      </pre>
+      <ClientOnly>
+        <pre v-highlightjs="{ language: lang }">
+          <code ref="codeElement" :class="lang">{{ processedCode }}</code>
+        </pre>
+        <template #fallback>
+          <pre>
+            <code ref="codeElement" :class="lang">{{ processedCode }}</code>
+          </pre>
+        </template>
+      </ClientOnly>
     </dd>
   </dl>
 </template>
