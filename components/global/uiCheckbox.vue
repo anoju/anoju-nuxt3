@@ -21,7 +21,7 @@ interface Props {
   switch?: boolean;
   switch2?: boolean;
 
-  value: string | number;
+  value?: string | number | boolean;
   modelValue?: string | number | boolean | Array<string | number> | Record<string, unknown> | null;
   trueValue?: string | number | boolean;
   falseValue?: string | number | boolean;
@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   button: false,
   switch: false,
   switch2: false,
+  value: 'default',
   modelValue: null,
   trueValue: true,
   falseValue: false,
