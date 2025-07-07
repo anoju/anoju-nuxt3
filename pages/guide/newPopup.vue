@@ -72,22 +72,22 @@ const manualCleanup = () => {
 const basicUsageCode = `const isModalOpen = ref(false);
 
 <!-- 모달 컴포넌트 -->
-<NewModal v-model="isModalOpen" modal title="모달 제목">
+<newPopup v-model="isModalOpen" modal title="모달 제목">
   <uiInner>
     <h1>모달 내용</h1>
-    <p>NewModal 컴포넌트를 사용한 간편한 모달입니다.</p>
+    <p>newModal 컴포넌트를 사용한 간편한 모달입니다.</p>
   </uiInner>
   <template #foot>
     <div class="flex full">
       <uiButton @click="isModalOpen = false">닫기</uiButton>
     </div>
   </template>
-</NewModal>
+</newPopup>
 
 <!-- 열기 버튼 -->
 <uiButton @click="isModalOpen = true">모달 열기</uiButton>`;
 
-const propsCode = `<NewModal 
+const propsCode = `<newPopup 
   v-model="isModalOpen"           <!-- 필수: v-model로 열림/닫힘 상태 -->
   
   <!-- 모달 타입 (4가지 방식) -->
@@ -108,14 +108,14 @@ const propsCode = `<NewModal
   :close-on-escape="true"         <!-- ESC 키로 닫기 -->
 >
   <!-- 슬롯 내용 -->
-</NewModal>`;
+</newPopup>`;
 
 const eventsCode = `const onModalOpen = () => console.log('모달이 열렸습니다');
 const onModalClose = () => console.log('모달이 닫혔습니다');
 const onModalOpened = () => console.log('모달 열기 완료');
 const onModalClosed = () => console.log('모달 닫기 완료');
 
-<NewModal 
+<newPopup 
   v-model="isModalOpen"
   modal
   title="이벤트 예시"
@@ -127,9 +127,9 @@ const onModalClosed = () => console.log('모달 닫기 완료');
   <uiInner>
     <p>콘솔에서 이벤트 로그를 확인하세요!</p>
   </uiInner>
-</NewModal>`;
+</newPopup>`;
 
-const slotsCode = `<NewModal v-model="isModalOpen" modal title="슬롯 예시">
+const slotsCode = `<newPopup v-model="isModalOpen" modal title="슬롯 예시">
   <!-- title-prev 슬롯: 제목 앞쪽 -->
   <template #title-prev>
     <i class="icon-back"></i>
@@ -163,27 +163,27 @@ const slotsCode = `<NewModal v-model="isModalOpen" modal title="슬롯 예시">
       <uiButton primary @click="isModalOpen = false">확인</uiButton>
     </div>
   </template>
-</NewModal>`;
+</newPopup>`;
 
 const typesCode = `<!-- 1. 일반 모달 (중앙 팝업) -->
-<NewModal v-model="isModal" modal title="일반 모달">
+<newPopup v-model="isModal" modal title="일반 모달">
   <uiInner>일반 모달 내용</uiInner>
-</NewModal>
+</newPopup>
 
 <!-- 2. 풀스크린 모달 -->
-<NewModal v-model="isFull" full title="풀스크린">
+<newPopup v-model="isFull" full title="풀스크린">
   <uiInner>풀스크린 내용</uiInner>
-</NewModal>
+</newPopup>
 
 <!-- 3. 바텀시트 -->
-<NewModal v-model="isBottom" bottom title="바텀시트">
+<newPopup v-model="isBottom" bottom title="바텀시트">
   <uiInner>바텀시트 내용</uiInner>
-</NewModal>
+</newPopup>
 
 <!-- 4. type prop 방식 -->
-<NewModal v-model="isType" type="modal" title="Type 방식">
+<newPopup v-model="isType" type="modal" title="Type 방식">
   <uiInner>type prop으로 지정</uiInner>
-</NewModal>`;
+</newPopup>`;
 
 const globalMethodsCode = `// Nuxt 앱에서 제공하는 전역 메서드들
 const { $closeAllNewModals, $cleanupNewModals, $newModal } = useNuxtApp();
@@ -202,16 +202,16 @@ const cleanupModals = () => {
 <uiButton @click="cleanupModals">시스템 정리</uiButton>`;
 
 const advancedCode = `<!-- 1. 헤드리스 모달 (헤더 없음) -->
-<NewModal v-model="isHeadless" modal :no-head="true">
+<newPopup v-model="isHeadless" modal :no-head="true">
   <div class="custom-modal-content">
     <h1>완전 커스텀 모달</h1>
     <p>헤더가 없는 자유로운 구성</p>
     <uiButton @click="isHeadless = false">닫기</uiButton>
   </div>
-</NewModal>
+</newPopup>
 
 <!-- 2. 배경 클릭 비활성화 -->
-<NewModal 
+<newPopup 
   v-model="isNoOverlay" 
   modal 
   title="배경 클릭 안됨"
@@ -226,10 +226,10 @@ const advancedCode = `<!-- 1. 헤드리스 모달 (헤더 없음) -->
       <uiButton @click="isNoOverlay = false">직접 닫기</uiButton>
     </div>
   </template>
-</NewModal>
+</newPopup>
 
 <!-- 3. 커스텀 클래스 -->
-<NewModal 
+<newPopup 
   v-model="isCustom" 
   modal 
   title="커스텀 스타일"
@@ -238,12 +238,12 @@ const advancedCode = `<!-- 1. 헤드리스 모달 (헤더 없음) -->
   <uiInner>
     <p>add-class로 커스텀 스타일 적용</p>
   </uiInner>
-</NewModal>`;
+</newPopup>`;
 </script>
 
 <template>
   <uiInner>
-    <h1 class="gd__h1">새로운 모달 컴포넌트 (NewModal)</h1>
+    <h1 class="gd__h1">새로운 모달 컴포넌트 (newModal)</h1>
 
     <div class="feature-highlight">
       <h2>✨ 주요 특징</h2>
@@ -276,7 +276,7 @@ const advancedCode = `<!-- 1. 헤드리스 모달 (헤더 없음) -->
     <uiCodeHighlight lang="vue" :code="propsCode"></uiCodeHighlight>
 
     <h2 class="gd__h2">🎭 슬롯 구조</h2>
-    <p>NewModal은 uiPop과 동일한 슬롯 구조를 제공합니다.</p>
+    <p>newModal은 uiPop과 동일한 슬롯 구조를 제공합니다.</p>
     <uiCodeHighlight lang="vue" :code="slotsCode"></uiCodeHighlight>
 
     <h2 class="gd__h2">🎪 이벤트 처리</h2>
@@ -327,11 +327,11 @@ useNuxtApp().$modal({
             <li>상태 관리 간편</li>
           </ul>
           <pre><code>&lt;!-- 사용 예시 --&gt;
-&lt;NewModal v-model="isOpen" modal&gt;
+&lt;newModal v-model="isOpen" modal&gt;
   &lt;uiInner&gt;
     모달 내용
   &lt;/uiInner&gt;
-&lt;/NewModal&gt;</code></pre>
+&lt;/newModal&gt;</code></pre>
         </div>
       </div>
     </div>
@@ -341,7 +341,7 @@ useNuxtApp().$modal({
       <div class="tip-item">
         <h4>✅ 권장사항</h4>
         <ul>
-          <li>간단한 모달은 NewModal 사용</li>
+          <li>간단한 모달은 newModal 사용</li>
           <li>v-model로 상태 관리</li>
           <li>슬롯으로 자유로운 구성</li>
           <li>이벤트로 라이프사이클 관리</li>
@@ -361,11 +361,11 @@ useNuxtApp().$modal({
     <!-- 실제 모달들 -->
 
     <!-- 일반 모달 -->
-    <NewModal v-model="isModalOpen" modal title="일반 모달 데모">
+    <newPopup v-model="isModalOpen" modal title="일반 모달 데모">
       <uiInner>
         <h1 class="tit-h1 pop-focus" tabindex="-1">일반 모달입니다</h1>
         <p>v-model로 제어되는 모달입니다.</p>
-        <p>NewModal 컴포넌트는 uiPop의 모든 기능을 지원합니다.</p>
+        <p>newModal 컴포넌트는 uiPop의 모든 기능을 지원합니다.</p>
 
         <div class="demo-features">
           <h3>✨ 새로운 기능들:</h3>
@@ -384,10 +384,10 @@ useNuxtApp().$modal({
           <uiButton primary h60 @click="isModalOpen = false">확인</uiButton>
         </div>
       </template>
-    </NewModal>
+    </newPopup>
 
     <!-- 풀스크린 모달 -->
-    <NewModal v-model="isFullPopupOpen" full title="풀스크린 모달">
+    <newPopup v-model="isFullPopupOpen" full title="풀스크린 모달">
       <uiInner>
         <h1 class="tit-h1 pop-focus" tabindex="-1">풀스크린 모달</h1>
         <p>화면 전체를 차지하는 모달입니다.</p>
@@ -408,10 +408,10 @@ useNuxtApp().$modal({
           <uiButton full primary @click="isFullPopupOpen = false">닫기</uiButton>
         </div>
       </template>
-    </NewModal>
+    </newPopup>
 
     <!-- 바텀시트 -->
-    <NewModal v-model="isBottomSheetOpen" bottom title="바텀시트">
+    <newPopup v-model="isBottomSheetOpen" bottom title="바텀시트">
       <uiInner>
         <h1 class="tit-h1 pop-focus" tabindex="-1">바텀시트</h1>
         <p>화면 하단에서 올라오는 모달입니다.</p>
@@ -431,10 +431,10 @@ useNuxtApp().$modal({
           <uiButton full primary @click="isBottomSheetOpen = false">완료</uiButton>
         </div>
       </template>
-    </NewModal>
+    </newPopup>
 
     <!-- 이벤트 모달 -->
-    <NewModal v-model="isEventModalOpen" modal title="이벤트 데모" @open="onModalOpen" @close="onModalClose" @opened="onModalOpened" @closed="onModalClosed">
+    <newPopup v-model="isEventModalOpen" modal title="이벤트 데모" @open="onModalOpen" @close="onModalClose" @opened="onModalOpened" @closed="onModalClosed">
       <uiInner>
         <h1 class="tit-h1 pop-focus" tabindex="-1">이벤트 모달</h1>
         <p>브라우저 콘솔을 확인하여 이벤트 로그를 확인하세요!</p>
@@ -454,10 +454,10 @@ useNuxtApp().$modal({
           <uiButton full primary @click="isEventModalOpen = false">닫기</uiButton>
         </div>
       </template>
-    </NewModal>
+    </newPopup>
 
     <!-- 헤드리스 모달 -->
-    <NewModal v-model="isHeadlessModalOpen" modal :no-head="true">
+    <newPopup v-model="isHeadlessModalOpen" modal :no-head="true">
       <div class="headless-modal">
         <div class="headless-content">
           <h1>🎨 헤드리스 모달</h1>
@@ -466,10 +466,10 @@ useNuxtApp().$modal({
           <uiButton primary @click="isHeadlessModalOpen = false">닫기</uiButton>
         </div>
       </div>
-    </NewModal>
+    </newPopup>
 
     <!-- 커스텀 모달 -->
-    <NewModal v-model="isCustomModalOpen" modal title="커스텀 모달" add-class="custom-demo-modal" :close-on-overlay="false">
+    <newPopup v-model="isCustomModalOpen" modal title="커스텀 모달" add-class="custom-demo-modal" :close-on-overlay="false">
       <uiInner>
         <h1 class="tit-h1 pop-focus" tabindex="-1">커스텀 설정 모달</h1>
         <p>다양한 커스텀 옵션이 적용된 모달입니다.</p>
@@ -489,7 +489,7 @@ useNuxtApp().$modal({
           <uiButton full primary @click="isCustomModalOpen = false">직접 닫기</uiButton>
         </div>
       </template>
-    </NewModal>
+    </newPopup>
   </uiInner>
 </template>
 
