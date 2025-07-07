@@ -18,11 +18,3 @@ export interface NewModalState {
   isPageLocked: boolean;
   highestZIndex: number;
 }
-
-export interface NewModalSystemOptions {
-  type?: 'modal' | 'full' | 'bottom';
-  addClass?: string;
-  closeOnOverlay?: boolean;
-  closeOnEscape?: boolean;
-  appendTo?: string | HTMLElement;
-}

@@ -53,9 +53,6 @@ export const useNewModalSystem = () => {
     state.value.modals.push(modal)
     state.value.highestZIndex = zIndex
 
-    console.log('모달 등록:', modal)
-    console.log('전체 모달 리스트:', state.value.modals)
-
     return id
   }
 
@@ -69,14 +66,10 @@ export const useNewModalSystem = () => {
 
   // 모달 표시
   const showModal = (id: string): void => {
-    console.log('showModal 호출:', id)
     const modal = state.value.modals.find(m => m.id === id)
     if (!modal) {
-      console.error('모달을 찾을 수 없음:', id)
       return
     }
-
-    console.log('모달 찾음:', modal)
 
     // returnFocus 설정 (현재 포커스된 요소 저장)
     if (!modal.returnFocus && process.client) {
@@ -87,7 +80,6 @@ export const useNewModalSystem = () => {
     }
 
     modal.visible = true
-    console.log('모달 visible 설정')
 
     // 첫 번째 모달이면 페이지 잠금
     const visibleModals = state.value.modals.filter(m => m.visible)
@@ -99,11 +91,9 @@ export const useNewModalSystem = () => {
     // 애니메이션을 위한 단계별 상태 변경
     nextTick(() => {
       modal.show = true
-      console.log('모달 show 설정')
       
       setTimeout(() => {
         modal.open = true
-        console.log('모달 open 설정')
       }, 1)
     })
   }
@@ -146,7 +136,6 @@ export const useNewModalSystem = () => {
     const modal = findModal(id)
     if (modal) {
       modal.slotRenderer = slotRenderer
-      console.log('모달 slot 설정됨:', id)
     }
   }
 
@@ -169,16 +158,34 @@ export const useNewModalSystem = () => {
     }
   }
 
-  // 클라이언트에서만 키보드 이벤트 처리 (lifecycle hooks 제거)
+  // 클라이언트에서만 키보드 이벤트 처리
+  let keydownHandler: ((event: KeyboardEvent) => void) | null = null
+  
   if (process.client) {
-    const handleKeydown = (event: KeyboardEvent): void => {
+    keydownHandler = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         handleEscapeKey()
       }
     }
 
-    // 즉시 이벤트 리스너 등록 (lifecycle hooks 사용하지 않음)
-    document.addEventListener('keydown', handleKeydown)
+    document.addEventListener('keydown', keydownHandler)
+  }
+
+  // 이벤트 리스너 정리 함수 (더 안전한 버전)
+  const cleanup = (): void => {
+    if (process.client && keydownHandler) {
+      try {
+        document.removeEventListener('keydown', keydownHandler)
+      } catch (error) {
+        // 이미 제거되었거나 오류 발생 시 무시
+        console.warn('Error removing keydown listener:', error)
+      } finally {
+        keydownHandler = null
+      }
+    }
+    
+    // 모든 모달 닫기
+    closeAllModals()
   }
 
   return {
@@ -194,6 +201,7 @@ export const useNewModalSystem = () => {
     findModal,
     setModalSlot,
     closeAllModals,
-    handleEscapeKey
+    handleEscapeKey,
+    cleanup
   }
 }

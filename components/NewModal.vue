@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { NewModalSystemOptions } from '@/types/newModal'
 
 interface Props {
   modelValue: boolean

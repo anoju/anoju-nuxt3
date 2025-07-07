@@ -3,11 +3,14 @@ import type { NewModalInstance } from '@/types/newModal'
 
 const { modals, hideModal } = useNewModalSystem()
 
-// 디버깅을 위한 모달 상태 감시
-watch(modals, (newModals) => {
-  console.log('NewModalContainer - modals 변경됨:', unref(newModals))
-  console.log('NewModalContainer - modals.length:', unref(newModals).length)
-}, { deep: true, immediate: true })
+// 컬포넌트 해제 시 안전성 보장
+const { $cleanupNewModals } = useNuxtApp()
+onUnmounted(() => {
+  // 플러그인에서 제공하는 cleanup 함수 호출
+  if ($cleanupNewModals) {
+    $cleanupNewModals()
+  }
+})
 
 // 배경 클릭 처리
 const handleOverlayClick = (modal: NewModalInstance): void => {
@@ -115,8 +118,6 @@ watch(modals, (newModals: any) => {
         >
           <h2>기본 모달</h2>
           <p>슬롯 내용이 없습니다.</p>
-          <p>slotRenderer 존재: {{ !!modal.slotRenderer }}</p>
-          <p>Modal ID: {{ modal.id }}</p>
           <button @click="handleOverlayClick(modal)">닫기</button>
         </div>
       </div>
